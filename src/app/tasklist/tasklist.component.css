@@ -1,0 +1,16 @@
+ul {
+    list-style-type: none;
+}
+
+.task-item {
+    height: 100px;
+    width: 400px;
+    background-color: cadetblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.task-name, .task-description {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
