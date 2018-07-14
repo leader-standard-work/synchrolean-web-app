@@ -1,16 +1,21 @@
-ul {
+.tasks {
     list-style-type: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ed6623;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 
 .task-item {
     height: 100px;
-    width: 400px;
-    background-color: cadetblue;
+    width: 50%;
+    background-color: white;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .task-name, .task-description {
-    color: black;
+    color: #ed6623;
     font-family: Arial, Helvetica, sans-serif;
 }

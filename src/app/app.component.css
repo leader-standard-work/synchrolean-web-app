@@ -1,0 +1,32 @@
+#topnav {
+    background-color: white;
+    justify-content: center;
+    color: #ed6623;
+}
+
+#options {
+    background-color: #ed6623;
+    justify-content: center;
+}
+
+.options-menu {
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+.menu-item {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: white;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.menu-item:hover {
+    cursor: pointer;
+    background-color: white;
+    border-radius: 5px;
+    color: #ed6623;
+}
