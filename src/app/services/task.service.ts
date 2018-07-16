@@ -62,4 +62,17 @@ export class TaskService {
       .subscribe((newTask:Task) => task = newTask);
     return task;
   }
+
+  /**
+   * Updates a task's information in the database.
+   * @param updatedTask The updated task whose changes will be saved to the database
+   * @returns       Returns the newly updated task back to the client
+   */
+  editTask(userId, taskId, updatedTask: Task) {
+    const endpoint = environment.baseServerUrl + this.apiBase + userId + '/' + taskId;
+    let task:Task;
+    this.http.put(endpoint, updatedTask, { withCredentials: true })
+      .subscribe((updatedTask:Task) => task = updatedTask);
+    return task;
+  }
 }
