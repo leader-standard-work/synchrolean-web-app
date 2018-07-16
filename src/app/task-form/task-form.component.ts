@@ -13,6 +13,7 @@ export class TaskFormComponent implements OnInit {
   action:string = 'Add';
   task: Task;
 
+
   /**
    * Communicates with the task service
    */
@@ -25,7 +26,11 @@ export class TaskFormComponent implements OnInit {
 
   /**
    * Provides the task that the form is working with to the task
-   * service so that the task can be added to the db.
+   * service so that the task can be added to the db. 
+   * 
+   * This is the most basic working example. From here we will want
+   * to get validation going and include other fields on the form that
+   * the user can manipulate. 
    */
   addTask() {
     this.task.creationDate = new Date();
