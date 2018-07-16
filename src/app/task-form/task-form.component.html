@@ -1,0 +1,22 @@
+<div class="container">
+  <h3>{{action}} post</h3>
+  <form>
+    <div class="form-group">
+      <label for="name">Task Name:</label>
+      <input type="text" class="form-control"
+         required [(ngModel)]="task.name" name="name">
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" class="form-control"
+        [(ngModel)]="task.description" name="description">
+    </div>
+    <div class="form-group">
+      <label for="isRecurring">Recurring?</label>
+      <input type="checkbox" class="form-control"
+        [(ngModel)]="task.isRecurring" name="recurring">
+    </div>
+    <button type="submit" class="btn btn-success" (click)="addTask()"
+      routerLink="/tasklist">{{action}}</button>
+  </form>
+</div>
