@@ -9,6 +9,13 @@ import { environment } from './../../environments/environment';
 })
 export class AccountsService {
   private apiBase: string = '/accounts/';
+  /**
+   * I'm thinking it would be nice to store the user account for the
+   * currently logged in user here. We can then reference this when 
+   * creating new tasks, teams, invites... etc. Would involve having
+   * some kind of method for "login" purposes.
+   */
+  private currentUser:Account;
 
   constructor(private http: HttpClient) { }
 

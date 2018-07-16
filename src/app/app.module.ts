@@ -6,11 +6,13 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TasklistComponent } from './tasklist/tasklist.component';
+import { TaskFormComponent } from './task-form/task-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TasklistComponent
+    TasklistComponent,
+    TaskFormComponent
   ],
   imports: [
     BrowserModule,
