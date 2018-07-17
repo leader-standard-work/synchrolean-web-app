@@ -1,7 +1,7 @@
-import { TaskService } from './../services/task.service';
+import { TaskService } from '../services/task.service';
 import { Component, OnInit } from '@angular/core';
 
-import { Task } from './../models/Task';
+import { Task } from '../models/Task';
 
 @Component({
   selector: 'tasklist',
@@ -27,7 +27,7 @@ export class TasklistComponent implements OnInit {
    */
   ngOnInit() {
     // Grab the tasks from the task service
-    this.tasks = this.taskService.fetchTasks(5);
+    this.tasks = this.taskService.getTasks();
     console.log(this.tasks);
   }
 }

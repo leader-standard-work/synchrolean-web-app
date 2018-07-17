@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Task } from './../models/Task';
-import { TaskService } from './../services/task.service';
-import { AccountsService } from './../services/accounts.service';
+import { Task } from '../models/Task';
+import { TaskService } from '../services/task.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-task-form',
@@ -17,7 +17,7 @@ export class TaskFormComponent implements OnInit {
    * Communicates with the task service
    */
   constructor(private taskService:TaskService, 
-    private accountsService:AccountsService,
+    private accountsService:AccountService,
     private formBuilder:FormBuilder) { 
 
   }

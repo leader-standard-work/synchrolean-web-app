@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Account } from './../models/Account';
-import { environment } from './../../environments/environment';
+import { Account } from '../models/Account';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountsService {
+export class AccountService {
   private apiBase: string = '/accounts/';
   /**
    * I'm thinking it would be nice to store the user account for the

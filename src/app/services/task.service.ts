@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Task } from '../models/Task';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,12 @@ export class TaskService {
    * Production version of this url should be in src/environments/environment.prod.ts.
    */
   private apiBase: string = '/tasks/'; // Api addition to the url
+  private tasks:Task[] = [];           // Local collection of tasks
 
   constructor(private http: HttpClient) { 
-    console.log("TaskService created."); // For logging purposes
+    console.log('TaskService created.'); // For logging purposes
+    console.log('Fetching tasks for current user.');
+    this.fetchTasks(4);
   }
 
   /**
@@ -42,12 +45,20 @@ export class TaskService {
           newTask.isRemoved = task.isRemoved;
           newTask.completionDate = task.completionDate;
           newTask.creationDate = task.creationDate;
-          userTasks.push(newTask);
+          this.tasks.push(newTask);
         })
       }, err => {
         console.log(err);
       });
-    return userTasks;
+  }
+
+  /**
+   * Get tasks provides the list of tasks from the task service back to
+   * the component that needs the tasks.
+   * @returns List of tasks for the current user.
+   */
+  getTasks() {
+    return this.tasks;
   }
 
   /**
@@ -59,7 +70,7 @@ export class TaskService {
     const endpoint = environment.baseServerUrl + this.apiBase;
     let task:Task;
     this.http.post(endpoint, newTask, { withCredentials: true })
-      .subscribe((newTask:Task) => task = newTask);
+      .subscribe((newTask:Task) => this.tasks.push(newTask));
     return task;
   }
 
