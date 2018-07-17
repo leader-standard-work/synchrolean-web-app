@@ -14,12 +14,16 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TasklistComponent } from './tasklist/tasklist.component';
 import { TaskFormComponent } from './task-form/task-form.component';
+import { TeamFormComponent } from './components/team-form/team-form.component';
+import { TeamListComponent } from './components/team-list/team-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TasklistComponent,
-    TaskFormComponent
+    TaskFormComponent,
+    TeamFormComponent,
+    TeamListComponent
   ],
   imports: [
     BrowserModule,
