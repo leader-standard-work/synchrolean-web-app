@@ -53,7 +53,7 @@ export class TaskFormComponent implements OnInit {
     task.creationDate = new Date();
     task.isCompleted = false;
     task.isRemoved = false;
-    task.ownerId = 5;
+    task.ownerId = 4;
     this.taskService.addTask(task);
   }
 
