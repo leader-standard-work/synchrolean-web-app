@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Task } from './../models/Task';
 import { TaskService } from './../services/task.service';
@@ -10,18 +11,31 @@ import { AccountsService } from './../services/accounts.service';
   styleUrls: ['./task-form.component.css']
 })
 export class TaskFormComponent implements OnInit {
-  action:string = 'Add';
-  task: Task;
-
+  taskForm:FormGroup;
 
   /**
    * Communicates with the task service
    */
-  constructor(private taskService:TaskService, private accountsService:AccountsService) { 
-    this.task = new Task();
+  constructor(private taskService:TaskService, 
+    private accountsService:AccountsService,
+    private formBuilder:FormBuilder) { 
+
   }
 
   ngOnInit() {
+    this.taskForm = this.formBuilder.group({
+      taskName: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20)
+      ]],
+      description: ['', [
+        Validators.maxLength(250)
+      ]],
+      recurring: [false, [
+        Validators.required
+      ]]
+    });
   }
 
   /**
@@ -33,11 +47,32 @@ export class TaskFormComponent implements OnInit {
    * the user can manipulate. 
    */
   addTask() {
-    this.task.creationDate = new Date();
-    this.task.isCompleted = false;
-    this.task.isRemoved = false;
-    this.task.ownerId = 5;
-    this.taskService.addTask(this.task);
+    let task = new Task();
+    task.name = this.taskForm.controls['taskName'].value;
+    task.description = this.taskForm.controls['description'].value;
+    task.creationDate = new Date();
+    task.isCompleted = false;
+    task.isRemoved = false;
+    task.ownerId = 5;
+    this.taskService.addTask(task);
+  }
+
+  /**
+   * Used to grab form properties to display useful messages to the
+   * end user.
+   * @returns The name entered for the task
+   */
+  get taskName() {
+    return this.taskForm.get('taskName');
+  }
+
+  /**
+   * Used to grab form properties to display useful messages to the
+   * end user.
+   * @returns The description entered for the task
+   */
+  get description() {
+    return this.taskForm.get('description');
   }
 
 }

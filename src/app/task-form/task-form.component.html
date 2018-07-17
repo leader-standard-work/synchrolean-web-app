@@ -1,22 +1,63 @@
+<!-- This does work however -->
 <div class="container">
-  <h3>{{action}} post</h3>
-  <form>
+  <h3>Add task</h3>
+  <form [formGroup]="taskForm" class="task-form">
     <div class="form-group">
       <label for="name">Task Name:</label>
-      <input type="text" class="form-control"
-         required [(ngModel)]="task.name" name="name">
+      <input type="text" class="form-control" formControlName="taskName">
+      <p *ngIf="taskName.invalid && taskName.touched" class="error">
+          A valid task name is required.
+      </p>
     </div>
     <div class="form-group">
       <label for="description">Description:</label>
-      <input type="text" class="form-control"
-        [(ngModel)]="task.description" name="description">
+      <textarea type="text" class="form-control" formControlName="description"></textarea>
+      <p *ngIf="description.invalid && description.touched" class="error">
+        Descriptions must be under 250 characters.
+      </p>
     </div>
     <div class="form-group">
-      <label for="isRecurring">Recurring?</label>
-      <input type="checkbox" class="form-control"
-        [(ngModel)]="task.isRecurring" name="recurring">
+      <label for="isRecurring"><input type="checkbox" class="form-control" formControlName="recurring"> Recurring?</label>
     </div>
-    <button type="submit" class="btn btn-success" (click)="addTask()"
-      routerLink="/tasklist">{{action}}</button>
+    <button type="submit" class="btn btn-primary"  (click)="addTask()"
+      routerLink="/tasklist">Create Task</button>
   </form>
 </div>
+
+<!-- For some reason the angular materials fields aren't working... -->
+<!-- <form [formGroup]="taskForm" class="task-form">
+  <hr>
+  <mat-form-field>
+    <input matInput placeholder="Task name" formControlName="taskName">
+    <mat-error *ngIf="taskName.invalid && taskName.touched">
+      A valid task name is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+      <textarea matInput placeholder="Description" formControlName="description">
+      <mat-error *ngIf="description.invalid && description.touched">
+        Descriptions must be less than 250 characters.
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-checkbox formControlName="recurring">
+      Is this a recurring task?
+    </mat-checkbox>
+  </mat-form-field>
+
+  <button mat-raised-button
+          (click)="addTask()">
+    Create Task
+  </button>
+</form> -->
+
+
+
+
+
+
+
+
+
