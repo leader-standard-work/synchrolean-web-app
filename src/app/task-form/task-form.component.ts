@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { Task } from '../models/Task';
 import { TaskService } from '../services/task.service';
@@ -18,6 +19,7 @@ export class TaskFormComponent implements OnInit {
    */
   constructor(private taskService:TaskService, 
     private accountsService:AccountService,
+    private router:Router,
     private formBuilder:FormBuilder) { 
 
   }
@@ -55,6 +57,7 @@ export class TaskFormComponent implements OnInit {
     task.isRemoved = false;
     task.ownerId = 4;
     this.taskService.addTask(task);
+    this.router.navigate(['/tasklist']);
   }
 
   /**
