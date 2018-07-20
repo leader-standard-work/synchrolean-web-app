@@ -1,17 +1,17 @@
-<!-- Root html component -->
-<section class="container-fluid">
-    <div class="navbar navbar-fixed navbar-expand-md" id="topnav">
-        <h3>LEAN Task Management</h3>
-    </div>
-    <div class="navbar navbar-fixed navbar-expand-md" id="options">
-        <ul class="options-menu">
-            <li class="menu-item" routerLink="/addtask">Add new task</li>
-            <li class="menu-item" routerLink="#">Edit task</li>
-            <li class="menu-item" routerLink="#">Remove task</li>
-            <li class="menu-item" routerLink="/teams">Teams</li>
-        </ul>
-    </div>
+<!-- Main navigation component -->
+<div class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <router-outlet></router-outlet>
+        <a class="navbar-brand" href="#">{{ brand | uppercase }}</a>
+        <div id="navbarResponsive" class="collapse navbar-collapse">
+        <ul class="navbar-nav nav-options">
+            <li class="nav-item nav-link" routerLink="/tasks">Tasks</li>
+            <li class="nav-item nav-link" routerLink="/teams">Teams</li>
+        </ul>
+        </div>
+        <button type="button" class="btn btn-secondary mr-auto">Login</button>
     </div>
+</div>
+<!-- Other components get loaded inside the router outlet here -->
+<section class="container-fluid">
+    <router-outlet></router-outlet>
 </section>

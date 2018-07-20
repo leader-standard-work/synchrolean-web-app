@@ -1,4 +1,4 @@
-#topnav {
+/* #topnav {
     background-color: white;
     justify-content: center;
     color: #ed6623;
@@ -29,4 +29,7 @@
     background-color: white;
     border-radius: 5px;
     color: #ed6623;
+} */
+.nav-options li:hover {
+    cursor: pointer;
 }

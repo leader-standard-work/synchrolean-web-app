@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'L.E.A.N.';
+  brand: string = 'lean';
+
+  /**
+   * We could use AppComponent for login logic and inject the
+   * required services to handle this since the navbar includes 
+   * a login button. 
+   */
+  constructor() {
+
+  }
 }
