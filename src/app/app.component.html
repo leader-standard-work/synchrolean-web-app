@@ -1,17 +1,17 @@
-<!-- Main navigation component -->
-<div class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">{{ brand | uppercase }}</a>
-        <div id="navbarResponsive" class="collapse navbar-collapse">
-        <ul class="navbar-nav nav-options">
-            <li class="nav-item nav-link" routerLink="/tasks">Tasks</li>
-            <li class="nav-item nav-link" routerLink="/teams">Teams</li>
-        </ul>
-        </div>
-        <button type="button" class="btn btn-secondary mr-auto">Login</button>
-    </div>
-</div>
 <!-- Other components get loaded inside the router outlet here -->
 <section class="container-fluid">
+    <!-- Main navigation component -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">{{ brand | uppercase }}</a>
+            <div id="navbarResponsive" class="collapse navbar-collapse">
+            <ul class="navbar-nav nav-options">
+                <li class="nav-item nav-link" routerLink="/tasks">Tasks</li>
+                <li class="nav-item nav-link" routerLink="/teams">Teams</li>
+            </ul>
+            </div>
+            <button type="button" class="btn btn-secondary mr-auto">Login</button>
+        </div>
+    </div>
     <router-outlet></router-outlet>
 </section>

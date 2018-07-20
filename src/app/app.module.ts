@@ -10,6 +10,7 @@ import { TasklistComponent } from './tasklist/tasklist.component';
 import { TaskFormComponent } from './task-form/task-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
+import { TaskPageComponent } from './components/task-page/task-page.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { TeamListComponent } from './components/team-list/team-list.component';
     TasklistComponent,
     TaskFormComponent,
     TeamFormComponent,
-    TeamListComponent
+    TeamListComponent,
+    TaskPageComponent
   ],
   imports: [
     BrowserModule,
