@@ -12,6 +12,9 @@ import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
 
+// bootstrap related imports
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +30,8 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CollapseModule
   ],
   providers: [],
   bootstrap: [AppComponent]

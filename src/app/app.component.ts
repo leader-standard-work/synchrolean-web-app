@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   brand: string = 'lean';
+  isCollapsed: boolean = true;
 
   /**
    * We could use AppComponent for login logic and inject the
