@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HomeComponent } from './components/home/home.component';
 import { TasklistComponent } from './tasklist/tasklist.component';
 import { TaskFormComponent } from './task-form/task-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
@@ -22,7 +23,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     TaskFormComponent,
     TeamFormComponent,
     TeamListComponent,
-    TaskPageComponent
+    TaskPageComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
