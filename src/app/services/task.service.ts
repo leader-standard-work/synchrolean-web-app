@@ -30,7 +30,7 @@ export class TaskService {
     const endpoint = environment.baseServerUrl + this.apiBase + id;
 
     console.log('TaskService: Fetching tasks for ownerId ' + id);
-    let userTasks: Task[] = [];
+
     this.http.get<Task[]>(endpoint, { withCredentials: true })
       .subscribe(data => {
         // We will also want to make sure we grab data appropriately
@@ -71,7 +71,6 @@ export class TaskService {
     let task:Task;
     this.http.post(endpoint, newTask, { withCredentials: true })
       .subscribe((newTask:Task) => this.tasks.push(newTask));
-    return task;
   }
 
   /**
@@ -84,6 +83,5 @@ export class TaskService {
     let task:Task;
     this.http.put(endpoint, updatedTask, { withCredentials: true })
       .subscribe((updatedTask:Task) => task = updatedTask);
-    return task;
   }
 }

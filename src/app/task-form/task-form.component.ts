@@ -52,12 +52,13 @@ export class TaskFormComponent implements OnInit {
     let task = new Task();
     task.name = this.taskForm.controls['taskName'].value;
     task.description = this.taskForm.controls['description'].value;
+    task.isRecurring = this.taskForm.controls['recurring'].value;
     task.creationDate = new Date();
     task.isCompleted = false;
     task.isRemoved = false;
     task.ownerId = 4;
     this.taskService.addTask(task);
-    this.router.navigate(['/tasklist']);
+    this.router.navigate(['/tasks']);
   }
 
   /**
