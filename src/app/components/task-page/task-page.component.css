@@ -1,3 +1,10 @@
-.option:hover {
+.nav-options {
+    display: inline-block;
+}
+.nav-item {
+    display: inline-block;
+}
+
+.nav-options li:hover {
     cursor: pointer;
 }
