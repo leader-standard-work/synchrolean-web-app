@@ -9,8 +9,8 @@ import { Task } from '../models/Task';
   styleUrls: ['./tasklist.component.css']
 })
 export class TasklistComponent implements OnInit {
-  // Array of tasks to be displayed in the list
-  public tasks: Task[] = [];
+  public tasks: Task[] = []; // Array of tasks to be displayed in the list
+  current: number;           // Current is used for dislay purposes (showing extra task info)
 
   constructor(private taskService: TaskService) { 
     console.log("TasklistComponent created.");

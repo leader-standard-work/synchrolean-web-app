@@ -1,8 +1,13 @@
-<ul class="list-group">
-    <li *ngFor="let task of tasks; let i = index"
-      class="list-group-item">
-      {{task.name}}
-      <hr>
-      {{task.description}}
-    </li>
-</ul>
+<!-- Accordion style list -->
+<div class="accordion" id="taskAccordion" role="tablist" aria-multiselectable="true">
+  <div class="card" *ngFor="let task of tasks; let i = index">
+    <div class="card-header text-left" role="tab" (click)="current = i" 
+      [attr.aria-expanded]="current != i" aria-controls="toCollapse">
+      <h4 class="task-name">{{task.name}}</h4>
+    </div>
+<!-- In the body of the card we can make presentation of details nice looking -->
+    <div class="card-body" id="toCollapse" [collapse]="current != i">
+      <p>{{task.description}}</p>
+    </div>
+  </div>
+</div>
