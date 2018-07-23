@@ -78,5 +78,4 @@ export class TaskFormComponent implements OnInit {
   get description() {
     return this.taskForm.get('description');
   }
-
 }
