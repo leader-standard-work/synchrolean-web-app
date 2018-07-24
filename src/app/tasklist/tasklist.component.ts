@@ -32,10 +32,12 @@ export class TasklistComponent implements OnInit {
   }
 
   /**
-   * 
+   * Sets task isRemoved field to true, then calls server to update change
+   * @param {number} index - the task list index of task
+   * @param {Task} task - the task to be removed
    */
   removeTask(index: number, task: Task) {
-    task.isCompleted = true;
+    task.isRemoved = true;
     this.taskService.editTask(task.ownerId, index, task);
     console.log(this.tasks[this.current]);
   }

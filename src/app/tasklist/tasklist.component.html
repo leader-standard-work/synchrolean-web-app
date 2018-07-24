@@ -1,7 +1,7 @@
 <!-- Accordion style list -->
 <ul role="tablist" aria-multiselectable="true">
   <div class="card" *ngFor="let task of tasks; let i = index">
-    <div *ngIf="!task.isCompleted">
+    <div *ngIf="!task.isRemoved">
       <div class="card-header text-left" role="tab" (click)="current = i" 
         [attr.aria-expanded]="current != i" aria-controls="toCollapse">
         <h4 class="task-name">{{task.name}}</h4>
@@ -13,7 +13,7 @@
             <p>{{task.description}}</p>
           </ul>
           <ul>
-            <button class="nav-item nav-link bg-primary" (click)="removeTask(i, task)">Completed</button>
+            <button class="nav-item nav-link bg-primary" (click)="removeTask(i, task)">Delete</button>
           </ul>
         </div>
       </div>
