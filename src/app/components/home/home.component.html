@@ -1,3 +1,21 @@
-<div class="container">
+<div class="container bg-secondary">
+  <div class="row">
+    <div class="container col-4">
+      <form [formGroup]="loginForm" class="form">
+        <div class="form-group">
+          <label class="form-control-label" for="email">Email:</label>
+          <input type="email" class="form-control" formControlName="email">
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="password">Password:</label>
+          <input type="password" class="form-control" formControlName="password">
+        </div>
+        <button type="button" class="btn btn-primary m-2" [disabled]="loginForm.invalid" 
+          (click)="userLogin()">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
   <h2 class="text-muted">This can act as our home page. We can include intro info about lean here.</h2>
 </div>

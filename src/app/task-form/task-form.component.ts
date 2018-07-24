@@ -1,10 +1,10 @@
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Task } from '../models/Task';
 import { TaskService } from '../services/task.service';
-import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-task-form',
@@ -17,10 +17,10 @@ export class TaskFormComponent implements OnInit {
   /**
    * Communicates with the task service
    */
-  constructor(private taskService:TaskService, 
-    private accountsService:AccountService,
-    private router:Router,
-    private formBuilder:FormBuilder) { 
+  constructor(private taskService: TaskService, 
+    private authService: AuthService,
+    private router: Router,
+    private formBuilder: FormBuilder) { 
 
   }
 
@@ -56,26 +56,8 @@ export class TaskFormComponent implements OnInit {
     task.creationDate = new Date();
     task.isCompleted = false;
     task.isRemoved = false;
-    task.ownerId = 4;
+    task.ownerId = this.authService.getCurrentUserId();
     this.taskService.addTask(task);
     this.router.navigate(['/tasks']);
-  }
-
-  /**
-   * Used to grab form properties to display useful messages to the
-   * end user.
-   * @returns The name entered for the task
-   */
-  get taskName() {
-    return this.taskForm.get('taskName');
-  }
-
-  /**
-   * Used to grab form properties to display useful messages to the
-   * end user.
-   * @returns The description entered for the task
-   */
-  get description() {
-    return this.taskForm.get('description');
   }
 }
