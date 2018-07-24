@@ -38,7 +38,7 @@ export class TasklistComponent implements OnInit {
    */
   removeTask(index: number, task: Task) {
     task.isRemoved = true;
-    this.taskService.editTask(task.ownerId, index, task);
+    this.taskService.editTask(index, task);
     console.log(this.tasks[this.current]);
   }
 }

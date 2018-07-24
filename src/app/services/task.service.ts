@@ -68,8 +68,7 @@ export class TaskService {
    */
   addTask(newTask: Task) {
     const endpoint = environment.baseServerUrl + this.apiBase;
-    let task:Task;
-    this.http.post(endpoint, newTask, { withCredentials: true })
+    this.http.post(endpoint, newTask)
       .subscribe((newTask:Task) => this.tasks.push(newTask));
   }
 
@@ -78,10 +77,10 @@ export class TaskService {
    * @param updatedTask The updated task whose changes will be saved to the database
    * @returns       Returns the newly updated task back to the client
    */
-  editTask(userId, taskId, updatedTask: Task) {
-    const endpoint = environment.baseServerUrl + this.apiBase + userId + '/' + taskId;
-    let task:Task;
-    this.http.put(endpoint, updatedTask, { withCredentials: true })
-      .subscribe((updatedTask:Task) => task = updatedTask);
+  editTask(index: number, updatedTask: Task) {
+    const endpoint = environment.baseServerUrl + this.apiBase + 4 + '/' + updatedTask.id;
+    this.tasks.splice(index, 1);
+    this.http.put(endpoint, updatedTask)
+      .subscribe((task:Task) => this.tasks.push(task));
   }
 }
