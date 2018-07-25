@@ -42,6 +42,7 @@ export class AuthService {
    */
   setSession(account: Account) {
     localStorage.setItem('userId', JSON.stringify(account.ownerId));
+    localStorage.setItem('userName', account.firstName);
   }
 
   /**
@@ -50,6 +51,7 @@ export class AuthService {
   logout() {
     this.currentUser = null;
     localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
   }
 
   // Just a method for testing...
@@ -80,5 +82,14 @@ export class AuthService {
     else if (uid != null) // If a page refresh has occurred
       return uid;
     else return -1; // Tough luck
+  }
+
+  /**
+   * Get the name of the current user
+   * @returns Current users name
+   */
+  getCurrentUserName() {
+    let userName = localStorage.getItem('userName');
+    return userName || '';
   }
 }

@@ -11,6 +11,7 @@
                 </ul>
             </div>
         </div>
+        <a *ngIf="userName" href="/home" (click)="logout()">{{userName}}</a>
     </div>
     <router-outlet></router-outlet>
 </section>

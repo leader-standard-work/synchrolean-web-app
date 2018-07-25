@@ -15,6 +15,7 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CollapseModule
+    CollapseModule,
+    BsDropdownModule
   ],
   providers: [],
   bootstrap: [AppComponent]

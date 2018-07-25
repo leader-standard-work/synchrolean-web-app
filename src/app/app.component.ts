@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   brand: string = 'lean';
   isCollapsed: boolean = true;
-  navShowing: boolean = false;
+  userName: string;
 
   /**
    * We could use AppComponent for login logic and inject the
@@ -17,7 +17,8 @@ export class AppComponent {
    * a login button. 
    */
   constructor(private authService: AuthService) {
-
+    this.userName = this.authService.getCurrentUserName();
+    console.log(this.userName);
   }
 
   /**
@@ -27,5 +28,12 @@ export class AppComponent {
    */
   showNav() {
     return this.authService.isCurrentUser();
+  }
+
+  /**
+   * Logout 
+   */
+  logout() {
+    this.authService.logout();
   }
 }
