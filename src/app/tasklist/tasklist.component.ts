@@ -1,5 +1,5 @@
 import { TaskService } from '../services/task.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Task } from '../models/Task';
 import { Router } from '../../../node_modules/@angular/router';
@@ -11,7 +11,8 @@ import { Router } from '../../../node_modules/@angular/router';
 })
 export class TasklistComponent implements OnInit {
   @Input() public taskList: Task[]; // Array of tasks to be displayed in the list (taken from TaskPageComponent)
-  public current: number = 0;       // Current stores the index of the task that is currently referenced
+  @Input() current: number;       // Current stores the index of the task that is currently referenced
+  @Output() change: EventEmitter<number> = new EventEmitter<number>(); // Listens for changes in the chosen index
 
   constructor(private taskService: TaskService,
     private router: Router) { 
@@ -32,8 +33,9 @@ export class TasklistComponent implements OnInit {
   }
 
   // Just for testing for now
-  logCurrent() {
-    console.log(this.current);
+  setCurrent(index: number) {
+    this.current = index;
+    this.change.emit(this.current);
   }
 
   /**

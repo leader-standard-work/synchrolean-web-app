@@ -1,19 +1,17 @@
-import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { TaskService } from './../../services/task.service';
 import { Task } from '../../models/Task';
-import { TasklistComponent } from '../../tasklist/tasklist.component';
 
 @Component({
   selector: 'app-task-page',
   templateUrl: './task-page.component.html',
   styleUrls: ['./task-page.component.css']
 })
-export class TaskPageComponent implements OnInit, AfterViewInit {
+export class TaskPageComponent implements OnInit {
   pageTitle: string = ' My Tasks';         // Page title
   public tasks: Task[] = [];               // List of tasks from service
-  public current: number;                  // The index of the currently referenced task from the list
-  @ViewChild(TasklistComponent) taskList;  // Child list component
+  public currentIndex: number = 0;         // The index of the currently referenced task from the list
 
   constructor(private taskService: TaskService) {
     console.log('TaskPageComponent: Created');
@@ -29,14 +27,12 @@ export class TaskPageComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * In order to get the current task that is being referenced in the child
-   * component we implement ngAfterViewInit so that we can gain access to the
-   * properties of the child component.
+   * Method for paying attention to which element in the list is currently
+   * selected.
+   * @param event Event emitter bound to the tasklist component in the view
    */
-  ngAfterViewInit() {
-    //this.currentTask = new Task();
-    this.current = this.taskList.current;
-    console.log(this.current);
+  change(event) {
+    this.currentIndex = event;
+    console.log(this.currentIndex);
   }
-
 }
