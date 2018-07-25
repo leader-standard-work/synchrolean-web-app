@@ -1,10 +1,10 @@
-import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Task } from '../models/Task';
 import { TaskService } from '../services/task.service';
+import { AuthService } from './../services/auth.service';
 
 @Component({
   selector: 'app-task-form',

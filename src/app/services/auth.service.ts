@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(private http: HttpClient,
     private router: Router) {
-    this.currentUser = new Account(); // Not sure if this is neccessary
+    //this.currentUser = new Account(); // Not sure if this is neccessary
    }
 
   /**
@@ -24,7 +24,9 @@ export class AuthService {
     const endpoint = environment.baseServerUrl + '/accounts/' + email;
     this.http.get(endpoint)
       .subscribe((userAccount: Account) => {
+        this.currentUser = new Account();
         this.currentUser = userAccount;
+        this.setSession(this.currentUser);
         this.getCurrentUserInfo();
         this.router.navigate(['/tasks']);
       }, (err) => {
@@ -34,10 +36,20 @@ export class AuthService {
   }
 
   /**
-   * Method to logout of the application
+   * Adds the current user's id to local storage to create a session
+   * We can figure out what we want to store in localStorage as things
+   * change... (JWT)
+   */
+  setSession(account: Account) {
+    localStorage.setItem('userId', JSON.stringify(account.ownerId));
+  }
+
+  /**
+   * Method to logout of the application (not called yet)
    */
   logout() {
     this.currentUser = null;
+    localStorage.removeItem('userId');
   }
 
   // Just a method for testing...
@@ -53,7 +65,8 @@ export class AuthService {
    * @returns true if there is a current user else false
    */
   isCurrentUser() {
-    return this.currentUser != null;
+    let uid = localStorage.getItem('userId');
+    return (this.currentUser != null) || (uid != null);
   }
 
   /**
@@ -61,8 +74,11 @@ export class AuthService {
    * @returns The ownerId of the current user
    */
   getCurrentUserId() {
-    if (this.currentUser)
+    let uid = +localStorage.getItem('userId');
+    if (this.currentUser) // If a page refresh hasn't occurred
       return this.currentUser.ownerId;
-    else return -1;
+    else if (uid != null) // If a page refresh has occurred
+      return uid;
+    else return -1; // Tough luck
   }
 }
