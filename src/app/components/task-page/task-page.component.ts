@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-page.component.css']
 })
 export class TaskPageComponent implements OnInit {
+  pageTitle: string = ' My Tasks';
 
   constructor() { }
 

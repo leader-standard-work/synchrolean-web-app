@@ -1,16 +1,12 @@
-<div class="container-fluid bg-dark pl-0 pr-0">
-  <div class="task-nav bg-primary">
-    <div class="container">
-      <ul class="navbar-nav nav-options bg-primary">
-        <li class="nav-item nav-link bg-primary" routerLink="/addtask">Add task</li>
-      </ul>
+<div class="jumbotron text-center mb-2">
+  <h2>{{pageTitle}}</h2>
+</div>
+
+<div class="container-fluid pl-0 pr-0">
+  <div class="row">
+    <div class="col">
+      <tasklist></tasklist>
     </div>
-  </div>
-    <div class="row">
-      <div class="col-3"></div>
-      <div class="col">
-        <tasklist></tasklist>
-      </div>
-      <div class="col-3"></div>
+    <div class="col-8"></div>
   </div>
 </div>
