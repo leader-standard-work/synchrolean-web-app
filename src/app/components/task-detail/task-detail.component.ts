@@ -9,6 +9,7 @@ import { Task } from '../../models/Task';
 export class TaskDetailComponent implements OnInit {
   @Input() detailedTask: Task;
   public completed: string;
+  public noDescription: string = 'This task has no description.'
 
   constructor() { }
 

@@ -4,10 +4,10 @@
 
 <div class="container-fluid pl-0 pr-0">
   <div class="row">
-    <div class="col">
+    <div class="col-3">
       <tasklist [taskList]="tasks" [current]="currentIndex" (change)="change($event)"></tasklist>
     </div>
-    <div class="col-8">
+    <div class="col-6">
       <div *ngIf="tasks[currentIndex]">
           <task-detail [detailedTask]="tasks[currentIndex]"></task-detail>
       </div>
