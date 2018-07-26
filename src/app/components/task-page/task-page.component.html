@@ -8,7 +8,9 @@
       <tasklist [taskList]="tasks" [current]="currentIndex" (change)="change($event)"></tasklist>
     </div>
     <div class="col-8">
-      
+      <div *ngIf="tasks[currentIndex]">
+          <task-detail [detailedTask]="tasks[currentIndex]"></task-detail>
+      </div>
     </div>
   </div>
 </div>
