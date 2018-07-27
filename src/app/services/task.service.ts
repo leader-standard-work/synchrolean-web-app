@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -15,10 +16,13 @@ export class TaskService {
   private apiBase: string = '/tasks/'; // Api addition to the url
   private tasks:Task[] = [];           // Local collection of tasks
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient,
+  private authService: AuthService) { 
     console.log('TaskService created.'); // For logging purposes
-    console.log('Fetching tasks for current user.');
-    this.fetchTasks(4);
+    if (this.authService.isCurrentUser()) {
+      console.log('Fetching tasks for: ' + this.authService.getCurrentUserId());
+      this.fetchTasks(this.authService.getCurrentUserId());
+    }
   }
 
   /**
@@ -78,7 +82,8 @@ export class TaskService {
    * @returns       Returns the newly updated task back to the client
    */
   editTask(index: number, updatedTask: Task) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 4 + '/' + updatedTask.id;
+    let id = this.authService.getCurrentUserId();
+    const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
     this.tasks.splice(index, 1);
     this.http.put(endpoint, updatedTask)
       .subscribe((task:Task) => this.tasks.push(task));

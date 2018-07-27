@@ -1,7 +1,8 @@
 import { TaskService } from '../services/task.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Task } from '../models/Task';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'tasklist',
@@ -9,26 +10,32 @@ import { Task } from '../models/Task';
   styleUrls: ['./tasklist.component.css']
 })
 export class TasklistComponent implements OnInit {
-  public tasks: Task[] = []; // Array of tasks to be displayed in the list
-  current: number;           // Current is used for dislay purposes (showing extra task info)
+  @Input() public taskList: Task[]; // Array of tasks to be displayed in the list (taken from TaskPageComponent)
+  @Input() current: number;       // Current stores the index of the task that is currently referenced
+  @Output() change: EventEmitter<number> = new EventEmitter<number>(); // Listens for changes in the chosen index
 
-  constructor(private taskService: TaskService) { 
-    console.log("TasklistComponent created.");
+  constructor(private taskService: TaskService,
+    private router: Router) { 
+    console.log("TasklistComponent: Created");
   }
 
   /**
-   * Right before the view is displayed to the end user we collect
-   * the tasks for that user. We may want to change this so that
-   * the task list takes, as input, the id of the user that is logged
-   * in so that it can then fetch tasks based on that id.
-   * 
-   * Currently just takes a hardcoded id that is in my local DB. Change
-   * this on your local machine to match an id you have in your DB.
+   * Changed location of task fetching to the task page component
    */
   ngOnInit() {
-    // Grab the tasks from the task service
-    this.tasks = this.taskService.getTasks();
-    console.log(this.tasks);
+  }
+
+  /**
+   * Navigate to the add task form. This will likely change in location.
+   */
+  addTask() {
+    this.router.navigate(['/addtask']);
+  }
+
+  // Just for testing for now
+  setCurrent(index: number) {
+    this.current = index;
+    this.change.emit(this.current);
   }
 
   /**
@@ -39,6 +46,5 @@ export class TasklistComponent implements OnInit {
   removeTask(index: number, task: Task) {
     task.isRemoved = true;
     this.taskService.editTask(index, task);
-    console.log(this.tasks[this.current]);
   }
 }

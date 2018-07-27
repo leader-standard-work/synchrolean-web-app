@@ -9,16 +9,16 @@
         <div class="form-group">
           <label for="name">Task Name:</label>
           <input type="text" class="form-control" formControlName="taskName">
-          <p *ngIf="taskName.invalid && taskName.touched" class="error">
+          <!-- <p *ngIf="taskName.invalid && taskName.touched" class="error">
               A valid task name is required.
-          </p>
+          </p> -->
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
           <textarea type="text" class="form-control" formControlName="description"></textarea>
-          <p *ngIf="description.invalid && description.touched" class="error">
+          <!-- <p *ngIf="description.invalid && description.touched" class="error">
             Descriptions must be under 250 characters.
-          </p>
+          </p> -->
         </div>
         <div class="form-group">
           <label for="isRecurring"><input type="checkbox" class="form-control" formControlName="recurring"> Recurring?</label>
