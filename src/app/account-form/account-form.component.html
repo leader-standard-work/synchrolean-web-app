@@ -1,3 +1,49 @@
-<div class="container">
-  Hello
+<div class="card">
+  <div class="card-header text-center">
+    <p class="card-text">
+      Create Account
+    </p>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="accountForm">
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" class="form-control" formControlName="firstName" placeholder="Enter your first name">
+        <div *ngIf="accountForm.controls['firstName'].invalid && accountForm.controls['firstName'].touched">
+          <p class="text-danger">A first name is required.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" class="form-control" formControlName="lastName" placeholder="Enter your last name">
+        <div *ngIf="accountForm.controls['lastName'].invalid && accountForm.controls['lastName'].touched">
+          <p class="text-danger">A last name is required.</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" class="form-control" formControlName="email" placeholder="Enter your email">
+        <div *ngIf="accountForm.controls['email'].invalid && accountForm.controls['email'].touched">
+          <p class="text-danger">An email is required.</p>
+        </div>
+      </div>
+      <hr/>
+      <form #f="ngForm" novalidate>
+        <label for="password1">Password</label>
+        <input type="password" class="form-control" name="password" [ngModel]="password" required #password="ngModel">
+        <small [hidden]="password.valid || (password.pristine && !f.submitted)">
+            Password is required
+        </small>
+        <br/>
+        <label for="password2">Retype password</label>
+        <input type="password" class="form-control" name="confirmPassword" [ngModel]="confirmPassword" required validateEqual="password" #confirmPassword="ngModel">
+        <small [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)">
+            Password mismatch
+        </small>
+      </form>
+    </form>
+  </div>
+  <div class="card-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid" (click)="addAccount()" [routerLink]="['/tasks']">Create Account</button>
+  </div>
 </div>
