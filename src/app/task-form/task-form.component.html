@@ -1,4 +1,4 @@
-<!-- This does work however -->
+<!-- This does work however
 <div class="container">
   <div class="card" height="500px" width="500px">
     <div class="card-header text-center">
@@ -8,54 +8,79 @@
       <form [formGroup]="taskForm">
         <div class="form-group">
           <label for="name">Task Name:</label>
-          <input type="text" class="form-control" formControlName="taskName">
-          <!-- <p *ngIf="taskName.invalid && taskName.touched" class="error">
+          <input type="text" class="form-control" formControlName="name">
+          <div *ngIf="name">
+            <p *ngIf="taskName.invalid && taskName.touched" class="error">
               A valid task name is required.
-          </p> -->
+            </p>
+          </div>
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
           <textarea type="text" class="form-control" formControlName="description"></textarea>
-          <!-- <p *ngIf="description.invalid && description.touched" class="error">
-            Descriptions must be under 250 characters.
-          </p> -->
+          <div *ngIf="description">
+            <p *ngIf="description.invalid && description.touched" class="error">
+              Descriptions must be under 250 characters.
+            </p>
+          </div>
         </div>
         <div class="form-group">
-          <label for="isRecurring"><input type="checkbox" class="form-control" formControlName="recurring"> Recurring?</label>
+          <label for="recurring"><input type="checkbox" class="form-control" formControlName="recurring"> Recurring?</label>
         </div>
         <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid" (click)="addTask()">Create Task</button>
       </form>
     </div>
-</div>
+</div> -->
 
-<!-- For some reason the angular materials fields aren't working... -->
-<!-- <form [formGroup]="taskForm" class="task-form">
-  <hr>
-  <mat-form-field>
-    <input matInput placeholder="Task name" formControlName="taskName">
-    <mat-error *ngIf="taskName.invalid && taskName.touched">
-      A valid task name is required.
-    </mat-error>
-  </mat-form-field>
+<!-- <div class="container"> -->
+  <div class="card">
+    <div class="card-header text-center">
+      <p class="card-text">
+        Add task
+      </p>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="taskForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Enter a task name">
+          <div *ngIf="taskForm.controls['name'].invalid && taskForm.controls['name'].touched">
+            <p class="text-danger">A task name between 4 and 40 characters is required.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea type="text" class="form-control" formControlName="description" placeholder="Enter a description"></textarea>
+          <div *ngIf="taskForm.controls['description'].invalid">
+            <p class="text-danger">Descriptions must be 250 characters or less.</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row text-center">
+          <legend>Additional task information</legend>
+        </div>
+        <div class="row">
+          <div class="col ml-5">
+            <div class="form-group">
+              <label for="recurring" class="form-check-label">
+                <input type="checkbox" class="form-check-input" formControlName="recurring">
+                Recurring task?
+              </label>
+            </div>
+          </div>
+          <div class="col">
+            If the task is recurring a date picker or something can go here...
+          </div>
+          <div class="col">Some other cool stuff could go here too...</div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer">
+      <button type="button" class="btn btn-primary btn-block" [disabled]="taskForm.invalid" (click)="addTask()">Submit</button>
+    </div>
+  </div>
+<!-- </div> -->
 
-  <mat-form-field>
-      <textarea matInput placeholder="Description" formControlName="description">
-      <mat-error *ngIf="description.invalid && description.touched">
-        Descriptions must be less than 250 characters.
-      </mat-error>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-checkbox formControlName="recurring">
-      Is this a recurring task?
-    </mat-checkbox>
-  </mat-form-field>
-
-  <button mat-raised-button
-          (click)="addTask()">
-    Create Task
-  </button>
-</form> -->
 
 
 

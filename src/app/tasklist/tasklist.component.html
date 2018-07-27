@@ -1,6 +1,5 @@
 <!-- Accordion style list -->
 <ul class="list-group">
-  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="addTask()">Add Task</button>
   <li *ngFor="let task of taskList; let i = index" class="list-group-item d-flex justify-content-between align-items-center"
     (click)="current = i; setCurrent(i)">
       <h5>{{task.name}}</h5>

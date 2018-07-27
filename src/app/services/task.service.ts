@@ -20,7 +20,6 @@ export class TaskService {
   private authService: AuthService) { 
     console.log('TaskService created.'); // For logging purposes
     if (this.authService.isCurrentUser()) {
-      console.log('Fetching tasks for: ' + this.authService.getCurrentUserId());
       this.fetchTasks(this.authService.getCurrentUserId());
     }
   }
@@ -32,9 +31,7 @@ export class TaskService {
    */
   fetchTasks(id:number) {
     const endpoint = environment.baseServerUrl + this.apiBase + id;
-
-    console.log('TaskService: Fetching tasks for ownerId ' + id);
-
+    console.log('TaskService: Fetching tasks from server');
     this.http.get<Task[]>(endpoint, { withCredentials: true })
       .subscribe(data => {
         // We will also want to make sure we grab data appropriately
@@ -59,10 +56,31 @@ export class TaskService {
   /**
    * Get tasks provides the list of tasks from the task service back to
    * the component that needs the tasks.
-   * @returns List of tasks for the current user.
+   * @returns List of all tasks for the current user.
    */
-  getTasks() {
+  getAllTasks() {
+    console.log('TaskService: Getting all tasks');
     return this.tasks;
+  }
+
+  /**
+   * Get completed tasks for the current user
+   * @returns List of completed tasks for the current user
+   */
+  getCompletedTasks() {
+    console.log('TaskService: Getting completed tasks');
+    let completedTasks: Task[] = this.tasks.filter(task => task.isCompleted === true);
+    return completedTasks;
+  }
+
+  /**
+   * Get unfinished tasks for the current user
+   * @returns List of unfinished tasks for the user
+   */
+  getUnfinishedTasks() {
+    console.log('TaskService: Getting unfinished tasks');
+    let unfinishedTasks: Task[] = this.tasks.filter(task => task.isCompleted === false);
+    return unfinishedTasks;
   }
 
   /**

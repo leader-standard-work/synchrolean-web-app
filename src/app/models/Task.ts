@@ -1,8 +1,3 @@
-/**
- * A basic model for a task. We can change this as needed. For now
- * it is just set up like this for test purposes (getting and displaying
- * tasks).
- */
 export class Task {
     id: number;
     ownerId: number;
@@ -12,7 +7,17 @@ export class Task {
     isCompleted: boolean;
     isRemoved: boolean;
     creationDate: Date;
+    updatedDate: Date;
     completionDate: Date;
     
-    constructor() {}
+    constructor() {
+        /**
+         * When the task is created the creation date is set
+         * and it defaults to a state of not complete and not
+         * removed.
+         */
+        this.creationDate = new Date();
+        this.isCompleted = false;
+        this.isRemoved = false;
+    }
 }

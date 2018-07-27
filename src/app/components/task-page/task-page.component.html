@@ -4,10 +4,16 @@
 
 <div class="container-fluid pl-0 pr-0">
   <div class="row">
-    <div class="col-3">
+    <div class="col-4">
+      <div class="btn-group d-flex">
+        <button class="btn btn-primary w-100" type="button" (click)="getAllTasks()">All</button>
+        <button class="btn btn-warning w-100" type="button" (click)="getUnfinishedTasks()">Unfinished</button>
+        <button class="btn btn-success w-100" type="button" (click)="getCompletedTasks()">Completed</button>
+      </div>
       <tasklist [taskList]="tasks" [current]="currentIndex" (change)="change($event)"></tasklist>
+      <button type="button" class="btn btn-primary btn-lg btn-block" (click)="addTask()">Add Task</button>
     </div>
-    <div class="col-6">
+    <div class="col-8">
       <div *ngIf="tasks[currentIndex]">
           <task-detail [detailedTask]="tasks[currentIndex]"></task-detail>
       </div>
