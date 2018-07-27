@@ -7,10 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { TaskFormComponent } from './task-form/task-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
+import { TaskFormComponent } from './components/task-form/task-form.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';

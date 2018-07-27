@@ -4,7 +4,7 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TaskFormComponent } from './task-form/task-form.component';
+import { TaskFormComponent } from './components/task-form/task-form.component';
 import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 
