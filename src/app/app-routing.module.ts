@@ -2,7 +2,6 @@ import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { HomeComponent } from './components/home/home.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
-import { TasklistComponent } from './tasklist/tasklist.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TaskFormComponent } from './task-form/task-form.component';

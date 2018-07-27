@@ -10,7 +10,7 @@ import { Task } from '../../models/Task';
   styleUrls: ['./task-page.component.css']
 })
 export class TaskPageComponent implements OnInit {
-  pageTitle: string = 'My Tasks';         // Page title
+  public pageTitle: string = 'My Tasks';  // Page title
   public tasks: Task[] = [];              // List of tasks from service
   public currentIndex: number = 0;        // The index of the currently referenced task from the list
   public complete: string = 'Done';
