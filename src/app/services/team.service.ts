@@ -77,7 +77,17 @@ export class TeamService {
    */
   getTeam(id: number) {
     const endpoint = environment.baseServerUrl + this.apiBase + id;
-    let team: Team;
+
+    return this.http.get(endpoint);
+  }
+
+  /**
+   * Fetches all team members for the team with the specified id.
+   * @param id The id of the team to fetch the members of
+   * @returns       Returns a list of members belonging to the team
+   */
+  fetchTeamMembers(id: Number) {
+    const endpoint = environment.baseServerUrl + this.apiBase + 'members/' + id;
 
     return this.http.get(endpoint);
   }

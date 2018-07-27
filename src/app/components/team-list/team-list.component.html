@@ -2,7 +2,7 @@
   <a [routerLink]="['/teams/new']" class="btn btn-primary">New Team</a>
   <ul class="teams">
     <li class="card team-item" *ngFor="let team of teams">
-      <a href="/teams/edit/{{team.id}}"><h4 class="text-center team-name">{{team.teamName}}</h4></a>
+      <a href="/teams/{{team.id}}"><h4 class="text-center team-name">{{team.teamName}}</h4></a>
       <hr>
       <p class="card-text text-center team-description">{{team.teamDescription}}</p>
     </li>

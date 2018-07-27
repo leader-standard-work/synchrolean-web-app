@@ -15,6 +15,7 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TeamInfoComponent } from './components/team-info/team-info.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     TeamFormComponent,
     TeamListComponent,
     TaskPageComponent,
-    HomeComponent
+    HomeComponent,
+    TeamInfoComponent
   ],
   imports: [
     BrowserModule,

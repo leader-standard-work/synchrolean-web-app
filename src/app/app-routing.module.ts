@@ -1,3 +1,4 @@
+import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { HomeComponent } from './components/home/home.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'addtask', component: TaskFormComponent },
   { path: 'teams', component: TeamListComponent },
   { path: 'teams/new', component: TeamFormComponent },
-  { path: 'teams/edit/:id', component: TeamFormComponent }
+  { path: 'teams/edit/:id', component: TeamFormComponent },
+  { path: 'teams/:id', component: TeamInfoComponent }
 ];
 
 @NgModule({

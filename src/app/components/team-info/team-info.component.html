@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">{{ team.teamName }}</h1>
+    <p class="lead">{{ team.teamDescription }}</p>
+  </div>
+  
+  <div>
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Members</h5>
+        <ul class="list-group">
+          <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#inviteModal">+ Invite</button>
+          <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let member of members">
+            <div class="d-flex justify-content-between">
+              <h5 class="mb-1">{{ member.firstName }} {{ member.lastName }}</h5>
+            </div>
+            <p class="mb-1">{{ member.email }}</p>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-8">
+          <h5>Metrics</h5>
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
