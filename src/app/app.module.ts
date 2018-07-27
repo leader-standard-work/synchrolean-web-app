@@ -17,6 +17,7 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 
 @NgModule({
@@ -28,6 +29,8 @@ import { TeamInfoComponent } from './components/team-info/team-info.component';
     TeamListComponent,
     TaskPageComponent,
     HomeComponent,
+    TaskDetailComponent,
+    AccountFormComponent,
     TaskDetailComponent,
     TeamInfoComponent
   ],
