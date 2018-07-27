@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Account } from '../models/Account';
@@ -13,8 +13,6 @@ import { AuthService } from '../services/auth.service';
 })
 export class AccountFormComponent implements OnInit {
   accountForm: FormGroup;
-  password: string;
-  confirmPassword: string;
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
@@ -34,7 +32,14 @@ export class AccountFormComponent implements OnInit {
       ]),
       email: new FormControl('', [
         Validators.required,
-        Validators.maxLength(50)
+        Validators.maxLength(50),
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.required
       ])
     });
   }
@@ -47,5 +52,9 @@ export class AccountFormComponent implements OnInit {
     console.log(account);
     this.accountService.addAccount(account);
     this.router.navigate(['/tasks']);
+  }
+
+  passwordMatch() {
+    return this.accountForm.controls['password'].value == this.accountForm.controls['confirmPassword'].value;
   }
 }
