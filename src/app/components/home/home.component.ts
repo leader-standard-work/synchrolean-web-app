@@ -33,4 +33,5 @@ export class HomeComponent implements OnInit {
     const email = this.loginForm.get('email').value;
     this.auth.login(email);
   }
+
 }

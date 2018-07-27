@@ -17,6 +17,7 @@ import { TaskPageComponent } from './components/task-page/task-page.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
@@ -34,6 +35,8 @@ import { NotificationsComponent } from './components/notifications/notifications
     TeamInfoComponent,
     InviteMemberComponent,
     NotificationsComponent
+    AccountFormComponent,
+    TaskDetailComponent
   ],
   imports: [
     BrowserModule,

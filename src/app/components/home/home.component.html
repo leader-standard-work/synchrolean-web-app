@@ -11,10 +11,19 @@
           <label class="form-control-label" for="password">Password:</label>
           <input type="password" class="form-control" formControlName="password">
         </div>
-        <button type="button" class="btn btn-primary m-2" [disabled]="loginForm.invalid" 
-          (click)="userLogin()">
-          Login
-        </button>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn-primary m-2" [disabled]="loginForm.invalid" 
+              (click)="userLogin()">
+              Login
+            </button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-primary m-2" [routerLink]="['/addaccount']">
+              Create Account
+            </button>
+          </div>
+        </div>
       </form>
     </div>
     <div class="col"></div>
