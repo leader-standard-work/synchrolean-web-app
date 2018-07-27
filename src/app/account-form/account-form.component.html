@@ -28,22 +28,44 @@
         </div>
       </div>
       <hr/>
-      <form #f="ngForm" novalidate>
-        <label for="password1">Password</label>
-        <input type="password" class="form-control" name="password" [ngModel]="password" required #password="ngModel">
-        <small [hidden]="password.valid || (password.pristine && !f.submitted)">
-            Password is required
-        </small>
-        <br/>
-        <label for="password2">Retype password</label>
-        <input type="password" class="form-control" name="confirmPassword" [ngModel]="confirmPassword" required validateEqual="password" #confirmPassword="ngModel">
-        <small [hidden]="confirmPassword.valid || (confirmPassword.pristine && !f.submitted)">
-            Password mismatch
-        </small>
-      </form>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-4">
+            <div class="row">
+              <div class="col-4">
+                <label for="password1">Password</label>
+              </div>
+              <input type="password" formControlName="password">
+              <div *ngIf="accountForm.controls['password'].invalid && accountForm.controls['password'].touched">
+                <div class="col">
+                  <label class="text-danger">A password is required.</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-4">
+            <div class="row">
+              <div class="col-4">
+                <label for="confirmPassword">Retype password</label>
+              </div>
+              <input type="password" formControlName="confirmPassword">
+              <div *ngIf="!passwordMatch()">
+                <div class="col">
+                  <label>Password mismatch</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
   <div class="card-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid" (click)="addAccount()" [routerLink]="['/tasks']">Create Account</button>
+    <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid || !passwordMatch()" (click)="addAccount()" [routerLink]="['/tasks']">Create Account</button>
   </div>
 </div>
