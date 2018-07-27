@@ -8,13 +8,18 @@ import { Task } from '../../models/Task';
 })
 export class TaskDetailComponent implements OnInit {
   @Input() detailedTask: Task;
-  public completed: string;
-  public noDescription: string = 'This task has no description.'
+  public status: string;
+  public noDescription: string = 'This task has no description.';
+  public recurring: string = 'This is a recurring task.';
+  public nonrecurring: string = 'This is a non-recurring task.';
 
   constructor() { }
 
   ngOnInit() {
-    this.completed = this.detailedTask.isCompleted ? 'Completed' : 'Incomplete';
+    this.status = this.detailedTask.isCompleted ? 'Completed' : 'Incomplete';
   }
 
+  updated() {
+    return this.detailedTask.updatedDate ? true : false;
+  }
 }
