@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { TeamService } from './../../services/team.service';
 import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,8 @@ export class TeamFormComponent implements OnInit {
   constructor(
     private teamService: TeamService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private authService: AuthService) {
       this.team = new Team();
       /**
        * Attempt to grab the team id
@@ -68,7 +70,7 @@ export class TeamFormComponent implements OnInit {
       this.teamService.editTeam(this.team);
     }
     else {
-      this.team.ownerId = 1;
+      this.team.ownerId = this.authService.getCurrentUserId();
       this.teamService.addTeam(this.team);
     }
     this.router.navigate(['/teams/']);

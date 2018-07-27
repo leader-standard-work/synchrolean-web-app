@@ -53,6 +53,18 @@ export class AccountService {
   }
 
   /**
+   * Takes an email and requests a matching account for that email from
+   * the server.
+   * @param email The email for the account you are looking to fetch
+   * @returns       The account matching the supplied email 
+   */
+  getAccountByEmail(email:string) {
+    const endpoint = environment.baseServerUrl + this.apiBase + email;
+    let account:Account;
+    return this.http.get<Account>(endpoint, { withCredentials: true });
+  }
+
+  /**
    * Retrieves all accounts for users that belong to the team matching the
    * given teamId.
    * @param teamId The id of the team to retrieve accounts for

@@ -9,7 +9,7 @@
       <div class="col-md-4">
         <h5>Members</h5>
         <ul class="list-group">
-          <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#inviteModal">+ Invite</button>
+          <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inviteModal">+ Invite</a>
           <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let member of members">
             <div class="d-flex justify-content-between">
               <h5 class="mb-1">{{ member.firstName }} {{ member.lastName }}</h5>

@@ -18,9 +18,8 @@ export class TeamListComponent implements OnInit {
    * the teams.
    */
   ngOnInit() {
-    // Grab the tasks from the task service
+    // Grab the teams from the team service
     this.teams = this.teamService.fetchTeams();
-    console.log(this.teams);
   }
 
 }

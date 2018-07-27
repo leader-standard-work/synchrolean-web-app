@@ -1,0 +1,17 @@
+<div class="container">
+  <ul class="notifications">
+    <li class="card notification-item" *ngFor="let invite of invites">
+      <div class="row">
+        <div class="col-md-10">
+          <p class="card-text text-center notification-description">Team Id: {{ invite.teamId }}</p>
+        </div>
+        <div class="col-md-2">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success btn-sm" (click)="acceptTeamInvite(invite)">Accept</button>
+            <button type="button" class="btn btn-danger" (click)="declineTeamInvite(invite)">Decline</button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
