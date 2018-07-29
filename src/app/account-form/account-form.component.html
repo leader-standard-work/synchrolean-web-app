@@ -54,7 +54,7 @@
                 <label for="confirmPassword">Retype password</label>
               </div>
               <input type="password" formControlName="confirmPassword">
-              <div *ngIf="!passwordMatch()">
+              <div *ngIf="accountForm.controls['password'].untouched && !passwordMatch()">
                 <div class="col">
                   <label>Password mismatch</label>
                 </div>

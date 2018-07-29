@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Account } from '../models/Account';
@@ -36,10 +36,16 @@ export class AccountFormComponent implements OnInit {
         Validators.email
       ]),
       password: new FormControl('', [
-        Validators.required
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50),
+        Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}")
       ]),
       confirmPassword: new FormControl('', [
-        Validators.required
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(50),
+        Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}")
       ])
     });
   }
