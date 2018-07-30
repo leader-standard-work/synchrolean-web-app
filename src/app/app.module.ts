@@ -29,11 +29,9 @@ import { NotificationsComponent } from './components/notifications/notifications
     TaskPageComponent,
     HomeComponent,
     InviteMemberComponent,
-    TaskDetailComponent,
     TeamInfoComponent,
-    NotificationsComponent
+    NotificationsComponent,
     AccountFormComponent,
-    TaskDetailComponent
   ],
   imports: [
     BrowserModule,
