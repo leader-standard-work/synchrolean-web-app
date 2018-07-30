@@ -1,7 +1,9 @@
+import { Team } from './../../models/Team';
 import { AuthService } from './../../services/auth.service';
 import { TeamService } from './../../services/team.service';
 import { Component, OnInit } from '@angular/core';
 import { AddUserRequest } from '../../models/AddUserRequest';
+import { Router } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-notifications',
@@ -13,7 +15,8 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private teamService: TeamService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit() {
     // Grab the notifications from the team service
@@ -22,12 +25,12 @@ export class NotificationsComponent implements OnInit {
 
   acceptTeamInvite(invite: AddUserRequest) {
     this.teamService.acceptTeamInvite(invite.inviteId, invite.inviteeId)
-      .subscribe();
+      .subscribe(data => this.router.navigate(['teams/' + invite.teamId]));
   }
 
   declineTeamInvite(invite: AddUserRequest) {
     this.teamService.declineTeamInvite(invite.inviteId, invite.inviteeId)
-      .subscribe();
+      .subscribe(data => this.router.navigate(['teams/' + invite.teamId]));
   }
 
 }

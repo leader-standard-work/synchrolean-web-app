@@ -2,6 +2,10 @@
   <div class="jumbotron">
     <h1 class="display-3">{{ team.teamName }}</h1>
     <p class="lead">{{ team.teamDescription }}</p>
+    <button type="button" class="btn btn-primary" 
+            data-toggle="modal" data-target="#teamFormModal">
+      Edit
+    </button>
   </div>
   
   <div>
@@ -9,7 +13,7 @@
       <div class="col-md-4">
         <h5>Members</h5>
         <ul class="list-group">
-          <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inviteModal">+ Invite</a>
+          <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm">+ Invite</a>
           <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let member of members">
             <div class="d-flex justify-content-between">
               <h5 class="mb-1">{{ member.firstName }} {{ member.lastName }}</h5>
@@ -20,19 +24,9 @@
       </div>
       <div class="col-md-8">
           <h5>Metrics</h5>
-          <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-team-form [teamId]="team.id" (teamUpdated)="onTeamUpdated($event)"></app-team-form>
