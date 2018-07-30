@@ -15,7 +15,12 @@
             <th scope="col">Description</th>
             <th scope="col">Created</th>
             <th scope="col">Status</th>
-            <th scope="col"><button type="button" class="btn btn-danger btn-sm btn-block" (click)="addTask()">Add Task</button></th>
+            <th scope="col">
+              <button type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal"
+                data-target="#addModal">
+                Add Task
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -37,3 +42,41 @@
   </div>  
 </div>
 
+<div class="modal" id="addModal">
+  <!-- <div class="modal" id="taskFormModal"> -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title">Add Task</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form [formGroup]="taskForm">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" formControlName="name" placeholder="Enter a task name">
+            <div *ngIf="taskForm.controls['name'].invalid && taskForm.controls['name'].touched">
+              <p class="text-danger">A task name between 4 and 40 characters is required.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea type="text" class="form-control" formControlName="description" placeholder="Enter a description"></textarea>
+            <div *ngIf="taskForm.controls['description'].invalid">
+              <p class="text-danger">Descriptions must be 250 characters or less.</p>
+            </div>
+          </div>
+          <hr>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="addTask()" 
+              data-dismiss="modal" [disabled]="taskForm.invalid">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

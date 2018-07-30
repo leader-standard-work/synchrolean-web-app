@@ -56,7 +56,7 @@ export class TaskService {
    */
   addTask(newTask: Task) {
     const endpoint = environment.baseServerUrl + this.apiBase;
-    return this.http.post(endpoint, newTask)
+    return this.http.post<Task>(endpoint, newTask);
       // .subscribe((newTask:Task) => this.tasks.push(newTask));
   }
 
