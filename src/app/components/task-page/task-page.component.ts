@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '../../../../node_modules/@angular/router';
 
@@ -13,6 +14,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   public pageTitle: string = 'My Tasks';  // Page title
   public tasks: Task[] = [];              // List of tasks from service
   public currentIndex: number = 0;        // The index of the currently referenced task from the list
+  taskForm: FormGroup;                    // Form for entering a new task
   public complete: string = 'Done';
   public incomplete: string = 'In-Progress';
 
@@ -28,6 +30,17 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
+    this.taskForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(40)
+      ]),
+      description: new FormControl('', [
+        Validators.maxLength(250)
+      ]),
+      recurring: new FormControl(false)
+    });
   }
 
   /**
