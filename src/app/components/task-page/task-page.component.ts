@@ -1,19 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '../../../../node_modules/@angular/router';
 
 import { TaskService } from './../../services/task.service';
 import { Task } from '../../models/Task';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-task-page',
+  selector: 'task-page',
   templateUrl: './task-page.component.html',
   styleUrls: ['./task-page.component.css']
 })
-export class TaskPageComponent implements OnInit {
-  pageTitle: string = ' My Tasks';         // Page title
-  public tasks: Task[] = [];               // List of tasks from service
-  public currentIndex: number = 0;         // The index of the currently referenced task from the list
+export class TaskPageComponent implements OnInit, OnDestroy {
+  public pageTitle: string = 'My Tasks';  // Page title
+  public tasks: Task[] = [];              // List of tasks from service
+  public currentIndex: number = 0;        // The index of the currently referenced task from the list
+  taskForm: FormGroup;                    // Form for entering a new task
+  public complete: string = 'Done';
+  public incomplete: string = 'In-Progress';
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService,
+    private authService: AuthService,
+    private router: Router) {
     console.log('TaskPageComponent: Created');
   }
 
@@ -23,16 +31,55 @@ export class TaskPageComponent implements OnInit {
    */
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
-    this.tasks = this.taskService.getTasks();
+    this.getAllTasks();
+    this.taskForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(40)
+      ]),
+      description: new FormControl('', [
+        Validators.maxLength(250)
+      ]),
+      recurring: new FormControl(false)
+    });
   }
 
   /**
-   * Method for paying attention to which element in the list is currently
-   * selected.
-   * @param event Event emitter bound to the tasklist component in the view
+   * Get all tasks for the current user
    */
-  change(event) {
-    this.currentIndex = event;
-    console.log(this.currentIndex);
+  getAllTasks() {
+    console.log('TaskPageComponent: Getting all tasks');
+    this.taskService.getAllTasks()
+      .subscribe((tasks) => {
+        this.tasks = tasks;
+      }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Navigate to the add task form. This will likely change in location.
+   */
+  addTask() {
+    let task: Task = new Task();
+    task.ownerId = this.authService.getCurrentUserId();
+    task.name = this.taskForm.controls['name'].value;
+    task.description = this.taskForm.controls['description'].value;
+    task.isRecurring = this.taskForm.controls['recurring'].value;
+    task.creationDate = new Date();
+    task.isCompleted = false;
+    task.isRecurring = false;
+    this.taskService.addTask(task)
+      .subscribe((newTask) => {
+        this.tasks.push(newTask);
+        this.taskService.updateObservableState(this.tasks);
+      }, (err) => { console.log(err) });
+  }
+
+  editTask(index: number) {
+    console.log(index);
+  }
+
+  ngOnDestroy() {
+
   }
 }

@@ -7,16 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { TasklistComponent } from './tasklist/tasklist.component';
-import { TaskFormComponent } from './task-form/task-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
+import { TaskFormComponent } from './components/task-form/task-form.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
@@ -25,15 +23,14 @@ import { NotificationsComponent } from './components/notifications/notifications
 @NgModule({
   declarations: [
     AppComponent,
-    TasklistComponent,
     TaskFormComponent,
     TeamFormComponent,
     TeamListComponent,
     TaskPageComponent,
     HomeComponent,
+    InviteMemberComponent,
     TaskDetailComponent,
     TeamInfoComponent,
-    InviteMemberComponent,
     NotificationsComponent
     AccountFormComponent,
     TaskDetailComponent

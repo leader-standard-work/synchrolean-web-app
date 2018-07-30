@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Task } from '../models/Task';
-import { TaskService } from '../services/task.service';
-import { AuthService } from './../services/auth.service';
+import { Task } from './../../models/Task';
+import { TaskService } from '../../services/task.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-task-form',
@@ -12,31 +12,28 @@ import { AuthService } from './../services/auth.service';
   styleUrls: ['./task-form.component.css']
 })
 export class TaskFormComponent implements OnInit {
-  taskForm:FormGroup;
+  taskForm:FormGroup;    // Form
 
   /**
    * Communicates with the task service
    */
   constructor(private taskService: TaskService, 
     private authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder) { 
+    private router: Router) { 
 
   }
 
   ngOnInit() {
-    this.taskForm = this.formBuilder.group({
-      taskName: ['', [
+    this.taskForm = new FormGroup({
+      name: new FormControl('', [
         Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(20)
-      ]],
-      description: ['', [
+        Validators.minLength(4),
+        Validators.maxLength(40)
+      ]),
+      description: new FormControl('', [
         Validators.maxLength(250)
-      ]],
-      recurring: [false, [
-        Validators.required
-      ]]
+      ]),
+      recurring: new FormControl(false)
     });
   }
 
@@ -50,13 +47,11 @@ export class TaskFormComponent implements OnInit {
    */
   addTask() {
     let task = new Task();
-    task.name = this.taskForm.controls['taskName'].value;
+    task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
     task.isRecurring = this.taskForm.controls['recurring'].value;
-    task.creationDate = new Date();
-    task.isCompleted = false;
-    task.isRemoved = false;
     task.ownerId = this.authService.getCurrentUserId();
+    console.log(task);
     this.taskService.addTask(task);
     this.router.navigate(['/tasks']);
   }
