@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,9 +12,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./task-form.component.css']
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
-  taskForm:FormGroup;    // Form
-  @Input() taskList: Task[];
-  @Input() taskIndex: number;
+  public action: string;
+  taskForm: FormGroup;    // Form
+  @Input() taskId: number;
+  @Output() addedTask = new EventEmitter<Task>();
+  @Output() editedTask = new EventEmitter<Task>();
 
   /**
    * Communicates with the task service
@@ -36,12 +38,18 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       ]),
       recurring: new FormControl(false)
     });
-    if (this.taskIndex > -1) {
-      this.taskForm.setValue({
-        name: this.taskList[this.taskIndex].name,
-        description: this.taskList[this.taskIndex].description,
-        recurring: this.taskList[this.taskIndex].isRecurring
-      });
+    if (this.taskId) {
+      this.action = 'Edit';
+      this.taskService.getTaskById(this.taskId)
+        .subscribe((task) => {
+          this.taskForm.setValue({
+            name: task.name,
+            description: task.description,
+            recurring: task.isRecurring
+          });
+        }, (err) => { console.log(err) });
+    } else {
+      this.action = 'Add';
     }
   }
   
@@ -49,7 +57,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * When the component is destroyed
    */
   ngOnDestroy() {
-    this.taskForm.reset();
+    this.clear();
   }
 
   /**
@@ -61,21 +69,22 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * the user can manipulate. 
    */
   submit() {
-    if (this.taskIndex > -1) {
-      let task: Task = this.taskList[this.taskIndex];
+    let task: Task = new Task();
+    if (this.taskId) {
+      task.id = this.taskId;
+      task.ownerId = this.authService.getCurrentUserId();
       task.name = this.taskForm.controls['name'].value;
       task.description = this.taskForm.controls['description'].value;
       task.isRecurring = this.taskForm.controls['recurring'].value; 
       task.isCompleted = false;
       task.isRecurring = false;
+      task.updatedDate = new Date();
       this.taskService.editTask(task)
         .subscribe((updatedTask) => {
-          this.taskList[this.taskIndex] = updatedTask;
-          this.taskService.updateObservableState(this.taskList);
+          this.editedTask.emit(updatedTask);
           this.clear();
         }, (err) => { console.log(err) });
     } else {
-      let task: Task = new Task();
       task.ownerId = this.authService.getCurrentUserId();
       task.name = this.taskForm.controls['name'].value;
       task.description = this.taskForm.controls['description'].value;
@@ -85,13 +94,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       task.isRecurring = false;
       this.taskService.addTask(task)
         .subscribe((newTask) => {
-          this.taskList.push(newTask);
-          this.taskService.updateObservableState(this.taskList);
+          this.addedTask.emit(newTask);
           this.clear();
         }, (err) => { console.log(err) });
     }
   }
 
+  /**
+   * Clears the form. Used for when the close or cancel button are clicked.
+   */
   clear() {
     this.taskForm.reset();
   }

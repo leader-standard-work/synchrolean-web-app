@@ -30,13 +30,7 @@
             <td style="width: 50px">{{ task.creationDate | date: "MM/dd/yy" }}</td>
             <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
             <td style="width: 50px">
-              <button type="button" class="btn btn-primary btn-sm btn-block" (click)="editTask(i)"
-                data-toggle="modal" data-target="#editModal">
-                Edit
-              </button>
-              <div class="modal" id="editModal">
-                <task-form [taskList]="tasks" [taskIndex]="i"></task-form>
-              </div>
+              <a href="/tasks/{{ task.id }}" class="btn btn-primary btn-sm btn-block">View</a>
             </td>
           </tr>
         </tbody>
@@ -49,5 +43,5 @@
 </div>
 
 <div class="modal" id="addModal">
-    <task-form [taskList]="tasks" [taskIndex]="-1"></task-form>
+    <task-form (addedTask)="onTaskAdded($event)"></task-form>
 </div>

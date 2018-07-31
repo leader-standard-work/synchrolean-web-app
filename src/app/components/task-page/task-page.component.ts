@@ -48,6 +48,16 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     this.currentIndex = index;
   }
 
+  /**
+   * Adds a new task to the list
+   * @param newTask The new task to add to the list
+   */
+  onTaskAdded(newTask: Task) {
+    console.log(newTask);
+    this.tasks.push(newTask);
+    this.taskService.updateObservableState(this.tasks);
+  }
+
   ngOnDestroy() {
     
   }

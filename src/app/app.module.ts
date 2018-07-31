@@ -21,6 +21,7 @@ import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
+import { TaskInfoComponent } from './components/task-info/task-info.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
     NotificationsComponent,
     AccountFormComponent,
     TaskListComponent,
+    TaskInfoComponent,
   ],
   imports: [
     BrowserModule,

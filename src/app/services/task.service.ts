@@ -50,6 +50,16 @@ export class TaskService {
   }
 
   /**
+   * Get a single task by it's unique id
+   * @param taskId The id of the task that we want to get
+   */
+  getTaskById(taskId: number): Observable<Task> {
+    let ownerId = this.authService.getCurrentUserId();
+    const endpoint = environment.baseServerUrl + this.apiBase + ownerId + '/' + taskId;
+    return this.http.get<Task>(endpoint);
+  }
+
+  /**
    * Adds a single, newly created task to the database.
    * @param newTask The task to be added to the database
    * @returns       Returns the newly created task back to the client
@@ -61,13 +71,6 @@ export class TaskService {
   }
 
   /**
-   * Updates the state of the observable array of tasks
-   */
-  updateObservableState(tasks: Task[]) {
-    this.tasksSubject.next(tasks);
-  }
-
-  /**
    * Updates a task's information in the database.
    * @param updatedTask The updated task whose changes will be saved to the database
    * @returns       Returns the newly updated task back to the client
@@ -76,5 +79,12 @@ export class TaskService {
     let id = this.authService.getCurrentUserId();
     const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
     return this.http.put<Task>(endpoint, updatedTask);
+  }
+
+  /**
+   * Updates the state of the observable array of tasks
+   */
+  updateObservableState(tasks: Task[]) {
+    this.tasksSubject.next(tasks);
   }
 }

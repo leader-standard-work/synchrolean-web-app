@@ -1,3 +1,4 @@
+import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent },
   { path: 'tasks', component: TaskPageComponent },
+  { path: 'tasks/:id', component: TaskInfoComponent },
   { path: 'addtask', component: TaskFormComponent },
   { path: 'addaccount', component: AccountFormComponent },
   { path: 'teams', component: TeamListComponent },
