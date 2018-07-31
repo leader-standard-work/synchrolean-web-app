@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.lean-bg {
+    background-color: #245779;
+}
+
+.lean-text {
+    color: #e39e2c;
+}
