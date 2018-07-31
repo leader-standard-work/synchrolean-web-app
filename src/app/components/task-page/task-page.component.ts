@@ -15,7 +15,6 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   public pageTitle: string = 'My Tasks';  // Page title
   public tasks: Task[] = [];              // List of tasks from service
   public currentIndex: number = 0;        // The index of the currently referenced task from the list
-  taskForm: FormGroup;                    // Form for entering a new task
   public complete: string = 'Done';
   public incomplete: string = 'In-Progress';
 
@@ -32,17 +31,6 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
-    this.taskForm = new FormGroup({
-      name: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(40)
-      ]),
-      description: new FormControl('', [
-        Validators.maxLength(250)
-      ]),
-      recurring: new FormControl(false)
-    });
   }
 
   /**
@@ -56,30 +44,11 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       }, (err) => { console.log(err) });
   }
 
-  /**
-   * Navigate to the add task form. This will likely change in location.
-   */
-  addTask() {
-    let task: Task = new Task();
-    task.ownerId = this.authService.getCurrentUserId();
-    task.name = this.taskForm.controls['name'].value;
-    task.description = this.taskForm.controls['description'].value;
-    task.isRecurring = this.taskForm.controls['recurring'].value;
-    task.creationDate = new Date();
-    task.isCompleted = false;
-    task.isRecurring = false;
-    this.taskService.addTask(task)
-      .subscribe((newTask) => {
-        this.tasks.push(newTask);
-        this.taskService.updateObservableState(this.tasks);
-      }, (err) => { console.log(err) });
-  }
-
   editTask(index: number) {
-    console.log(index);
+    this.currentIndex = index;
   }
 
   ngOnDestroy() {
-
+    
   }
 }

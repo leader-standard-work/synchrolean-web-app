@@ -1,3 +1,4 @@
+import { TaskService } from './services/task.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -29,11 +30,9 @@ import { NotificationsComponent } from './components/notifications/notifications
     TaskPageComponent,
     HomeComponent,
     InviteMemberComponent,
-    TaskDetailComponent,
     TeamInfoComponent,
-    NotificationsComponent
+    NotificationsComponent,
     AccountFormComponent,
-    TaskDetailComponent
   ],
   imports: [
     BrowserModule,

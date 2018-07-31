@@ -67,16 +67,14 @@ export class TaskService {
     this.tasksSubject.next(tasks);
   }
 
-  // /**
-  //  * Updates a task's information in the database.
-  //  * @param updatedTask The updated task whose changes will be saved to the database
-  //  * @returns       Returns the newly updated task back to the client
-  //  */
-  // editTask(index: number, updatedTask: Task) {
-  //   let id = this.authService.getCurrentUserId();
-  //   const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
-  //   this.tasks.splice(index, 1);
-  //   this.http.put(endpoint, updatedTask)
-  //     .subscribe((task:Task) => this.tasks.push(task));
-  // }
+  /**
+   * Updates a task's information in the database.
+   * @param updatedTask The updated task whose changes will be saved to the database
+   * @returns       Returns the newly updated task back to the client
+   */
+  editTask(updatedTask: Task) {
+    let id = this.authService.getCurrentUserId();
+    const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
+    return this.http.put<Task>(endpoint, updatedTask);
+  }
 }
