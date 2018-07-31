@@ -16,7 +16,7 @@
           <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm">+ Invite</a>
           <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let member of members">
             <div class="d-flex justify-content-between">
-              <h5 class="mb-1">{{ member.firstName }} {{ member.lastName }}</h5>
+              <h5 class="mb-1"><a href="users/{{ member.ownerId }}/tasks">{{ member.firstName }} {{ member.lastName }}</a></h5>
             </div>
             <p class="mb-1">{{ member.email }}</p>
           </li>

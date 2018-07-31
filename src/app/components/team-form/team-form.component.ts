@@ -88,6 +88,7 @@ export class TeamFormComponent implements OnInit {
       this.teamService.addTeam(team)
         .subscribe((newTeam: Team) => {
           this.teamAdded.emit(newTeam);
+          this.teamForm.reset();
         }, err => console.log(err));
     }
   }
