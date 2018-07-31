@@ -9,6 +9,7 @@ import { TaskFormComponent } from './components/task-form/task-form.component';
 import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
 
 // Routes to different components go here.
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'teams/edit/:id', component: TeamFormComponent },
   { path: 'teams/:id', component: TeamInfoComponent },
   { path: 'teams/:id/invite', component: InviteMemberComponent },
-  { path: 'notifications', component: NotificationsComponent }
+  { path: 'notifications', component: NotificationsComponent },
+  { path: 'users/:id/tasks', component: TaskListComponent }
 ];
 
 @NgModule({

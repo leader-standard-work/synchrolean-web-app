@@ -13,22 +13,25 @@ import { AuthService } from '../services/auth.service';
 })
 export class AccountFormComponent implements OnInit {
   accountForm: FormGroup;
+  passwordValidatorArray = [];
+  nameValidatorArray = [];
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
     private router: Router) { 
-
+      this.passwordValidatorArray.push(Validators.required);
+      this.passwordValidatorArray.push(Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}"));
+      this.nameValidatorArray.push(Validators.required);
+      this.nameValidatorArray.push(Validators.maxLength(25));
     }
 
   ngOnInit() {
     this.accountForm = new FormGroup({
       firstName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(20)
+        Validators.compose(this.nameValidatorArray)
       ]),
       lastName: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(20)
+        Validators.compose(this.nameValidatorArray)
       ]),
       email: new FormControl('', [
         Validators.required,
@@ -36,16 +39,10 @@ export class AccountFormComponent implements OnInit {
         Validators.email
       ]),
       password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50),
-        Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}")
+        Validators.compose(this.passwordValidatorArray)
       ]),
       confirmPassword: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(50),
-        Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}")
+        Validators.compose(this.passwordValidatorArray)
       ])
     });
   }

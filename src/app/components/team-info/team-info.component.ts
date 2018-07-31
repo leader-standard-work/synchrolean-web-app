@@ -42,4 +42,13 @@ export class TeamInfoComponent implements OnInit {
       });
   }
 
+  /**
+   * Updates the displayed team information
+   * after it has been edited.
+   * @param updatedTeam The updated team information
+   */
+  onTeamUpdated(updatedTeam: Team) {
+    this.team = updatedTeam;
+  }
+
 }

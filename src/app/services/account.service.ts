@@ -42,14 +42,7 @@ export class AccountService {
    */
   getAccountById(ownerId:number) {
     const endpoint = environment.baseServerUrl + this.apiBase + 'owner/' + ownerId;
-    let account:Account;
-    this.http.get<Account>(endpoint, { withCredentials: true })
-      .subscribe((acc) => {
-        account = acc;
-      }, (err) => {
-        console.log(err)
-      });
-    return account;
+    return this.http.get(endpoint, { withCredentials: true });
   }
 
   /**

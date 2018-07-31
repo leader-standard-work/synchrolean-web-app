@@ -1,8 +1,9 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './../../services/auth.service';
 import { TeamService } from './../../services/team.service';
 import { Team } from './../../models/Team';
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-team-form',
@@ -11,27 +12,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class TeamFormComponent implements OnInit {
   action: string;
-  team: Team;
+  teamForm: FormGroup;  // Form for creating or editing a team
+  @Input() teamId: number;
+  @Output() teamAdded = new EventEmitter<Team>();
+  @Output() teamUpdated = new EventEmitter<Team>();
 
   constructor(
     private teamService: TeamService,
-    private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService) {
-      this.team = new Team();
-      /**
-       * Attempt to grab the team id
-       * from the route, if it doesn't
-       * exist assign a 0
-       * 
-       * See app-routing for how to name
-       * parameters that you can later
-       * grab.
-       */
-      this.route.params.subscribe(p => {
-        this.team.id = +p['id'] || 0;
-      });
-    }
+    private authService: AuthService) { }
 
   ngOnInit() {
     /**
@@ -46,11 +35,26 @@ export class TeamFormComponent implements OnInit {
      * with the selected teams data because
      * of our ngModel bindings.
      */
-    if(this.team.id) {
+    this.teamForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(40)
+      ]),
+      description: new FormControl('', [
+        Validators.maxLength(250)
+      ]),
+      id: new FormControl(false),
+      ownerId: new FormControl(false)
+    });
+    if(this.teamId) {
       this.action = 'Edit';
-      this.teamService.getTeam(this.team.id)
+      this.teamService.getTeam(this.teamId)
         .subscribe((loadedTeam: Team) => {
-          this.team = loadedTeam;
+          this.teamForm.controls['id'].setValue(loadedTeam.id);
+          this.teamForm.controls['ownerId'].setValue(loadedTeam.ownerId);
+          this.teamForm.controls['name'].setValue(loadedTeam.teamName);
+          this.teamForm.controls['description'].setValue(loadedTeam.teamDescription);
         }, err => {
           console.log(err);
         });
@@ -66,14 +70,27 @@ export class TeamFormComponent implements OnInit {
    * or editing an existing team.
    */
   submit() {
-    if (this.team.id) {
-      this.teamService.editTeam(this.team);
+    let team = new Team();
+    if (this.teamId) {
+      team.id = this.teamForm.controls['id'].value;
+      team.ownerId = this.teamForm.controls['ownerId'].value;
+      team.teamName = this.teamForm.controls['name'].value;
+      team.teamDescription = this.teamForm.controls['description'].value;
+      this.teamService.editTeam(team)
+        .subscribe((updatedTeam: Team) => {
+          this.teamUpdated.emit(updatedTeam);
+        }, err => console.log(err));
     }
     else {
-      this.team.ownerId = this.authService.getCurrentUserId();
-      this.teamService.addTeam(this.team);
+      team.ownerId = this.authService.getCurrentUserId();
+      team.teamName = this.teamForm.controls['name'].value;
+      team.teamDescription = this.teamForm.controls['description'].value;
+      this.teamService.addTeam(team)
+        .subscribe((newTeam: Team) => {
+          this.teamAdded.emit(newTeam);
+          this.teamForm.reset();
+        }, err => console.log(err));
     }
-    this.router.navigate(['/teams/']);
   }
 
 }
