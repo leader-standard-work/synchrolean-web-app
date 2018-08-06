@@ -6,12 +6,12 @@
             <a class="navbar-brand lean-text" href="/home">{{ brand | uppercase }}</a>
             <div id="navbarResponsive" class="collapse navbar-collapse" [collapse]="isCollapsed">
                 <ul class="navbar-nav nav-options">
-                    <li class="nav-item nav-link lean-text" routerLink="/tasks">Tasks</li>
-                    <li class="nav-item nav-link lean-text" routerLink="/teams">Teams</li>
+                    <li class="nav-item nav-link lean-text" routerLink="/tasks" [hidden]="isCurrentUser()">Tasks</li>
+                    <li class="nav-item nav-link lean-text" routerLink="/teams" [hidden]="isCurrentUser()">Teams</li>
                 </ul>
             </div>
         </div>
-        <a *ngIf="userName" href="/home" (click)="logout()" class="lean-text">{{userName}}</a>
+        <a [hidden]="isCurrentUser()" href="/home" (click)="logout()" class="lean-text">{{userName}}</a>
     </div>
     <router-outlet></router-outlet>
 </section>

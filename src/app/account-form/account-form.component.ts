@@ -52,9 +52,18 @@ export class AccountFormComponent implements OnInit {
     account.firstName = this.accountForm.controls['firstName'].value;
     account.lastName = this.accountForm.controls['lastName'].value;
     account.email = this.accountForm.controls['email'].value;
-    console.log(account);
-    this.accountService.addAccount(account);
-    this.router.navigate(['/tasks']);
+    account.password = this.accountForm.controls['password'].value;
+    this.accountService.addAccount(account)
+      .subscribe((newAccount) => {
+        // this.authService.login(newAccount.email, newAccount.password)
+        //   .subscribe((response) => {
+        //     let { token } = response;
+        //     this.authService.setCurrentUser(newAccount);
+        //     this.authService.setSession(token, newAccount);
+        //     this.router.navigate(['/tasks']);
+        //   }, (err) => { console.log(err) });
+        this.router.navigate(['/home']);
+      }, (err) => { console.log(err) });
   }
 
   passwordMatch() {

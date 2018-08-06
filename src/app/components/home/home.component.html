@@ -5,21 +5,21 @@
       <form [formGroup]="loginForm" class="form">
         <div class="form-group">
           <label class="form-control-label" for="email">Email:</label>
-          <input type="email" class="form-control" formControlName="email">
+          <input type="email" class="form-control" formControlName="email" placeholder="Email">
         </div>
         <div class="form-group">
           <label class="form-control-label" for="password">Password:</label>
-          <input type="password" class="form-control" formControlName="password">
+          <input type="password" class="form-control" formControlName="password" placeholder="Password">
         </div>
         <div class="row">
           <div class="col">
-            <button type="button" class="btn btn-primary m-2" [disabled]="loginForm.invalid" 
+            <button type="button" class="btn btn-primary" [disabled]="loginForm.invalid" 
               (click)="userLogin()">
               Login
             </button>
           </div>
           <div class="col">
-            <button type="button" class="btn btn-primary m-2" [routerLink]="['/addaccount']">
+            <button type="button" class="btn btn-primary" [routerLink]="['/addaccount']">
               Create Account
             </button>
           </div>

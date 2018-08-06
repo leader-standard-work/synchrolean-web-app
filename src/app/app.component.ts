@@ -36,4 +36,12 @@ export class AppComponent {
   logout() {
     this.authService.logout();
   }
+
+  /**
+   * Check to see if a user is logged in
+   */
+  isCurrentUser() {
+    let uid = localStorage.getItem('userId');
+    return uid == null;
+  }
 }

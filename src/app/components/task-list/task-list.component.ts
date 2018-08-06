@@ -3,6 +3,7 @@ import { Task } from '../../models/Task';
 import { TaskService } from '../../services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../services/account.service';
+import { Account } from '../../models/Account';
 
 @Component({
   selector: 'app-task-list',
@@ -30,7 +31,7 @@ export class TaskListComponent implements OnInit {
     console.log('TaskListComponent: Fetching tasks');
     this.getAllTasks();
     this.accountService.getAccountById(this.userId)
-      .subscribe((acc: Account) => {
+      .subscribe((acc) => {
         this.user = acc;
       }, (err) => console.log(err));
   }

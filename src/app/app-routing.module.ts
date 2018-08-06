@@ -1,3 +1,4 @@
+import { AuthGuard } from './guards/auth.guard';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
@@ -16,17 +17,17 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent },
-  { path: 'tasks', component: TaskPageComponent },
-  { path: 'tasks/:id', component: TaskInfoComponent },
-  { path: 'addtask', component: TaskFormComponent },
+  { path: 'tasks', component: TaskPageComponent, canActivate: [AuthGuard] },
+  { path: 'tasks/:id', component: TaskInfoComponent, canActivate: [AuthGuard] },
+  { path: 'addtask', component: TaskFormComponent, canActivate: [AuthGuard] },
   { path: 'addaccount', component: AccountFormComponent },
-  { path: 'teams', component: TeamListComponent },
-  { path: 'teams/new', component: TeamFormComponent },
-  { path: 'teams/edit/:id', component: TeamFormComponent },
-  { path: 'teams/:id', component: TeamInfoComponent },
-  { path: 'teams/:id/invite', component: InviteMemberComponent },
-  { path: 'notifications', component: NotificationsComponent },
-  { path: 'users/:id/tasks', component: TaskListComponent }
+  { path: 'teams', component: TeamListComponent, canActivate: [AuthGuard] },
+  { path: 'teams/new', component: TeamFormComponent, canActivate: [AuthGuard] },
+  { path: 'teams/edit/:id', component: TeamFormComponent, canActivate: [AuthGuard] },
+  { path: 'teams/:id', component: TeamInfoComponent, canActivate: [AuthGuard] },
+  { path: 'teams/:id/invite', component: InviteMemberComponent, canActivate: [AuthGuard] },
+  { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
+  { path: 'users/:id/tasks', component: TaskListComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
