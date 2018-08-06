@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -7,22 +7,28 @@ import { AccountService } from '../services/account.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-account-form',
+  selector: 'account-form',
   templateUrl: './account-form.component.html',
   styleUrls: ['./account-form.component.css']
 })
 export class AccountFormComponent implements OnInit {
-  accountForm: FormGroup;
-  passwordValidatorArray = [];
-  nameValidatorArray = [];
+  public action: string;
+  public accountForm: FormGroup;
+  private passwordValidatorArray = [];
+  private nameValidatorArray = [];
+  @Input() private newAccount: EventEmitter<Account>; // Event emitter for creating a new account
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
     private router: Router) { 
+      // Validation setup
       this.passwordValidatorArray.push(Validators.required);
       this.passwordValidatorArray.push(Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}"));
       this.nameValidatorArray.push(Validators.required);
       this.nameValidatorArray.push(Validators.maxLength(25));
+
+      this.action = 'Create a new account';
+      this.newAccount = new EventEmitter<Account>();
     }
 
   ngOnInit() {
@@ -54,19 +60,21 @@ export class AccountFormComponent implements OnInit {
     account.email = this.accountForm.controls['email'].value;
     account.password = this.accountForm.controls['password'].value;
     this.accountService.addAccount(account)
-      .subscribe((newAccount) => {
-        // this.authService.login(newAccount.email, newAccount.password)
-        //   .subscribe((response) => {
-        //     let { token } = response;
-        //     this.authService.setCurrentUser(newAccount);
-        //     this.authService.setSession(token, newAccount);
-        //     this.router.navigate(['/tasks']);
-        //   }, (err) => { console.log(err) });
-        this.router.navigate(['/home']);
+      .subscribe((newAcc) => {
+        this.newAccount.emit(newAcc);
+        this.clear();
       }, (err) => { console.log(err) });
   }
 
   passwordMatch() {
     return this.accountForm.controls['password'].value == this.accountForm.controls['confirmPassword'].value;
+  }
+
+  /**
+   * Clear the account form so that when the user closes the modal or
+   * cancels and then re-opens the form it doesn't retain any information.
+   */
+  clear() {
+    this.accountForm.reset();
   }
 }

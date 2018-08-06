@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Account } from '../../models/Account';
 
 @Component({
   selector: 'app-home',
@@ -41,6 +42,18 @@ export class HomeComponent implements OnInit {
         alert("Invalid login credentials");
         this.router.navigate(['/home']);
       });
+  }
+
+  /**
+   * Captures the account that was created and populates the login email
+   * with that email so they just have to enter their password to log in.
+   * @param account The account that was newly created 
+   */
+  onCreateAccount(account: Account) {
+    console.log(`Account email: ${account.email}`);
+    if (account && account.email) {
+      this.loginForm.setValue({ email: account.email });
+    }
   }
 
 }

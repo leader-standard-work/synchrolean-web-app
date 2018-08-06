@@ -1,3 +1,7 @@
+<video width="100%" height="100%" autoplay>
+  <source src="../../../assets/video/Lean Portland Logo Animation.mov">
+</video>
+
 <div class="jumbotron">
   <div class="row">
     <div class="col"></div>
@@ -19,7 +23,7 @@
             </button>
           </div>
           <div class="col">
-            <button type="button" class="btn btn-primary" [routerLink]="['/addaccount']">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accountModal">
               Create Account
             </button>
           </div>
@@ -29,6 +33,8 @@
     <div class="col"></div>
   </div>
 </div>
+
+<account-form (newAccount)="onCreateAccount($event)"></account-form>
 
 <div class="container">
   <h2 class="text-muted">This can act as our home page. We can include intro info about lean here.</h2>
