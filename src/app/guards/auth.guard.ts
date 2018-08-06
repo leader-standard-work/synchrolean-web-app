@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import * as JWT from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,15 @@ export class AuthGuard implements CanActivate {
 
   constructor(private router: Router) { }
 
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+  canActivate(): boolean {
     let token = localStorage.getItem('jwt');
+    let decoded = JWT(token);
+    let currentTime = Date.now() / 1000;
+
+    console.log(currentTime < decoded.exp);
 
     // Should also check expiration somehow
-    if (token) {
+    if (token && currentTime < decoded.exp) {
       return true;
     }
 
