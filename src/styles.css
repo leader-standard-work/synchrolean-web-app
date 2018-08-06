@@ -6,3 +6,9 @@
 .lean-text {
     color: #e39e2c;
 }
+
+#lean-footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
