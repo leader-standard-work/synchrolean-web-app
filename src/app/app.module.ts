@@ -22,6 +22,7 @@ import { InviteMemberComponent } from './components/invite-member/invite-member.
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { TaskInfoComponent } from './components/task-info/task-info.component';
     AccountFormComponent,
     TaskListComponent,
     TaskInfoComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,
