@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+// Leaving this import here for if we decide to use an expiration time
 import * as JWT from 'jwt-decode';
 
 @Injectable({
@@ -14,15 +15,13 @@ export class AuthGuard implements CanActivate {
   // Route guard
   canActivate(): boolean {
     let token = localStorage.getItem('jwt');
-    let decoded = <any>JWT(token);
-    let currentTime = Date.now() / 1000;
 
-    // Check to make sure the token is there and that the token hasn't expired
-    if (token && currentTime < decoded.exp) {
+    // Check to make sure the token is there
+    if (token) {
       return true;
     }
 
-    // If the token has expired log the user out and route them to the home page
+    // If the token isn't there log the user out
     this.authService.logout();
     this.router.navigate(['/home']);
     return false;

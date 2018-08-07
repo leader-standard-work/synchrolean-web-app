@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
 import { Team } from '../models/Team';
@@ -60,7 +60,6 @@ export class TeamService {
    */
   editTeam(updatedTeam: Team) {
     const endpoint = environment.baseServerUrl + this.apiBase + updatedTeam.ownerId + '/' + updatedTeam.id;
-
     return this.http.put(endpoint, updatedTeam);
   }
 
@@ -71,7 +70,6 @@ export class TeamService {
    */
   getTeam(id: number) {
     const endpoint = environment.baseServerUrl + this.apiBase + id;
-
     return this.http.get(endpoint);
   }
 
@@ -82,7 +80,6 @@ export class TeamService {
    */
   fetchTeamMembers(id: number) {
     const endpoint = environment.baseServerUrl + this.apiBase + 'members/' + id;
-
     return this.http.get(endpoint);
   }
 

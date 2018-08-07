@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private currentUser: Account;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Gets a JSON Web Token for the person logging in
@@ -41,9 +41,12 @@ export class AuthService {
   setCurrentUser(account: Account) {
     this.currentUser = new Account();
     this.currentUser = account;
+    localStorage.setItem('userId', JSON.stringify(account.ownerId));
+    localStorage.setItem('userName', account.firstName);
   }
 
   /**
+   * MAY NOT BE NECCESSARY ANY MORE
    * Sets the JWT, userId, and userName in localStorage to persist across
    * page refreshes.
    * @param token The token to set in localStorage
@@ -52,6 +55,13 @@ export class AuthService {
   setSession(token, account: Account) {
     localStorage.setItem('userId', JSON.stringify(account.ownerId));
     localStorage.setItem('userName', account.firstName);
+    localStorage.setItem('jwt', token);
+  }
+
+  /**
+   * Set just the token
+   */
+  setToken(token) {
     localStorage.setItem('jwt', token);
   }
 
