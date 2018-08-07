@@ -33,10 +33,14 @@ export class LoginFormComponent implements OnInit {
             this.authService.setSession(token, account);
             this.clear();
             this.router.navigate(['/tasks']);
-          }, (err) => { console.log(err) });
+          }, (err) => { 
+            console.log(err);
+            this.clear(); 
+          });
       }, (err) => {
         console.log(err);
         alert("Invalid login credentials");
+        this.clear();
         this.router.navigate(['/home']);
       });
   }
