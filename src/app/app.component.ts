@@ -42,6 +42,6 @@ export class AppComponent {
    */
   isCurrentUser() {
     let uid = localStorage.getItem('userId');
-    return uid == null;
+    return uid != null;
   }
 }

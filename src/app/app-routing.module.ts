@@ -8,7 +8,6 @@ import { TeamListComponent } from './components/team-list/team-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TaskFormComponent } from './components/task-form/task-form.component';
-import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
@@ -20,7 +19,6 @@ const routes: Routes = [
   { path: 'tasks', component: TaskPageComponent, canActivate: [AuthGuard] },
   { path: 'tasks/:id', component: TaskInfoComponent, canActivate: [AuthGuard] },
   { path: 'addtask', component: TaskFormComponent, canActivate: [AuthGuard] },
-  { path: 'addaccount', component: AccountFormComponent },
   { path: 'teams', component: TeamListComponent, canActivate: [AuthGuard] },
   { path: 'teams/new', component: TeamFormComponent, canActivate: [AuthGuard] },
   { path: 'teams/edit/:id', component: TeamFormComponent, canActivate: [AuthGuard] },
