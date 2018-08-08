@@ -9,10 +9,14 @@ export class JwtInterceptor implements HttpInterceptor {
               next: HttpHandler): Observable<HttpEvent<any>> {
 
         const token = localStorage.getItem('jwt');
-        let cloned = req.clone({
-            headers: req.headers.set("Authorization", "Bearer " + token)
-        });
-
-        return next.handle(cloned);
+        
+        if (token) {
+            let cloned = req.clone({
+                headers: req.headers.set("Authorization", "Bearer " + token)
+            });
+            return next.handle(cloned);
+        } else {
+            return next.handle(req);
+        }
     }
 }
