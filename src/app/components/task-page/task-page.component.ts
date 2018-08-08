@@ -1,4 +1,3 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '../../../../node_modules/@angular/router';
 
@@ -12,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./task-page.component.css']
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
-  public pageTitle: string = 'My Tasks';  // Page title
+  public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
   public currentIndex: number = 0;        // The index of the currently referenced task from the list
   public complete: string = 'Done';
@@ -46,6 +45,20 @@ export class TaskPageComponent implements OnInit, OnDestroy {
 
   editTask(index: number) {
     this.currentIndex = index;
+  }
+
+  /**
+   * Marks a task as complete and calls edit task to mark it complete
+   * on the backend
+   * @param index The index of the task that we are completing
+   */
+  completeTask(index: number) {
+    this.tasks[index].isCompleted = true;
+    this.tasks[index].isRemoved = true;
+    this.taskService.editTask(this.tasks[index])
+      .subscribe((updatedTask) => {
+        this.tasks.splice(index, 1);
+      }, (err) => { console.log(err) });
   }
 
   /**

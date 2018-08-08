@@ -1,5 +1,15 @@
 <div class="jumbotron text-center mb-0">
-  <h2>{{pageTitle}}</h2>
+  <div class="row">
+    <div class="col">
+      <h4>{{pageTitle}}'s tasks</h4>
+    </div>
+    <div class="col">
+      Weekly user metrics will go here.
+    </div>
+    <div class="col">
+      Weekly team metrics will go here.
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid pl-0 pr-0">
@@ -25,12 +35,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let task of tasks; let i = index">
-            <td style="width: 200px">{{ task.name }}</td>
+            <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
             <td style="width: 500px">{{ task.description  }}</td>
             <td style="width: 50px">{{ task.creationDate | date: "MM/dd/yy" }}</td>
             <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
             <td style="width: 50px">
-              <a href="/tasks/{{ task.id }}" class="btn btn-primary btn-sm btn-block">View</a>
+              <button type="button" class="btn btn-primary btn-sm btn-block" (click)="completeTask(i)">Complete</button>
             </td>
           </tr>
         </tbody>
