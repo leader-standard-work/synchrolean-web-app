@@ -39,6 +39,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     console.log('TaskPageComponent: Getting all tasks');
     this.taskService.getAllTasks()
       .subscribe((tasks) => {
+        console.log(tasks);
         this.tasks = tasks;
       }, (err) => { console.log(err) });
   }
@@ -54,10 +55,9 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    */
   completeTask(index: number) {
     this.tasks[index].isCompleted = true;
-    this.tasks[index].isRemoved = true;
     this.taskService.editTask(this.tasks[index])
       .subscribe((updatedTask) => {
-        this.tasks.splice(index, 1);
+        this.tasks[index] = updatedTask;
       }, (err) => { console.log(err) });
   }
 

@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
-import { Task } from './../../models/Task';
 import { TaskService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
+import { Task, Frequency, Weekdays } from './../../models/Task';
 
 @Component({
   selector: 'task-form',
@@ -17,13 +16,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Input() taskId: number;
   @Output() addedTask = new EventEmitter<Task>();
   @Output() editedTask = new EventEmitter<Task>();
+  public weekdaysArray: string[];
+  public weekdays: number; // The numerical days value for a task
 
   /**
    * Communicates with the task service
    */
   constructor(private taskService: TaskService, 
-    private authService: AuthService,
-    private router: Router) { 
+    private authService: AuthService) {
+      this.weekdaysArray = [];
+      this.weekdays = 0;
   }
 
   ngOnInit() {
@@ -36,7 +38,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       description: new FormControl('', [
         Validators.maxLength(250)
       ]),
-      recurring: new FormControl(false)
+      recurring: new FormControl(false),
+      frequency: new FormControl(Frequency.Once, [ Validators.required ])
     });
     if (this.taskId) {
       this.action = 'Edit';
@@ -45,7 +48,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           this.taskForm.setValue({
             name: task.name,
             description: task.description,
-            recurring: task.isRecurring
+            recurring: task.isRecurring,
+            frequency: task.frequency
           });
         }, (err) => { console.log(err) });
     } else {
@@ -71,33 +75,97 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   submit() {
     let task: Task = new Task();
     if (this.taskId) {
-      task.id = this.taskId;
-      task.ownerId = this.authService.getCurrentUserId();
-      task.name = this.taskForm.controls['name'].value;
-      task.description = this.taskForm.controls['description'].value;
-      task.isRecurring = this.taskForm.controls['recurring'].value; 
-      task.isCompleted = false;
-      task.isRecurring = false;
-      task.updatedDate = new Date();
+      // Set task information for the task we edited
+      this.setEditTask(task);
       this.taskService.editTask(task)
         .subscribe((updatedTask) => {
           this.editedTask.emit(updatedTask);
           this.clear();
         }, (err) => { console.log(err) });
     } else {
-      task.ownerId = this.authService.getCurrentUserId();
-      task.name = this.taskForm.controls['name'].value;
-      task.description = this.taskForm.controls['description'].value;
-      task.isRecurring = this.taskForm.controls['recurring'].value;
-      task.creationDate = new Date();
-      task.isCompleted = false;
-      task.isRecurring = false;
+      // Set properties on the task we are creating
+      this.setAddTask(task);
       this.taskService.addTask(task)
         .subscribe((newTask) => {
           this.addedTask.emit(newTask);
           this.clear();
         }, (err) => { console.log(err) });
     }
+  }
+
+  /**
+   * Sets the taskForms duration property
+   * @param duration The duration of the task the user is creating
+   */
+  setFrequency(frequency: Frequency) {
+    this.taskForm.controls['frequency'].setValue(frequency);
+  }
+
+  /**
+   * Returns the frequency of the task for conditionally displaying some
+   * form stuffs
+   * @returns The frequency of the task we are creating/editing
+   */
+  getFrequency() {
+    return this.taskForm.controls['frequency'].value;
+  }
+
+  // /**
+  //  * Probably not needed on this form
+  //  * Bitshifts the weekdays number to get the days that the task occurs on
+  //  * @param weekdays The number representing the days the task occurs on
+  //  */
+  // getWeekdays(weekdays: number) {
+  //   let days = weekdays;
+  //   for(let i = 0; days > 0; i++) {
+  //     if (days & 1) {
+  //       this.weekdaysArray.push(Weekdays[i]);
+  //     }
+  //     days >>= 1;
+  //   }
+  // }
+
+  /**
+   * Adds a day to the numerical weekdays value
+   * @param dayValue The day value to add to the task
+   */
+  addWeekday(dayValue: number) {
+    if (this.taskForm.controls['frequency'].value === 2) {
+      this.weekdays += dayValue;
+    }
+  }
+
+  /**
+   * Sets the task information for the task we are editing
+   * @param task Task to set information to
+   */
+  setEditTask(task: Task) {
+    task.id = this.taskId;
+    task.ownerId = this.authService.getCurrentUserId();
+    task.name = this.taskForm.controls['name'].value;
+    task.description = this.taskForm.controls['description'].value;
+    task.isRecurring = this.taskForm.controls['recurring'].value; 
+    task.isCompleted = false;
+    task.isRemoved = false;
+    task.updatedDate = new Date();
+    task.frequency = this.taskForm.controls['frequency'].value;
+    task.weekdays = this.weekdays;
+  }
+
+  /**
+   * Sets the information for the task we are creating
+   * @param task The new task we are creating
+   */
+  setAddTask(task: Task) {
+    task.ownerId = this.authService.getCurrentUserId();
+    task.name = this.taskForm.controls['name'].value;
+    task.description = this.taskForm.controls['description'].value;
+    task.isRecurring = this.taskForm.controls['recurring'].value;
+    task.creationDate = new Date();
+    task.isCompleted = false;
+    task.isRemoved = false;
+    task.frequency = this.taskForm.controls['frequency'].value;
+    task.weekdays = this.weekdays;
   }
 
   /**
