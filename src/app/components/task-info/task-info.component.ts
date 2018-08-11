@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Task } from '../../models/Task';
+import { Task, Weekdays } from '../../models/Task';
 import { TaskService } from '../../services/task.service';
 
 @Component({
@@ -10,13 +10,13 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskInfoComponent implements OnInit {
   public task: Task;
+  public daysOfWeek: string[] = [];
 
   constructor(private taskService: TaskService,
     private route: ActivatedRoute) { 
       this.task = new Task();
       this.route.params.subscribe(p => {
         this.task.id = p['id'];
-        console.log(this.task.id);
       });
     }
 
@@ -24,6 +24,8 @@ export class TaskInfoComponent implements OnInit {
     this.taskService.getTaskById(this.task.id)
       .subscribe((loadedTask) => {
         this.task = loadedTask;
+        this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
+        console.log(this.task);
       }, (err) => { console.log(err) });
   }
 
@@ -32,7 +34,44 @@ export class TaskInfoComponent implements OnInit {
    * @param editedTask The task that was edited
    */
   onTaskEdited(editedTask) {
-    console.log(editedTask);
     this.task = editedTask;
+  }
+
+  /**
+   * Marks the task as completed but doesn't remove it
+   */
+  completeTask() {
+    this.task.isCompleted = true;
+    this.taskService.editTask(this.task)
+      .subscribe((completedTask) => {
+        this.task = completedTask;
+      }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Marks the task as removed and gets rid of it from the task list
+   */
+  removeTask() {
+    this.task.isRemoved = true;
+    this.taskService.editTask(this.task)
+      .subscribe((removedTask) => {
+        this.task = removedTask;
+      }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Bitshifts the weekdays number to get the days that the task occurs on
+   * @returns The weekdays property as an array of strings of the days the task occurs on
+   */
+  getWeekdaysAsArray(weekdays: number) {
+    let days: number = weekdays;
+    let weekdaysArray: string[] = [];
+    for(let i = 0; days > 0; i++) {
+        if (days & 1) {
+            weekdaysArray.push(Weekdays[i]);
+        }
+        days >>= 1;
+    }
+    return weekdaysArray;
   }
 }

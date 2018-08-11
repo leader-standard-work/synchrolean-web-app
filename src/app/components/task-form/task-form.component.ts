@@ -39,6 +39,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(250)
       ]),
       recurring: new FormControl(false),
+      completed: new FormControl(false),
+      removed: new FormControl(false),
       frequency: new FormControl(Frequency.Once, [ Validators.required ])
     });
     if (this.taskId) {
@@ -49,6 +51,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             name: task.name,
             description: task.description,
             recurring: task.isRecurring,
+            completed: task.isCompleted,
+            removed: task.isRemoved,
             frequency: task.frequency
           });
         }, (err) => { console.log(err) });
@@ -110,21 +114,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     return this.taskForm.controls['frequency'].value;
   }
 
-  // /**
-  //  * Probably not needed on this form
-  //  * Bitshifts the weekdays number to get the days that the task occurs on
-  //  * @param weekdays The number representing the days the task occurs on
-  //  */
-  // getWeekdays(weekdays: number) {
-  //   let days = weekdays;
-  //   for(let i = 0; days > 0; i++) {
-  //     if (days & 1) {
-  //       this.weekdaysArray.push(Weekdays[i]);
-  //     }
-  //     days >>= 1;
-  //   }
-  // }
-
   /**
    * Adds a day to the numerical weekdays value
    * @param dayValue The day value to add to the task
@@ -145,11 +134,17 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
     task.isRecurring = this.taskForm.controls['recurring'].value; 
-    task.isCompleted = false;
-    task.isRemoved = false;
+    task.isCompleted = this.taskForm.controls['completed'].value;
+    task.isRemoved = this.taskForm.controls['removed'].value;
     task.updatedDate = new Date();
     task.frequency = this.taskForm.controls['frequency'].value;
-    task.weekdays = this.weekdays;
+    if (task.frequency == 0) {
+      task.weekdays = 0;
+    } else if (task.frequency == 1) {
+      task.weekdays = 31; // Mon-Fri
+    } else if (task.frequency == 2) {
+      task.weekdays = this.weekdays; // Specific days
+    }
   }
 
   /**
@@ -165,7 +160,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isCompleted = false;
     task.isRemoved = false;
     task.frequency = this.taskForm.controls['frequency'].value;
-    task.weekdays = this.weekdays;
+    if (task.frequency == 0) {
+      task.weekdays = 0;
+    } else if (task.frequency == 1) {
+      task.weekdays = 31;
+    } else if (task.frequency == 2) {
+      task.weekdays = this.weekdays;
+    }
   }
 
   /**

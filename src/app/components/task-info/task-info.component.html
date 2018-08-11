@@ -1,16 +1,42 @@
-<div class="jumbotron">
+<div class="jumbotron text-center lean-bg">
   <h4>{{task.name}}</h4>
 </div>
 
-<div class="card">
-  <div class="card-header">
-    <p>{{task.description}}</p>
-  </div>
-  <div class="card-body">
-    <p>{{task.isRecurring}}</p>
-  </div>
-  <div class="card-footer">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center">
+      <div class="row">
+        <div class="container">
+          {{task.description}}
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div [hidden]="daysOfWeek.length == 0">
+        <p>This task occurs on:</p>
+        <div class="list-group">
+          <a href="#" class="list-group-item" *ngFor="let day of daysOfWeek">{{day}}</a>
+        </div>
+      </div>
+      <div [hidden]="daysOfWeek.length > 0">
+        <p>This task occurs only once.</p>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-block btn-danger" (click)="removeTask()">Remove</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-block btn-success" (click)="completeTask()">Complete</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

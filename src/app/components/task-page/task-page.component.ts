@@ -58,6 +58,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     this.taskService.editTask(this.tasks[index])
       .subscribe((updatedTask) => {
         this.tasks[index] = updatedTask;
+        this.taskService.updateObservableState(this.tasks);
       }, (err) => { console.log(err) });
   }
 
