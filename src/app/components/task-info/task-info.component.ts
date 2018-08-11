@@ -25,7 +25,6 @@ export class TaskInfoComponent implements OnInit {
       .subscribe((loadedTask) => {
         this.task = loadedTask;
         this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
-        console.log(this.task);
       }, (err) => { console.log(err) });
   }
 
@@ -35,6 +34,7 @@ export class TaskInfoComponent implements OnInit {
    */
   onTaskEdited(editedTask) {
     this.task = editedTask;
+    this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
   }
 
   /**

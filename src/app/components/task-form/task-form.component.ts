@@ -47,6 +47,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.action = 'Edit';
       this.taskService.getTaskById(this.taskId)
         .subscribe((task) => {
+          console.log(task);
           this.taskForm.setValue({
             name: task.name,
             description: task.description,
@@ -55,6 +56,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             removed: task.isRemoved,
             frequency: task.frequency
           });
+          console.log(this.taskForm.controls['frequency'].value);
         }, (err) => { console.log(err) });
     } else {
       this.action = 'Add';
@@ -142,7 +144,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
       task.weekdays = 31; // Mon-Fri
-    } else if (task.frequency == 2) {
+    } else {
       task.weekdays = this.weekdays; // Specific days
     }
   }
