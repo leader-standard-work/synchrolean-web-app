@@ -54,9 +54,44 @@ export class TaskService {
    * @param taskId The id of the task that we want to get
    */
   getTaskById(taskId: number): Observable<Task> {
+    console.log('TaskService: Fetching task by ID');
     let ownerId = this.authService.getCurrentUserId();
     const endpoint = environment.baseServerUrl + this.apiBase + ownerId + '/' + taskId;
     return this.http.get<Task>(endpoint);
+  }
+
+  /**
+   * Gets the user's task metrics for the prior week
+   * @param ownerId The id of the user we are retrieving metrics for
+   * @returns Observable<number> representing the user's task metrics 
+   */
+  getWeeklyTaskMetrics(ownerId: number): Observable<number> {
+    console.log('TaskService: Fetching weekly metrics for user');
+    let today = new Date();
+    let day = today.getDay();
+    let startDate = new Date();
+    startDate.setDate(today.getDate() - (7 + day));
+    let endDate = new Date();
+    endDate.setDate(today.getDate() - 7);
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/${ownerId}/${startDate}/${endDate}`
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Gets the user's team metrics for the prior week
+   * @param teamId The id of the team we are retrieving metrics for
+   * @returns Observable<number> representing the user's team metrics
+   */
+  getWeeklyTeamMetrics(teamId: number): Observable<number> {
+    console.log('TaskService: Fetching weekly metrics for team');
+    let today = new Date();
+    let day = today.getDay();
+    let startDate = new Date();
+    startDate.setDate(today.getDate() - (7 + day));
+    let endDate = new Date();
+    endDate.setDate(today.getDate() - 7);
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`
+    return this.http.get<number>(endpoint);
   }
 
   /**
@@ -64,10 +99,10 @@ export class TaskService {
    * @param newTask The task to be added to the database
    * @returns       Returns the newly created task back to the client
    */
-  addTask(newTask: Task) {
+  addTask(newTask: Task): Observable<Task> {
+    console.log('TaskService: Adding new task');
     const endpoint = environment.baseServerUrl + this.apiBase;
     return this.http.post<Task>(endpoint, newTask);
-      // .subscribe((newTask:Task) => this.tasks.push(newTask));
   }
 
   /**
@@ -75,7 +110,8 @@ export class TaskService {
    * @param updatedTask The updated task whose changes will be saved to the database
    * @returns       Returns the newly updated task back to the client
    */
-  editTask(updatedTask: Task) {
+  editTask(updatedTask: Task): Observable<Task> {
+    console.log('TaskService: Editing existing task');
     let id = this.authService.getCurrentUserId();
     const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
     return this.http.put<Task>(endpoint, updatedTask);

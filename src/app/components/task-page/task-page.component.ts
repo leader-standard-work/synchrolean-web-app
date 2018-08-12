@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '../../../../node_modules/@angular/router';
 
 import { TaskService } from './../../services/task.service';
 import { Task } from '../../models/Task';
@@ -13,13 +12,13 @@ import { AuthService } from '../../services/auth.service';
 export class TaskPageComponent implements OnInit, OnDestroy {
   public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
-  public currentIndex: number = 0;        // The index of the currently referenced task from the list
-  public complete: string = 'Done';
-  public incomplete: string = 'In-Progress';
+  public complete: string = 'Complete';
+  public incomplete: string = 'Incomplete';
+  public userMetrics: number;
+  public teamMetrics: number;
 
   constructor(private taskService: TaskService,
-    private authService: AuthService,
-    private router: Router) {
+    private authService: AuthService) {
     console.log('TaskPageComponent: Created');
   }
 
@@ -30,6 +29,12 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
+    this.getWeeklyUserMetrics();
+    this.getWeeklyTeamMetrics();
+  }
+
+  ngOnDestroy() {
+    
   }
 
   /**
@@ -39,13 +44,8 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     console.log('TaskPageComponent: Getting all tasks');
     this.taskService.getAllTasks()
       .subscribe((tasks) => {
-        console.log(tasks);
         this.tasks = tasks;
       }, (err) => { console.log(err) });
-  }
-
-  editTask(index: number) {
-    this.currentIndex = index;
   }
 
   /**
@@ -67,12 +67,31 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * @param newTask The new task to add to the list
    */
   onTaskAdded(newTask: Task) {
-    console.log(newTask);
     this.tasks.push(newTask);
     this.taskService.updateObservableState(this.tasks);
   }
 
-  ngOnDestroy() {
-    
+  /**
+   * Get the users metrics from the prior week
+   */
+  getWeeklyUserMetrics() {
+    this.taskService.getWeeklyTaskMetrics(this.authService.getCurrentUserId())
+      .subscribe((metrics) => {
+        this.userMetrics = metrics;
+      }, (err) => {
+        this.userMetrics = 0; // Until the call is actually working
+      });
+  }
+
+  /**
+   * Get the users metrics from the prior week
+   */
+  getWeeklyTeamMetrics() {
+    this.taskService.getWeeklyTeamMetrics(this.authService.getCurrentUserId())
+      .subscribe((metrics) => {
+        this.teamMetrics = metrics;
+      }, (err) => {
+        this.teamMetrics = 0; // Until the call is actually working
+      });
   }
 }

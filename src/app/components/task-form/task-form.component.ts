@@ -24,6 +24,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   constructor(private taskService: TaskService, 
     private authService: AuthService) {
+      console.log('TaskForm: Created');
       this.weekdaysArray = [];
       this.weekdays = 0;
   }
@@ -47,7 +48,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.action = 'Edit';
       this.taskService.getTaskById(this.taskId)
         .subscribe((task) => {
-          console.log(task);
           this.taskForm.setValue({
             name: task.name,
             description: task.description,
@@ -56,7 +56,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             removed: task.isRemoved,
             frequency: task.frequency
           });
-          console.log(this.taskForm.controls['frequency'].value);
         }, (err) => { console.log(err) });
     } else {
       this.action = 'Add';
@@ -67,6 +66,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * When the component is destroyed
    */
   ngOnDestroy() {
+    console.log('TaskForm: Destroyed');
     this.clear();
   }
 

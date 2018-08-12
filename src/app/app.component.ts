@@ -18,7 +18,6 @@ export class AppComponent {
    */
   constructor(private authService: AuthService) {
     this.userName = this.authService.getCurrentUserName();
-    console.log(this.userName);
   }
 
   /**
