@@ -17,17 +17,17 @@ export const Weekdays: string[] = [
 
 export class Task {
     id: number;
-    ownerId: number;
     name: string;
     description: string;
     isRecurring: boolean;
-    isCompleted: boolean;
-    isRemoved: boolean;
-    creationDate: Date;
-    updatedDate: Date;
-    completionDate: Date;
-    frequency: Frequency;
     weekdays: number;
+    creationDate: Date;
+    isCompleted: boolean;
+    completionDate: Date;
+    isDeleted: boolean;
+    ownerEmail: string;
+    frequency: Frequency;
+    teamId: number;
     
     constructor() {}
 }

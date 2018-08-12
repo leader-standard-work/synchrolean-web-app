@@ -27,10 +27,11 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(email, password)
       .subscribe((response) => {
         const { token } = response;
-        this.authService.setToken(token);
+        this.authService.setSession(token);
         this.authService.getUserAccountByEmail(email)
           .subscribe((account) => {
             this.authService.setCurrentUser(account);
+            this.authService.setEmail();
             this.clear();
             this.router.navigate(['/tasks']);
           }, (err) => { 

@@ -58,9 +58,11 @@ export class AccountFormComponent implements OnInit {
     account.firstName = this.accountForm.controls['firstName'].value;
     account.lastName = this.accountForm.controls['lastName'].value;
     account.email = this.accountForm.controls['email'].value;
+    account.isDeleted = false;
     account.password = this.accountForm.controls['password'].value;
     this.accountService.addAccount(account)
       .subscribe((newAcc) => {
+        console.log(newAcc);
         this.newAccount.emit(newAcc);
         this.clear();
       }, (err) => { console.log(err) });

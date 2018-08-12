@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./task-page.component.css']
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
-  public pageTitle: string = this.authService.getCurrentUserName();  // Page title
+  // public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
   public complete: string = 'Complete';
   public incomplete: string = 'Incomplete';
@@ -29,7 +29,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
-    this.getWeeklyUserMetrics();
+    // this.getWeeklyUserMetrics();
     this.getWeeklyTeamMetrics();
   }
 
@@ -48,19 +48,19 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       }, (err) => { console.log(err) });
   }
 
-  /**
-   * Marks a task as complete and calls edit task to mark it complete
-   * on the backend
-   * @param index The index of the task that we are completing
-   */
-  completeTask(index: number) {
-    this.tasks[index].isCompleted = true;
-    this.taskService.editTask(this.tasks[index])
-      .subscribe((updatedTask) => {
-        this.tasks[index] = updatedTask;
-        this.taskService.updateObservableState(this.tasks);
-      }, (err) => { console.log(err) });
-  }
+  // /**
+  //  * Marks a task as complete and calls edit task to mark it complete
+  //  * on the backend
+  //  * @param index The index of the task that we are completing
+  //  */
+  // completeTask(index: number) {
+  //   this.tasks[index].isCompleted = true;
+  //   this.taskService.editTask(this.tasks[index])
+  //     .subscribe((updatedTask) => {
+  //       this.tasks[index] = updatedTask;
+  //       this.taskService.updateObservableState(this.tasks);
+  //     }, (err) => { console.log(err) });
+  // }
 
   /**
    * Adds a new task to the list
@@ -75,19 +75,19 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * Get the users metrics from the prior week
    */
   getWeeklyUserMetrics() {
-    this.taskService.getWeeklyTaskMetrics(this.authService.getCurrentUserId())
-      .subscribe((metrics) => {
-        this.userMetrics = metrics;
-      }, (err) => {
-        this.userMetrics = 0; // Until the call is actually working
-      });
+    // this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
+    //   // .subscribe((metrics) => {
+    //   //   this.userMetrics = metrics;
+    //   // }, (err) => {
+    //   //   this.userMetrics = 0; // Until the call is actually working
+    //   // });
   }
 
   /**
    * Get the users metrics from the prior week
    */
   getWeeklyTeamMetrics() {
-    this.taskService.getWeeklyTeamMetrics(this.authService.getCurrentUserId())
+    this.taskService.getWeeklyTeamMetrics(this.authService.getEmail())
       .subscribe((metrics) => {
         this.teamMetrics = metrics;
       }, (err) => {

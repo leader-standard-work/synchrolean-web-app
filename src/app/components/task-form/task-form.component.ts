@@ -41,7 +41,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       ]),
       recurring: new FormControl(false),
       completed: new FormControl(false),
-      removed: new FormControl(false),
+      deleted: new FormControl(false),
       frequency: new FormControl(Frequency.Once, [ Validators.required ])
     });
     if (this.taskId) {
@@ -53,7 +53,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             description: task.description,
             recurring: task.isRecurring,
             completed: task.isCompleted,
-            removed: task.isRemoved,
+            deleted: task.isDeleted,
             frequency: task.frequency
           });
         }, (err) => { console.log(err) });
@@ -93,6 +93,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.setAddTask(task);
       this.taskService.addTask(task)
         .subscribe((newTask) => {
+          console.log(newTask);
           this.addedTask.emit(newTask);
           this.clear();
         }, (err) => { console.log(err) });
@@ -132,14 +133,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   setEditTask(task: Task) {
     task.id = this.taskId;
-    task.ownerId = this.authService.getCurrentUserId();
+    // task.ownerId = this.authService.getCurrentUserId();
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
     task.isRecurring = this.taskForm.controls['recurring'].value; 
     task.isCompleted = this.taskForm.controls['completed'].value;
-    task.isRemoved = this.taskForm.controls['removed'].value;
-    task.updatedDate = new Date();
+    task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
+    task.ownerEmail = this.authService.getEmail();
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
@@ -154,13 +155,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * @param task The new task we are creating
    */
   setAddTask(task: Task) {
-    task.ownerId = this.authService.getCurrentUserId();
+    task.ownerEmail = this.authService.getEmail();
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
     task.isRecurring = this.taskForm.controls['recurring'].value;
     task.creationDate = new Date();
     task.isCompleted = false;
-    task.isRemoved = false;
+    task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
     if (task.frequency == 0) {
       task.weekdays = 0;

@@ -14,7 +14,7 @@ export class TaskService {
    * Base url is provided in the environment file under src/environments/environment.ts.
    * Production version of this url should be in src/environments/environment.prod.ts.
    */
-  private apiBase: string = '/tasks/'; // Api addition to the url
+  private apiBase: string = '/tasks'; // Api addition to the url
   private tasksSubject: BehaviorSubject<Task[]>;
   private tasksObservable: Observable<Task[]>;
 
@@ -23,9 +23,10 @@ export class TaskService {
     console.log('TaskService created.'); // For logging purposes
     this.tasksSubject = new BehaviorSubject([]);
     this.tasksObservable = this.tasksSubject.asObservable();
-    if (this.authService.isCurrentUser()) {
-      this.tasksObservable = this.fetchTasks(this.authService.getCurrentUserId());
-    }
+    // if (this.authService.isCurrentUser()) {
+    //   console.log(this.authService.getEmail());
+      this.tasksObservable = this.fetchTasks(this.authService.getEmail());
+    // }
   }
 
   /**
@@ -33,8 +34,9 @@ export class TaskService {
    * @param id The id of the user to retrieve tasks for
    * @returns  A list of tasks belonging to the user matching id arg
    */
-  fetchTasks(id:number): Observable<Task[]> {
-    const endpoint = environment.baseServerUrl + this.apiBase + id;
+  fetchTasks(email: string): Observable<Task[]> {
+    // Changed from id to email
+    const endpoint = environment.baseServerUrl + this.apiBase + '/' + email;
     console.log('TaskService: Fetching tasks from server');
     return this.http.get<Task[]>(endpoint);
   }
@@ -55,8 +57,8 @@ export class TaskService {
    */
   getTaskById(taskId: number): Observable<Task> {
     console.log('TaskService: Fetching task by ID');
-    let ownerId = this.authService.getCurrentUserId();
-    const endpoint = environment.baseServerUrl + this.apiBase + ownerId + '/' + taskId;
+    // let ownerId = this.authService.getCurrentUserId();
+    const endpoint = environment.baseServerUrl + this.apiBase + taskId + '/' + this.authService.getEmail();
     return this.http.get<Task>(endpoint);
   }
 
@@ -65,7 +67,7 @@ export class TaskService {
    * @param ownerId The id of the user we are retrieving metrics for
    * @returns Observable<number> representing the user's task metrics 
    */
-  getWeeklyTaskMetrics(ownerId: number): Observable<number> {
+  getWeeklyTaskMetrics(email: string) {
     console.log('TaskService: Fetching weekly metrics for user');
     let today = new Date();
     let day = today.getDay();
@@ -73,8 +75,8 @@ export class TaskService {
     startDate.setDate(today.getDate() - (7 + day));
     let endDate = new Date();
     endDate.setDate(today.getDate() - 7);
-    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/${ownerId}/${startDate}/${endDate}`
-    return this.http.get<number>(endpoint);
+    // const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/${startDate}/${endDate}/${email}`;
+    // return this.http.get<number>(endpoint);
   }
 
   /**
@@ -82,7 +84,7 @@ export class TaskService {
    * @param teamId The id of the team we are retrieving metrics for
    * @returns Observable<number> representing the user's team metrics
    */
-  getWeeklyTeamMetrics(teamId: number): Observable<number> {
+  getWeeklyTeamMetrics(email: string): Observable<number> {
     console.log('TaskService: Fetching weekly metrics for team');
     let today = new Date();
     let day = today.getDay();
@@ -90,7 +92,7 @@ export class TaskService {
     startDate.setDate(today.getDate() - (7 + day));
     let endDate = new Date();
     endDate.setDate(today.getDate() - 7);
-    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${startDate}/${endDate}/${email}`;
     return this.http.get<number>(endpoint);
   }
 
@@ -112,8 +114,8 @@ export class TaskService {
    */
   editTask(updatedTask: Task): Observable<Task> {
     console.log('TaskService: Editing existing task');
-    let id = this.authService.getCurrentUserId();
-    const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
+    // let id = this.authService.getCurrentUserId();
+    const endpoint = environment.baseServerUrl + this.apiBase + updatedTask.id;
     return this.http.put<Task>(endpoint, updatedTask);
   }
 
