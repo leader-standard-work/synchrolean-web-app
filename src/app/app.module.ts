@@ -23,7 +23,6 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
-import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,7 @@ import { FooterComponent } from './components/footer/footer.component';
     AccountFormComponent,
     TaskListComponent,
     TaskInfoComponent,
-    LoginFormComponent,
-    FooterComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
