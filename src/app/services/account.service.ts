@@ -1,17 +1,25 @@
+import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 import { Account } from '../models/Account';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private apiBase: string = '/accounts/';
+  private accountsSubject: BehaviorSubject<Account[]>;
+  private accountsObservable: Observable<Account[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+  private authService: AuthService) { 
+    console.log('AccountService created.'); // For logging purposes
+    this.accountsSubject = new BehaviorSubject([]);
+    this.accountsObservable = this.accountsSubject.asObservable();
+  }
 
   /**
    * Takes an account and sends request to server to add that account to
@@ -53,7 +61,7 @@ export class AccountService {
    * @returns      A list of accounts for users that belong to the given teamId 
    */
   getAccountsByTeamId(teamId:number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'member/' + teamId;
+    const endpoint = environment.baseServerUrl + 'teams/member/' + teamId;
     let accounts:Account[];
     this.http.get<Account[]>(endpoint, { withCredentials: true })
       .subscribe((accs) => {
