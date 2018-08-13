@@ -45,14 +45,15 @@ export class TeamFormComponent implements OnInit {
         Validators.maxLength(250)
       ]),
       id: new FormControl(false),
-      ownerId: new FormControl(false)
+      ownerEmail: new FormControl(false)
     });
     if(this.teamId) {
       this.action = 'Edit';
       this.teamService.getTeam(this.teamId)
         .subscribe((loadedTeam: Team) => {
           this.teamForm.controls['id'].setValue(loadedTeam.id);
-          this.teamForm.controls['ownerId'].setValue(loadedTeam.ownerId);
+          //this.teamForm.controls['ownerId'].setValue(loadedTeam.ownerId);
+          this.teamForm.controls['ownerEmail'].setValue(loadedTeam.ownerEmail);
           this.teamForm.controls['name'].setValue(loadedTeam.teamName);
           this.teamForm.controls['description'].setValue(loadedTeam.teamDescription);
         }, err => {
@@ -73,7 +74,8 @@ export class TeamFormComponent implements OnInit {
     let team = new Team();
     if (this.teamId) {
       team.id = this.teamForm.controls['id'].value;
-      team.ownerId = this.teamForm.controls['ownerId'].value;
+      //team.ownerId = this.teamForm.controls['ownerId'].value;
+      team.ownerEmail = this.teamForm.controls['ownerEmail'].value;
       team.teamName = this.teamForm.controls['name'].value;
       team.teamDescription = this.teamForm.controls['description'].value;
       this.teamService.editTeam(team)
@@ -82,7 +84,8 @@ export class TeamFormComponent implements OnInit {
         }, err => console.log(err));
     }
     else {
-      // team.ownerId = this.authService.getCurrentUserId();
+      //team.ownerId = this.authService.getCurrentUserId();
+      team.ownerEmail = this.authService.getEmail();
       team.teamName = this.teamForm.controls['name'].value;
       team.teamDescription = this.teamForm.controls['description'].value;
       this.teamService.addTeam(team)

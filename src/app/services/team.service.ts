@@ -82,10 +82,11 @@ export class TeamService {
    * @param teamId The id of the team to fetch the members of
    * @returns List of members belonging to the team
    */
-  fetchTeamMembers(teamId: number) {
-    let members: Account[] = [];
+  fetchTeamMembers(teamId: number): Observable<Account[]> {
+    //let members: Account[] = [];
     const endpoint = environment.baseServerUrl + this.apiBase + 'members/' + teamId;
-    this.http.get<Account[]>(endpoint)
+    return this.http.get<Account[]>(endpoint);
+    /*this.http.get<Account[]>(endpoint)
       .subscribe(data => {
         data.forEach(member => {
           members.push(member);
@@ -94,6 +95,7 @@ export class TeamService {
         console.log(err)
       });
     return members;
+    */
   }
 
   /**

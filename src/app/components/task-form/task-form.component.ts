@@ -141,7 +141,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
-    task.teamId = 0;
+    task.teamId = null;
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
@@ -164,7 +164,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isCompleted = false;
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
-    task.teamId = 0;
+    task.teamId = null;
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
