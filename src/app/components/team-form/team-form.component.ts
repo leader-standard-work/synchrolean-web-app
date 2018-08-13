@@ -82,7 +82,7 @@ export class TeamFormComponent implements OnInit {
         }, err => console.log(err));
     }
     else {
-      team.ownerId = this.authService.getCurrentUserId();
+      // team.ownerId = this.authService.getCurrentUserId();
       team.teamName = this.teamForm.controls['name'].value;
       team.teamDescription = this.teamForm.controls['description'].value;
       this.teamService.addTeam(team)

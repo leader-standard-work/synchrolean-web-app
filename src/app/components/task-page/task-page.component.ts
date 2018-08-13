@@ -29,7 +29,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
-    // this.getWeeklyUserMetrics();
+    this.getWeeklyUserMetrics();
     this.getWeeklyTeamMetrics();
   }
 
@@ -48,25 +48,12 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       }, (err) => { console.log(err) });
   }
 
-  // /**
-  //  * Marks a task as complete and calls edit task to mark it complete
-  //  * on the backend
-  //  * @param index The index of the task that we are completing
-  //  */
-  // completeTask(index: number) {
-  //   this.tasks[index].isCompleted = true;
-  //   this.taskService.editTask(this.tasks[index])
-  //     .subscribe((updatedTask) => {
-  //       this.tasks[index] = updatedTask;
-  //       this.taskService.updateObservableState(this.tasks);
-  //     }, (err) => { console.log(err) });
-  // }
-
   /**
    * Adds a new task to the list
    * @param newTask The new task to add to the list
    */
   onTaskAdded(newTask: Task) {
+    console.log('TaskPageComponent: Adding task and updating observable state');
     this.tasks.push(newTask);
     this.taskService.updateObservableState(this.tasks);
   }
@@ -75,21 +62,31 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * Get the users metrics from the prior week
    */
   getWeeklyUserMetrics() {
-    // this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
-    //   // .subscribe((metrics) => {
-    //   //   this.userMetrics = metrics;
-    //   // }, (err) => {
-    //   //   this.userMetrics = 0; // Until the call is actually working
-    //   // });
+    console.log('TaskPageComponent: Getting weekly user metrics');
+    this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
+      .subscribe((metrics) => {
+        if (!isNaN(metrics)) {
+          this.userMetrics = metrics;
+        } else {
+          this.userMetrics = 0;
+        }
+      }, (err) => {
+        this.userMetrics = 0;
+      });
   }
 
   /**
    * Get the users metrics from the prior week
    */
   getWeeklyTeamMetrics() {
+    console.log('TaskPageComponent: Getting weekly team metrics');
     this.taskService.getWeeklyTeamMetrics(this.authService.getEmail())
       .subscribe((metrics) => {
-        this.teamMetrics = metrics;
+        if (!isNaN(metrics)) {
+          this.teamMetrics = metrics;
+        } else {
+          this.teamMetrics = 0;
+        }
       }, (err) => {
         this.teamMetrics = 0; // Until the call is actually working
       });

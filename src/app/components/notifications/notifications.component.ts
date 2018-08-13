@@ -20,7 +20,7 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     // Grab the notifications from the team service
-    this.invites = this.teamService.fetchTeamInvites(this.authService.getCurrentUserId());
+    // this.invites = this.teamService.fetchTeamInvites(this.authService.getCurrentUserId());
   }
 
   acceptTeamInvite(invite: AddUserRequest) {

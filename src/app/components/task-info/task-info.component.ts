@@ -52,7 +52,7 @@ export class TaskInfoComponent implements OnInit {
    * Marks the task as removed and gets rid of it from the task list
    */
   removeTask() {
-    this.task.isRemoved = true;
+    this.task.isDeleted = true;
     this.taskService.editTask(this.task)
       .subscribe((removedTask) => {
         this.task = removedTask;

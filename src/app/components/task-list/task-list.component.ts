@@ -38,7 +38,7 @@ export class TaskListComponent implements OnInit {
 
   getAllTasks() {
     console.log('TaskListComponent: Getting all tasks');
-    this.taskService.fetchTasks(this.userId)
+    this.taskService.fetchTasks(localStorage.getItem('email'))
       .subscribe((tasks: Task[]) => {
         this.tasks = tasks;
       }, err => console.log(err));

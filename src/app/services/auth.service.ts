@@ -41,77 +41,36 @@ export class AuthService {
   setCurrentUser(account: Account) {
     this.currentUser = new Account();
     this.currentUser = account;
-    // // localStorage.setItem('userId', JSON.stringify(account.ownerId));
-    // localStorage.setItem('userName', account.firstName);
   }
 
   /**
-   * MAY NOT BE NECCESSARY ANY MORE
-   * Sets the JWT, userId, and userName in localStorage to persist across
-   * page refreshes.
+   * Sets the JWT in localStorage to persist across page refreshes.
    * @param token The token to set in localStorage
    */
   setSession(token) {
-    // localStorage.setItem('userId', JSON.stringify(account.ownerId));
-    // localStorage.setItem('userName', account.firstName);
     localStorage.setItem('jwt', token);
   }
 
-  // /**
-  //  * Set just the token
-  //  */
-  // setToken(token) {
-  //   localStorage.setItem('jwt', token);
-  // }
+  /**
+   * Sets the user's email to localStorage for operations that require the
+   * email and persistence across page refreshes
+   */
+  setEmail() {
+    localStorage.setItem('email', this.currentUser.email);
+  }
 
   /**
    * Clears all information from localStorage to essentially logout a user
    */
   logout() {
     this.currentUser = null;
-    // localStorage.removeItem('userId');
-    // localStorage.removeItem('userName');
     localStorage.removeItem('email');
     localStorage.removeItem('jwt');
   }
 
-  // /**
-  //  * Check to see if there is a current user
-  //  * @returns true if there is a current user else false
-  //  */
-  // isCurrentUser() {
-  //   let uid = localStorage.getItem('userId');
-  //   return (this.currentUser != null) || (uid != null);
-  // }
-
-  // /**
-  //  * Get the ownerId property from the current user for fetching tasks
-  //  * @returns The ownerId of the current user
-  //  */
-  // getCurrentUserId() {
-  //   let uid = +localStorage.getItem('userId');
-  //   if (this.currentUser) // If a page refresh hasn't occurred
-  //     return this.currentUser.ownerId;
-  //   else if (uid != null) // If a page refresh has occurred
-  //     return uid;
-  //   else return -1; // Tough luck
-  // }
-
-  // /**
-  //  * Get the name of the current user
-  //  * @returns Current users name
-  //  */
-  // getCurrentUserName() {
-  //   let userName = localStorage.getItem('userName');
-  //   return userName || '';
-  // }
-
-  setEmail() {
-    localStorage.setItem('email', this.currentUser.email);
-  }
-
   /**
-   * Returns the current user's email address for api calls
+   * Retrieves the current user's email address for api calls
+   * @returns The current user's email address from localStorage
    */
   getEmail() {
     let email = localStorage.getItem('email');
@@ -121,6 +80,9 @@ export class AuthService {
       return email;
   }
 
+  /**
+   * Return the current user to access certain user information for api calls
+   */
   getUser() {
     return this.currentUser;
   }
