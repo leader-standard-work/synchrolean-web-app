@@ -1,3 +1,4 @@
+import { AccountService } from './../../services/account.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -16,16 +17,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Input() taskId: number;
   @Output() addedTask = new EventEmitter<Task>();
   @Output() editedTask = new EventEmitter<Task>();
-  public weekdaysArray: string[];
   public weekdays: number; // The numerical days value for a task
 
   /**
    * Communicates with the task service
    */
   constructor(private taskService: TaskService, 
-    private authService: AuthService) {
+    private authService: AuthService,
+    private accountService: AccountService) { // Will need account service to fetch team that user is on
       console.log('TaskForm: Created');
-      this.weekdaysArray = [];
       this.weekdays = 0;
   }
 
@@ -141,7 +141,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
-    task.teamId = 0;
+    task.teamId = null; // Might have to check if user is on team first
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
@@ -164,7 +164,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isCompleted = false;
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
-    task.teamId = 0;
+    task.teamId = null;
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
