@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'teams/:id', component: TeamInfoComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id/invite', component: InviteMemberComponent, canActivate: [AuthGuard] },
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
-  { path: 'users/:id/tasks', component: TaskListComponent, canActivate: [AuthGuard] }
+  { path: 'users/:email/tasks', component: TaskListComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

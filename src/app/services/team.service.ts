@@ -7,6 +7,7 @@ import { environment } from './../../environments/environment';
 import { Team } from '../models/Team';
 import { AddUserRequest } from '../models/AddUserRequest';
 import { Account } from '../models/Account';
+import { Task } from '../models/Task';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class TeamService {
    * @returns  Observable list of all teams.
    */
   fetchTeams(): Observable<Team[]> {
-    const endpoint = environment.baseServerUrl + this.apiBase;
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}`;
     console.log('TeamService: Fetching teams from server');
     return this.http.get<Team[]>(endpoint);
   }
@@ -63,7 +64,7 @@ export class TeamService {
    * @returns       Returns and observable of the newly updated team back to the client
    */
   editTeam(updatedTeam: Team): Observable<Team> {
-    const endpoint = environment.baseServerUrl + this.apiBase + /*updatedTeam.ownerId +*/ '/' + updatedTeam.id;
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}${updatedTeam.id}`;
     return this.http.put<Team>(endpoint, updatedTeam);
   }
 
@@ -73,7 +74,7 @@ export class TeamService {
    * @returns The selected team object
    */
   getTeam(teamId: number): Observable<Team> {
-    const endpoint = environment.baseServerUrl + this.apiBase + teamId;
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}${teamId}`;
     return this.http.get<Team>(endpoint);
   }
 
@@ -82,18 +83,9 @@ export class TeamService {
    * @param teamId The id of the team to fetch the members of
    * @returns List of members belonging to the team
    */
-  fetchTeamMembers(teamId: number) {
-    let members: Account[] = [];
-    const endpoint = environment.baseServerUrl + this.apiBase + 'members/' + teamId;
-    this.http.get<Account[]>(endpoint)
-      .subscribe(data => {
-        data.forEach(member => {
-          members.push(member);
-        });
-      }, err => {
-        console.log(err)
-      });
-    return members;
+  fetchTeamMembers(teamId: number): Observable<Account[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}members/${teamId}`;
+    return this.http.get<Account[]>(endpoint);
   }
 
   /**
@@ -101,8 +93,8 @@ export class TeamService {
    * @param teamId The id of the team that a user is being invited to
    * @param email the email address of the invitee
    */
-  inviteMemberToTeam(teamId: number, email: string) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/' +  '/' + teamId + '/' + email;
+  inviteMemberToTeam(teamId: number, email: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/${teamId}/${email}`;
     return this.http.put(endpoint, null);
   }
 
@@ -110,27 +102,17 @@ export class TeamService {
    * Fetches all outstanding team invites awaiting a user's input.
    * @returns List of invites for the user
    */
-  fetchTeamInvites() {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/incoming/accept/';
-    let invites: AddUserRequest[] = [];
-
-    this.http.get<AddUserRequest[]>(endpoint)
-      .subscribe(data => {
-        data.forEach(invite => {
-          invites.push(invite);
-        });
-      }, err => {
-        console.log(err);
-      });
-    return invites;
+  fetchTeamInvites(): Observable<AddUserRequest[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/incoming/accept/`;
+    return this.http.get<AddUserRequest[]>(endpoint);
   }
 
   /**
    * Accepts an invite to a team, adding the invitee to the team.
    * @param teamId The id of the team issuing the invite
    */
-  acceptTeamInvite(teamId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/accept/' + teamId;
+  acceptTeamInvite(teamId: number): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/accept/${teamId}`;
     return this.http.put(endpoint, null);
   }
 
@@ -138,8 +120,8 @@ export class TeamService {
    * Declines an invite to a team.
    * @param teamId The id of the team whose invite is being declined
    */
-  declineTeamInvite(teamId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/reject/' + teamId;
+  declineTeamInvite(teamId: number): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/reject/${teamId}`;
     return this.http.put(endpoint, null);
   }
 
@@ -148,8 +130,8 @@ export class TeamService {
    * @param teamId The id of the team invite is for
    * @param email The email address of the user invite is for
    */
-  rescindTeamInvite(teamId: number, email: string) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/rescind/' + teamId + '/' + email;
+  rescindTeamInvite(teamId: number, email: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/rescind/${teamId}/${email}`;
     return this.http.put(endpoint, null);
   }
 
@@ -158,8 +140,8 @@ export class TeamService {
    * @param teamId The id of the team invite is for
    * @param email The email of the user invite is for
    */
-  authorizeTeamInvite(teamId: number, email: string) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/authorize/' + teamId + '/' + email;
+  authorizeTeamInvite(teamId: number, email: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/authorize/${teamId}/${email}`;
     return this.http.put(endpoint, null);
   }
 
@@ -168,25 +150,25 @@ export class TeamService {
    * @param teamId The id of the team invite is for
    * @param email The email of the user invite is for
    */
-  vetoTeamInvite(teamId: number, email: string) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/veto/' + teamId + '/' + email;
+  vetoTeamInvite(teamId: number, email: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/veto/${teamId}/${email}`;
     return this.http.put(endpoint, null);
   }
 
   /**
    * Retrieves all the invites that need authorization (team owner only)
    */
-  getInvitesToAuthorize() {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/incoming/authorize';
-    return this.http.get(endpoint, null);
+  getInvitesToAuthorize(): Observable<AddUserRequest[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/incoming/authorize`;
+    return this.http.get<AddUserRequest[]>(endpoint);
   }
 
   /**
    * Retrieves all invites a user has made
    */
-  getCreatedInvites() {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'invite/outgoing';
-    return this.http.get(endpoint, null);
+  getCreatedInvites(): Observable<AddUserRequest[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/outgoing`;
+    return this.http.get<AddUserRequest[]>(endpoint);
   }
 
   /**
@@ -194,8 +176,8 @@ export class TeamService {
    * @param objectId The id of the team granting permission
    * @param subjectId The id of the team receiving permission
    */
-  grantTeamPermission(objectId: number, subjectId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'permissions/grant/' + objectId + '/' + subjectId;
+  grantTeamPermission(objectId: number, subjectId: number): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}permissions/grant/${objectId}/${subjectId}`;
     return this.http.put(endpoint, null);
   }
 
@@ -204,8 +186,8 @@ export class TeamService {
    * @param objectId The id of the team removing permission
    * @param subjectId The id of the team whose permissions are being revoked
    */
-  revokeTeamPermission(objectId: number, subjectId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'permissions/revoke' + objectId + '/' + subjectId;
+  revokeTeamPermission(objectId: number, subjectId: number): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}permissions/revoke${objectId}/${subjectId}`;
     return this.http.put(endpoint, null);
   }
 
@@ -214,8 +196,8 @@ export class TeamService {
    * @param teamId The id of the team member is being removed from
    * @param email The email of the member being removed
    */
-  removeTeamMember(teamId: number, email: string) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'remove/' + teamId + '/' + email;
+  removeTeamMember(teamId: number, email: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}remove/${teamId}/${email}`;
     return this.http.put(endpoint, null);
   }
 
@@ -223,17 +205,17 @@ export class TeamService {
    * Retrieves the team rollup
    * @param teamId The id of the team being rolled up on, yo
    */
-  getTeamRollUp(teamId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'rollup/' + teamId;
-    return this.http.get(endpoint, null);
+  getTeamRollUp(teamId: number): Observable<Task[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}rollup/${teamId}`;
+    return this.http.get<Task[]>(endpoint);
   }
 
   /**
    * Deletes the team (team owner only, may be removed)
    * @param teamId The id of the team being removed
    */
-  deleteTeam(teamId: number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'delete/' + teamId;
+  deleteTeam(teamId: number): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}delete/${teamId}`;
     return this.http.put(endpoint, null);
   }
 

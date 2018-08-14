@@ -12,6 +12,7 @@ import { Account } from '../../models/Account';
 })
 export class TaskListComponent implements OnInit {
   public tasks: Task[] = [];
+  public ownerEmail: string;
   public userId: number;
   public user: Account;
   public complete: string = 'Done';
@@ -23,14 +24,15 @@ export class TaskListComponent implements OnInit {
     private accountService: AccountService) {
     console.log('TaskListComponent: Created');
     this.route.params.subscribe(p => {
-      this.userId = +p['id'];
+      console.log(p);
+      this.ownerEmail = p['email'];
     })
   }
 
   ngOnInit() {
     console.log('TaskListComponent: Fetching tasks');
     this.getAllTasks();
-    this.accountService.getAccountById(this.userId)
+    this.accountService.getAccountByEmail(this.ownerEmail)
       .subscribe((acc) => {
         this.user = acc;
       }, (err) => console.log(err));
@@ -39,6 +41,7 @@ export class TaskListComponent implements OnInit {
   getAllTasks() {
     console.log('TaskListComponent: Getting all tasks');
     this.taskService.fetchTasks(localStorage.getItem('email'))
+    this.taskService.fetchTasks(this.ownerEmail)
       .subscribe((tasks: Task[]) => {
         this.tasks = tasks;
       }, err => console.log(err));

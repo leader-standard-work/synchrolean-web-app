@@ -23,19 +23,19 @@ export class InviteMemberComponent implements OnInit {
   ngOnInit() {
   }
 
-  // submit() {
-  //   this.accountService.getAccountByEmail(this.email)
-  //     .subscribe((acc) => {
-  //       let inviteeAccount = acc;
-  //       this.route.params.subscribe(p => {
-  //         let teamId = +p['id'];
-  //         this.teamService.inviteMemberToTeam(inviteeAccount.ownerId, this.authService.getCurrentUserId(), teamId)
-  //           .subscribe();
-  //         this.router.navigate(['/teams/' + teamId])
-  //       });
-  //     }, (err) => {
-  //       console.log(err)
-  //     });
-  // }
+  submit() {
+    this.accountService.getAccountByEmail(this.email)
+      .subscribe((acc) => {
+        let inviteeAccount = acc;
+        this.route.params.subscribe(p => {
+          let teamId = +p['id'];
+          this.teamService.inviteMemberToTeam(teamId, inviteeAccount.email)
+            .subscribe();
+          this.router.navigate(['/teams/' + teamId])
+        });
+      }, (err) => {
+        console.log(err)
+      });
+  }
 
 }

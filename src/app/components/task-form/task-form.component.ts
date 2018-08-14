@@ -141,7 +141,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
+<<<<<<< HEAD
     task.teamId = null; // Might have to check if user is on team first
+=======
+    task.teamId = null;
+>>>>>>> 9066f2d84187f1d6f3920c82516d023962b18192
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
