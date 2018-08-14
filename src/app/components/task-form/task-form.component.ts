@@ -173,7 +173,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.teamId = this.taskForm.controls['teamId'].value;
-    console.log(task.teamId);
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {

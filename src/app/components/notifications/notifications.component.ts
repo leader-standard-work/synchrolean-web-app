@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-  public invites$: Observable<AddUserRequest[]>; 
+  public invites: AddUserRequest[];
 
   constructor(
     private teamService: TeamService,
@@ -21,7 +21,10 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     // Grab the notifications from the team service
-    this.invites$ = this.teamService.fetchTeamInvites();
+    this.teamService.fetchTeamInvites()
+      .subscribe((invites) => { 
+        this.invites = invites 
+      }, (err) => { console.log(err) });
   }
 
   acceptTeamInvite(invite: AddUserRequest) {
