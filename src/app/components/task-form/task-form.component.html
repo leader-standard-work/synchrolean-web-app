@@ -25,13 +25,24 @@
           </div>
         </div>
         <hr>
+        <!-- Present team choices for the task to belong to -->
+        <div class="form-group text-center">
+          <p>Which team would you like to assign this task to?</p>
+          <div *ngFor="let team of teams">
+            <button type="button" class="btn btn-primary" (click)="setTaskTeamId(team.id)">
+              {{ team.teamName }}
+            </button>
+          </div>
+        </div>
+        <hr>
+        <!-- Frequency options for the user to choose -->
         <div class="form-group text-center">
           <p class="text-muted">How often does this task occur?</p>
           <div class="btn-group lean-text">
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(0)">Once</button>
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(1)">Daily</button>
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(2)">Weekly</button>
-            <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(3)">Monthly</button>
+            <!-- <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(3)">Monthly</button> -->
           </div>
         </div>
         <div *ngIf="getFrequency() == 0">
@@ -54,12 +65,12 @@
             </div>
           </div>
         </div>
-        <div *ngIf="getFrequency() == 3">
+        <!-- <div *ngIf="getFrequency() == 3">
           <div class="form-group">
             <p class="text-succeed">Tasks that occur monthly occur on the dates you choose.</p>
             <p>Monthly date picker here...</p>
           </div>
-        </div>
+        </div> -->
 
         <!-- Footer content -->
         <div class="modal-footer">

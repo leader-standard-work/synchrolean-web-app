@@ -42,9 +42,12 @@ export class TaskInfoComponent implements OnInit {
    */
   completeTask() {
     this.task.isCompleted = true;
+    console.log('Before', this.task);
     this.taskService.editTask(this.task)
       .subscribe((completedTask) => {
+        console.log('Response', completedTask);
         this.task = completedTask;
+        console.log('Task is now', this.task);
       }, (err) => { console.log(err) });
   }
 

@@ -1,3 +1,4 @@
+import { Team } from './../../models/Team';
 import { AccountService } from './../../services/account.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -18,6 +19,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Output() addedTask = new EventEmitter<Task>();
   @Output() editedTask = new EventEmitter<Task>();
   public weekdays: number; // The numerical days value for a task
+  private teams: Team[];
 
   /**
    * Communicates with the task service
@@ -27,6 +29,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private accountService: AccountService) { // Will need account service to fetch team that user is on
       console.log('TaskForm: Created');
       this.weekdays = 0;
+      // Fetch the teams the user is on so they can pick which team the task belongs to
+      this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
+      .subscribe((teams) => {
+        this.teams = teams;
+      }, (err) => { console.log(err) });
   }
 
   ngOnInit() {
@@ -42,7 +49,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       recurring: new FormControl(false),
       completed: new FormControl(false),
       deleted: new FormControl(false),
-      frequency: new FormControl(Frequency.Once, [ Validators.required ])
+      frequency: new FormControl(Frequency.Once, [ Validators.required ]),
+      teamId: new FormControl(null, [ Validators.required ])
     });
     if (this.taskId) {
       this.action = 'Edit';
@@ -54,7 +62,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             recurring: task.isRecurring,
             completed: task.isCompleted,
             deleted: task.isDeleted,
-            frequency: task.frequency
+            frequency: task.frequency,
+            teamId: task.teamId
           });
         }, (err) => { console.log(err) });
     } else {
@@ -133,7 +142,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   setEditTask(task: Task) {
     task.id = this.taskId;
-    // task.ownerId = this.authService.getCurrentUserId();
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
     task.isRecurring = this.taskForm.controls['recurring'].value; 
@@ -141,11 +149,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
-<<<<<<< HEAD
-    task.teamId = null; // Might have to check if user is on team first
-=======
-    task.teamId = null;
->>>>>>> 9066f2d84187f1d6f3920c82516d023962b18192
+    task.teamId = this.taskForm.controls['teamId'].value;
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
@@ -168,7 +172,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isCompleted = false;
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
-    task.teamId = null;
+    task.teamId = this.taskForm.controls['teamId'].value;
+    console.log(task.teamId);
     if (task.frequency == 0) {
       task.weekdays = 0;
     } else if (task.frequency == 1) {
@@ -176,6 +181,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else if (task.frequency == 2) {
       task.weekdays = this.weekdays;
     }
+  }
+
+  /**
+   * Sets the tasks teamId to the team the user selects
+   * @param id The teamId for the team the task belongs to
+   */
+  setTaskTeamId(id: number) {
+    this.taskForm.controls['teamId'].setValue(id);
   }
 
   /**

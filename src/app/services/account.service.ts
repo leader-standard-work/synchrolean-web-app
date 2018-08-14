@@ -1,3 +1,4 @@
+import { Team } from './../models/Team';
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -70,6 +71,16 @@ export class AccountService {
         console.log(err) 
       });
     return accounts;
+  }
+
+  /**
+   * Retrieves the teams that a user is on
+   * @param email The email of the user we are retrieving teams for
+   * @returns Observable array of teams the user is on
+   */
+  getTeamsByAccountEmail(email: string): Observable<Team[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}teams/${email}`;
+    return this.http.get<Team[]>(endpoint);
   }
 
   /**
