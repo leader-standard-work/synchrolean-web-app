@@ -3,32 +3,32 @@
     <h1 class="display-3">{{ team.teamName }}</h1>
     <p class="lead">{{ team.teamDescription }}</p>
     <div class="row" style="text-align:center">
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary"
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info"
               data-toggle="modal" data-target="#teamFormModal">
         Edit
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Remove Member
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Task Roll-Up
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Invite Authorization Manager
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Grant Permission
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Revoke Permission
       </button>
       <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Delete Team
       </button>
     </div>
