@@ -1,5 +1,11 @@
+<section class="lean-bg text-center" style="height: 200px;">
+  <div class="jumbotron" style="background-color: transparent !important;">
+    <h2 class="text-white">Notifications</h2>
+  </div>
+</section>
+
 <div class="container">
-  <ul class="notifications">
+  <!-- <ul class="notifications">
     <li class="card notification-item" *ngFor="let invite of invites">
       <div class="row">
         <div class="col-md-10">
@@ -9,6 +15,28 @@
           <div class="btn-group" role="group">
             <button type="button" class="btn btn-success btn-sm" (click)="acceptTeamInvite(invite)">Accept</button>
             <button type="button" class="btn btn-danger" (click)="declineTeamInvite(invite)">Decline</button>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul> -->
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let invite of invites">
+      <div class="container">
+        <div class="row">
+          <div class="col" style="border-right-style: solid; border-right-color: lightgray;">
+            <blockquote class="blockquote">
+              <h4>Steve Rodgers</h4>
+              <footer>{{ invite.inviterEmail }}</footer>
+            </blockquote>
+          </div>
+          <div class="col" style="border-right-style: solid; border-right-color: lightgray;">
+            <h4>{{ inviterName }}</h4>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-success btn-md">Accept</button>
+            <button type="button" class="btn btn-danger btn-md">Decline</button>
           </div>
         </div>
       </div>
