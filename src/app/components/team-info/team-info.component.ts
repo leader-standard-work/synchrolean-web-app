@@ -36,11 +36,23 @@ export class TeamInfoComponent implements OnInit {
     this.teamService.fetchTeamMembers(this.team.id)
       .subscribe((accountList: Account[]) => {
         this.accounts = accountList;
-      }, err => console.log(err));
+      }, err => {
+        console.log(err);
+      });
   }
 
+  /**
+   * Checks if the current user is the owner of the team
+   */
   isOwnerOfTeam() {
       return this.authService.getEmail() == this.team.ownerEmail;
+  }
+
+  /**
+   * Retrieves all the tasks for the team
+   */
+  teamRollUp() {
+    
   }
 
   /**

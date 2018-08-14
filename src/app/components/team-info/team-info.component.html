@@ -2,10 +2,37 @@
   <div class="jumbotron">
     <h1 class="display-3">{{ team.teamName }}</h1>
     <p class="lead">{{ team.teamDescription }}</p>
-    <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary" 
-            data-toggle="modal" data-target="#teamFormModal">
-      Edit
-    </button>
+    <div class="row" style="text-align:center">
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary"
+              data-toggle="modal" data-target="#teamFormModal">
+        Edit
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Remove Member
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Task Roll-Up
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Invite Authorization Manager
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Grant Permission
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Revoke Permission
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary">
+        Delete Team
+      </button>
+    </div>
+    <hr>
   </div>
   
   <div>
