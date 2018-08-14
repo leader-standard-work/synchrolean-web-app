@@ -10,7 +10,6 @@
     <div class="modal-body">
       <form [formGroup]="taskForm">
         <div class="form-group">
-          <!-- <label for="name">Name:</label> -->
           <input type="text" class="form-control" formControlName="name" placeholder="Enter a task name">
           <div *ngIf="taskForm.controls['name'].invalid && taskForm.controls['name'].touched">
             <p class="text-danger">A task name between 4 and 40 characters is required.</p>
@@ -18,7 +17,6 @@
         </div>
         <hr>
         <div class="form-group">
-          <!-- <label for="description">Description:</label> -->
           <textarea type="text" class="form-control" formControlName="description" placeholder="Enter a description"></textarea>
           <div *ngIf="taskForm.controls['description'].invalid">
             <p class="text-danger">Descriptions must be 250 characters or less.</p>
