@@ -1,5 +1,6 @@
 import { Account } from './../../models/Account';
 import { TeamService } from './../../services/team.service';
+import { TaskService } from './../../services/task.service';
 import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -11,18 +12,24 @@ import { AuthService } from './../../services/auth.service';
   styleUrls: ['./team-info.component.css']
 })
 export class TeamInfoComponent implements OnInit {
-  team: Team;
-  accounts: Account[];
+  public team: Team;
+  public accounts: Account[];
+  public isTeamMember: boolean;
+  public lastWeeksMetrics: number;
+  public thisWeeksMetrics: number;
 
   constructor(
     private teamService: TeamService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private taskService: TaskService
   ) {
     this.team = new Team();
     this.route.params.subscribe(p => {
       this.team.id = p['id'];
     });
+    this.getLastWeekTeamMetrics();
+    this.getThisWeekTeamMetrics();
    }
 
   ngOnInit() {
@@ -49,10 +56,59 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Retrieves all the tasks for the team
+   * Gets previous weeks team metrics
    */
-  teamRollUp() {
-    
+  getLastWeekTeamMetrics() {
+    this.taskService.getWeeklyTeamMetrics(this.team.id)
+      .subscribe((metrics) => {
+        if (!isNaN(metrics)) {
+          this.lastWeeksMetrics = metrics;
+        } else {
+          this.lastWeeksMetrics = 0;
+        }
+      }, (err) => {
+        this.lastWeeksMetrics = 0; // Until the call is actually working
+        console.log(err);
+      });
+  }
+
+  /**
+   * Gets metrics for team for previous week
+   */
+  getThisWeekTeamMetrics() {
+    this.teamService.getTeamCompletionRate(this.team.id, this.getWeekStartDate(), this.getWeekEndDate())
+      .subscribe((metrics) => {
+        if (!isNaN(metrics)) {
+          this.thisWeeksMetrics = metrics;
+        } else {
+          this.thisWeeksMetrics = 0;
+        }
+      }, (err) => {
+        this.thisWeeksMetrics = 0; // Until the call is actually working
+        console.log(err);
+      });
+  }
+
+  /**
+   * Gets the start of current week
+   * @returns previous Sunday's date
+   */
+  getWeekStartDate(): Date {
+    let today = new Date();
+    let day = today.getDay();
+    let startDate = new Date();
+    startDate.setDate(today.getDate() - day);
+    return startDate;
+  }
+
+  /**
+   * Gets the end date for current week metrics
+   * @returns next days date to catch all tasks for today
+   */
+  getWeekEndDate(): Date {
+    let today = new Date();
+    today.setDate(today.getDate() + 1);
+    return today;
   }
 
   /**
