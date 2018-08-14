@@ -3,7 +3,7 @@ import { TeamService } from './../../services/team.service';
 import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { AuthService } from './../../services/auth.service';
 
 @Component({
   selector: 'app-team-info',
@@ -12,16 +12,14 @@ import { Observable } from 'rxjs';
 })
 export class TeamInfoComponent implements OnInit {
   team: Team;
-  //members: Account[];
-  accounts$: Observable<Account[]>;
+  accounts: Account[];
 
   constructor(
     private teamService: TeamService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     this.team = new Team();
-    //this.members = [];
-    //this.accounts$ = new Observable<Account[]>();
     this.route.params.subscribe(p => {
       this.team.id = p['id'];
     });
@@ -35,15 +33,14 @@ export class TeamInfoComponent implements OnInit {
         console.log(err);
       });
     
-    this.accounts$ = this.teamService.fetchTeamMembers(this.team.id);
-    /*this.teamService.fetchTeamMembers(this.team.id)
-      .subscribe((data: Account[]) => {
-        data.forEach(member => {
-          this.members.push(member);
-        });
-      }, err => {
-        console.log(err);
-      });*/
+    this.teamService.fetchTeamMembers(this.team.id)
+      .subscribe((accountList: Account[]) => {
+        this.accounts = accountList;
+      }, err => console.log(err));
+  }
+
+  isOwnerOfTeam() {
+      return this.authService.getEmail() == this.team.ownerEmail;
   }
 
   /**

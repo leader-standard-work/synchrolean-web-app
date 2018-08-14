@@ -2,7 +2,7 @@
   <div class="jumbotron">
     <h1 class="display-3">{{ team.teamName }}</h1>
     <p class="lead">{{ team.teamDescription }}</p>
-    <button type="button" class="btn btn-primary" 
+    <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-primary" 
             data-toggle="modal" data-target="#teamFormModal">
       Edit
     </button>
@@ -14,7 +14,7 @@
         <h5>Members</h5>
         <ul class="list-group">
           <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm">+ Invite</a>
-          <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let account of accounts$ | async">
+          <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let account of accounts">
             <div class="d-flex justify-content-between">
               <h5 class="mb-1"><a href="users/{{ account.ownerEmail }}/tasks">{{ account.firstName }} {{ account.lastName }}</a></h5>
             </div>

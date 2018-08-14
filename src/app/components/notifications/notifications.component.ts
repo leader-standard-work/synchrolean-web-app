@@ -4,6 +4,7 @@ import { TeamService } from './../../services/team.service';
 import { Component, OnInit } from '@angular/core';
 import { AddUserRequest } from '../../models/AddUserRequest';
 import { Router } from '../../../../node_modules/@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-notifications',
@@ -11,7 +12,7 @@ import { Router } from '../../../../node_modules/@angular/router';
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-  public invites: AddUserRequest[] = []; 
+  public invites$: Observable<AddUserRequest[]>; 
 
   constructor(
     private teamService: TeamService,
@@ -20,7 +21,7 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     // Grab the notifications from the team service
-    this.invites = this.teamService.fetchTeamInvites();
+    this.invites$ = this.teamService.fetchTeamInvites();
   }
 
   acceptTeamInvite(invite: AddUserRequest) {

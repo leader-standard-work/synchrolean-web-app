@@ -84,19 +84,8 @@ export class TeamService {
    * @returns List of members belonging to the team
    */
   fetchTeamMembers(teamId: number): Observable<Account[]> {
-    //let members: Account[] = [];
     const endpoint = `${environment.baseServerUrl}${this.apiBase}members/${teamId}`;
     return this.http.get<Account[]>(endpoint);
-    /*this.http.get<Account[]>(endpoint)
-      .subscribe(data => {
-        data.forEach(member => {
-          members.push(member);
-        });
-      }, err => {
-        console.log(err)
-      });
-    return members;
-    */
   }
 
   /**
@@ -116,18 +105,6 @@ export class TeamService {
   fetchTeamInvites(): Observable<AddUserRequest[]> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}invite/incoming/accept/`;
     return this.http.get<AddUserRequest[]>(endpoint);
-    /*let invites: AddUserRequest[] = [];
-
-    this.http.get<AddUserRequest[]>(endpoint)
-      .subscribe(data => {
-        data.forEach(invite => {
-          invites.push(invite);
-        });
-      }, err => {
-        console.log(err);
-      });
-    return invites;
-    */
   }
 
   /**
