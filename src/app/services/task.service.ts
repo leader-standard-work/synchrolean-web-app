@@ -72,11 +72,24 @@ export class TaskService {
    * @param teamId The id of the team we are retrieving metrics for
    * @returns Observable<number> representing the user's team metrics
    */
-  getWeeklyTeamMetrics(email: string): Observable<number> {
+  getWeeklyTeamMetrics(teamId: number): Observable<number> {
     console.log('TaskService: Fetching weekly metrics for team');
     let startDate: Date = this.getStartDate();
     let endDate: Date = this.getEndDate();
-    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${startDate}/${endDate}/${email}`;
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`;
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Gets total metrics for all teams user is on
+   * @param email The email of the user being requested
+   * @returns Observable<number> representing the user's teams metrics
+   */
+  getAllUserTeamsMetrics(email: string): Observable<number> {
+    console.log('TaskService: Fetching weekly metrics for all teams user is on');
+    let startDate: Date = this.getStartDate();
+    let endDate: Date = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/teams/${startDate}/${endDate}/${email}`
     return this.http.get<number>(endpoint);
   }
 

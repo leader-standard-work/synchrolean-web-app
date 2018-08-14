@@ -80,7 +80,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    */
   getWeeklyTeamMetrics() {
     console.log('TaskPageComponent: Getting weekly team metrics');
-    this.taskService.getWeeklyTeamMetrics(this.authService.getEmail())
+    this.taskService.getAllUserTeamsMetrics(this.authService.getEmail())
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
           this.teamMetrics = metrics;
