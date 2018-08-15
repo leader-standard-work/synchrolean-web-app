@@ -10,6 +10,5 @@
 
 li:hover {
     cursor: pointer;
-    border-style: solid;
     background-color: darkgray;
 }

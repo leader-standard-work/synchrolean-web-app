@@ -14,11 +14,11 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-2" *ngIf="isCurrentUser()">
+    <div class="row mr-0">
+        <div class="col-md-2 pr-0" *ngIf="isCurrentUser()">
             <sidebar></sidebar>
         </div>
-        <div class="col">
+        <div class="col pl-0 pr-0">
             <login-form></login-form>
             <account-form (newAccount)="onCreateAccount($event)"></account-form>
             <router-outlet></router-outlet>
