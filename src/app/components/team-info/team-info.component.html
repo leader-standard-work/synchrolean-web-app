@@ -2,14 +2,11 @@
   <div class="jumbotron">
     <h1 class="display-3">{{ team.teamName }}</h1>
     <p class="lead">{{ team.teamDescription }}</p>
+    <hr>
     <div class="row" style="text-align:center">
       <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info"
               data-toggle="modal" data-target="#teamFormModal">
-        Edit
-      </button>
-      <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
-        Remove Member
+        Edit Team
       </button>
       <div class="divider"></div>
       <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
@@ -17,22 +14,22 @@
       </button>
       <div class="divider"></div>
       <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
-        Invite Authorization Manager
+        Invite Authorizations
+      </button>
+      <div class="divider"></div>
+      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info" data-toggle="modal"
+        data-target="#permissionModal">
+        Permissions
       </button>
       <div class="divider"></div>
       <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
-        Grant Permission
-      </button>
-      <div class="divider"></div>
-      <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
-        Revoke Permission
+        Remove Member
       </button>
       <div class="divider"></div>
       <button type="button" [hidden]="!isOwnerOfTeam()" class="btn btn-info">
         Delete Team
       </button>
     </div>
-    <hr>
   </div>
   
   <div>
@@ -68,3 +65,7 @@
 </div>
 
 <app-team-form [teamId]="team.id" (teamUpdated)="onTeamUpdated($event)"></app-team-form>
+
+<div class="modal" id="permissionModal">
+    <permissions [teamId]="team.id" (grantPermission)="grantPermission($event)"></permissions>
+</div>

@@ -50,7 +50,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       completed: new FormControl(false),
       deleted: new FormControl(false),
       frequency: new FormControl(Frequency.Once, [ Validators.required ]),
-      teamId: new FormControl(null, [ Validators.required ])
+      teamId: new FormControl(null)
     });
     if (this.taskId) {
       this.action = 'Edit';
