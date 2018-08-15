@@ -1,0 +1,26 @@
+<div class="modal-dialog modal-dialog-center">
+  <div class="modal-content modal-content-center">
+    <!-- Header content -->
+    <div class="modal-header lean-bg">
+      <h4 class="modal-title lean-text">Permissions</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+
+    <!-- Body content -->
+    <div class="modal-body">
+      <table class="table table-bordered table-hover" style="width: 100%">
+        <th class="lean-bg lean-text" colspan="3">Teams</th>
+        <tbody>
+          <ng-container *ngFor="let team of teams">
+            <tr *ngIf="team.id != teamId">
+              <td style="width: 80%">{{ team.teamName }}</td>
+              <button style="width: 50%" class="btn btn-success" (click)="grantTeamPermission(team.id)">Grant</button>
+              <button style="width: 50%" class="btn btn-danger" (click)="revokeTeamPermission(team.id)">Revoke</button>
+              <br>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

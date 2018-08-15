@@ -5,6 +5,7 @@ import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
+import { AddUserRequest } from '../../models/AddUserRequest';
 
 @Component({
   selector: 'app-team-info',
@@ -110,7 +111,7 @@ export class TeamInfoComponent implements OnInit {
     today.setDate(today.getDate() + 1);
     return today;
   }
-
+ 
   /**
    * Updates the displayed team information
    * after it has been edited.
