@@ -1,16 +1,7 @@
-<!-- Other components get loaded inside the router outlet here -->
-<section class="container-fluid">
-    <!-- Main navigation component -->
+<div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand lean-text" href="/home">{{ brand | uppercase }}</a>
-            <div id="navbarResponsive" class="collapse navbar-collapse" [collapse]="isCollapsed">
-                <ul class="navbar-nav nav-options">
-                    <li class="nav-item nav-link lean-text" routerLink="/tasks" [hidden]="!isCurrentUser()">Tasks</li>
-                    <li class="nav-item nav-link lean-text" routerLink="/teams" [hidden]="!isCurrentUser()">Teams</li>
-                    <li class="nav-item nav-link lean-text" routerLink="/notifications" [hidden]="!isCurrentUser()">Invites</li>
-                </ul>
-            </div>
             <div class="btn-group">
                 <button type="button" class="btn lean-bg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="lean-text">Account</span>
@@ -23,9 +14,14 @@
             </div>
         </div>
     </div>
-    <!-- Form for a user to login to their account -->
-    <login-form></login-form>
-    <!-- Form for a user to create a new account -->
-    <account-form (newAccount)="onCreateAccount($event)"></account-form>
-    <router-outlet></router-outlet>
-</section>
+    <div class="row">
+        <div class="col-md-2" *ngIf="isCurrentUser()">
+            <sidebar></sidebar>
+        </div>
+        <div class="col">
+            <login-form></login-form>
+            <account-form (newAccount)="onCreateAccount($event)"></account-form>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

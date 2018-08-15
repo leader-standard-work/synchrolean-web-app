@@ -23,6 +23,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { LoginFormComponent } from './components/login-form/login-form.component
     AccountFormComponent,
     TaskListComponent,
     TaskInfoComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

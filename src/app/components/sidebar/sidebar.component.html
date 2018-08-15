@@ -1,0 +1,7 @@
+<nav class="sidebar text-center light-bg">
+  <ul class="nav flex-column">
+    <li class="nav-item nav-link" routerLink="/tasks" [hidden]="!isCurrentUser()"><h4>Tasks</h4></li>
+    <li class="nav-item nav-link" routerLink="/teams" [hidden]="!isCurrentUser()"><h4>Teams</h4></li>
+    <li class="nav-item nav-link" routerLink="/notifications" [hidden]="!isCurrentUser()"><h4>Invites</h4></li>
+  </ul>
+</nav>
