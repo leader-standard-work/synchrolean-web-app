@@ -14,13 +14,21 @@
           <ng-container *ngFor="let team of teams">
             <tr *ngIf="team.id != teamId">
               <td style="width: 80%">{{ team.teamName }}</td>
-              <button style="width: 50%" class="btn btn-success" (click)="grantTeamPermission(team.id)">Grant</button>
-              <button style="width: 50%" class="btn btn-danger" (click)="revokeTeamPermission(team.id)">Revoke</button>
-              <br>
+              <td>
+              <button style="background-color: green" class="btn btn-info" (click)="grantTeamPermission(team.id)">Grant</button>
+              </td>
+              <td>
+              <button style="background-color: red" class="btn btn-info" (click)="revokeTeamPermission(team.id)">Revoke</button>
+              </td>
             </tr>
           </ng-container>
         </tbody>
       </table>
+    </div>
+
+    <!-- Footer content -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
   </div>
 </div>
