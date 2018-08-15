@@ -24,3 +24,11 @@
     height: 900px;
     width: 900px;
 }
+
+thead {
+    width: 100%;
+}
+
+.table tbody > tr > td.vert-aligned {
+    vertical-align: middle;
+}
