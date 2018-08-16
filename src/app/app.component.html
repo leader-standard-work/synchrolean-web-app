@@ -1,26 +1,13 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
-        <div class="container-fluid">
-            <a class="navbar-brand lean-text" href="/home">{{ brand | uppercase }}</a>
-            <div class="btn-group">
-                <button type="button" class="btn lean-bg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="lean-text">Account</span>
-                </button>
-                <div class="dropdown-menu">
-                    <a [hidden]="isCurrentUser()" class="dropdown-item" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
-                    <a [hidden]="!isCurrentUser()" class="dropdown-item" href="#" (click)="logout()">Logout</a>
-                    <a [hidden]="isCurrentUser()" class="dropdown-item" href="#" data-toggle="modal" data-target="#accountModal">Create Account</a>
-                </div>
-            </div>
-        </div>
+        <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
+        <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link" (click)="logout()">Logout</a></h4>
     </div>
     <div class="row mr-0">
-        <div class="col-md-2 pr-0" *ngIf="isCurrentUser()">
+        <div class="col-md-2 pr-0">
             <sidebar></sidebar>
         </div>
         <div class="col pl-0 pr-0">
-            <login-form></login-form>
-            <account-form (newAccount)="onCreateAccount($event)"></account-form>
             <router-outlet></router-outlet>
         </div>
     </div>

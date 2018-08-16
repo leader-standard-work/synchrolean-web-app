@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   brand: string = 'lean';
   isCollapsed: boolean = true;
-  // userName: string;
 
   /**
    * We could use AppComponent for login logic and inject the
@@ -19,15 +18,6 @@ export class AppComponent {
   constructor(private authService: AuthService) {
     // this.userName = this.authService.getCurrentUserName();
   }
-
-  // /**
-  //  * Conditionally display the navigation options.
-  //  * If there is no logged in user don't show any navigation options
-  //  * Else show them
-  //  */
-  // showNav() {
-  //   return this.authService.isCurrentUser();
-  // }
 
   /**
    * Logout 
