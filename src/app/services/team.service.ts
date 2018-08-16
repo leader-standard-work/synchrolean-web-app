@@ -259,7 +259,7 @@ export class TeamService {
   deleteTeam(teamId: number): Observable<any> {
     console.log('TeamService: Deleting team');
     const endpoint = `${environment.baseServerUrl}${this.apiBase}delete/${teamId}`;
-    return this.http.put(endpoint, null);
+    return this.http.post(endpoint, null);
   }
 
   /**

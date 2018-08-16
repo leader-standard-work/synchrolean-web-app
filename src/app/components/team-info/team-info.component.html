@@ -7,7 +7,9 @@
       <li class="list-inline-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#teamFormModal">Edit Team</a>
       </li>
-      <li class="list-inline-item"><a class="nav-link" href="#">Delete Team</a></li>
+      <li class="list-inline-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#">Delete Team</a>
+      </li>
       <li class="list-inline-item"><a class="nav-link" href="#">Invite Authorizations</a></li>
       <li class="list-inline-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#permissionModal">Permissions</a>
@@ -23,34 +25,65 @@
     <div class="col-md-5">
       <h5>Members</h5>
       <ul class="list-group">
-        <a href="teams/{{ team.id }}/invite" class="btn btn-info btn-sm">+ Invite</a>
+        <button class="btn btn-info btn-sm" [hidden]="!isMemberOfTeam()" data-toggle="modal" data-target="#inviteMember">+ Invite</button>
         <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let account of accounts">
           <div class="d-flex justify-content-between">
-            <h5 class="mb-1"><a href="users/{{ account.ownerEmail }}/tasks">{{ account.firstName }} {{ account.lastName }}</a></h5>
+            <h5 class="mb-1"><a href="users/{{ account.email }}/tasks">{{ account.firstName }} {{ account.lastName }}</a></h5>
           </div>
-          <p class="mb-1">{{ account.ownerEmail }}</p>
+          <p class="mb-1">{{ account.email }}</p>
         </li>
       </ul>
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-6">
-        <h5>Metrics</h5>
-        <div class="row">
-          <div class="col-md-6">
-            <p>Last week's performance:</p>
-            <div class="metric-container team-metric">{{ lastWeeksMetrics | percent }}</div>
-          </div>
-          <div class="col-md-6">
-            <p>This week's performance:</p>
-            <div class="metric-container team-metric">{{ thisWeeksMetrics | percent }}</div>
-          </div>
+      <h5>Metrics</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <p>Last week's performance:</p>
+          <div class="metric-container team-metric">{{ lastWeeksMetrics | percent }}</div>
         </div>
+        <div class="col-md-6">
+          <p>This week's performance:</p>
+          <div class="metric-container team-metric">{{ thisWeeksMetrics | percent }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <app-team-form [teamId]="team.id" (teamUpdated)="onTeamUpdated($event)"></app-team-form>
 
-<div class="modal" id="permissionModal">
-    <permissions [teamId]="team.id" (grantPermission)="grantPermission($event)"></permissions>
+<!-- Invite Member Modal -->
+<div class="modal" id="inviteMember">
+    <app-invite-member [teamId]="team.id"></app-invite-member>
 </div>
+
+<!-- Team Permission Modal -->
+<div class="modal" id="permissionModal">
+    <permissions [teamId]="team.id"></permissions>
+</div>
+
+<!-- Delete Team Warning Modal DOESN'T WORK YET
+<div id="deleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content--
+    <div class="modal-content">
+      <!-- Modal header --
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Team</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body --
+      <div class="modal-body">
+        <p>Are you sure you want to delete this team?</p>
+      </div>
+      <!-- Modal footer --
+      <div class="modal-footer">
+        <a routerLink=".."><button type="button" class="btn btn-info" style="background-color: orange;border: ridge" 
+          data-dismiss="modal" (click)="deleteTeam()">Yes, Delete Team</button></a>
+        <button type="button" class="btn btn-info" style="background-color: lightblue;border: ridge" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>-->

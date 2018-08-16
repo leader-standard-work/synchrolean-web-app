@@ -13,8 +13,7 @@ import { AuthService } from './../../services/auth.service';
 })
 export class TeamInfoComponent implements OnInit {
   public team: Team;
-  public accounts: Account[];
-  public isTeamMember: boolean;
+  public accounts: Account[] = [];
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
 
@@ -49,10 +48,25 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Checks if the current user is the owner of the team
+   * Verifies if current user is team owner
    */
   isOwnerOfTeam() {
-      return this.authService.getEmail() == this.team.ownerEmail;
+    let email = this.authService.getEmail();
+    return email == this.team.ownerEmail;
+  }
+
+  /**
+   * Verifies if current user is team member
+   */
+  isMemberOfTeam() {
+    let email = this.authService.getEmail();
+    var teamMember: boolean;
+
+    for (let account of this.accounts) {
+      if (email == account.email)
+        teamMember = true;
+    }
+    return teamMember;
   }
 
   /**
@@ -111,6 +125,17 @@ export class TeamInfoComponent implements OnInit {
     let today = new Date();
     today.setDate(today.getDate() + 1);
     return today;
+  }
+
+  /**
+   * Deletes the current team
+   */
+  deleteTeam() {
+    console.log("TeamInfoComponent: Deleting team");
+    this.teamService.deleteTeam(this.team.id)
+      .subscribe(() => {}, (err) => {
+        console.log(err);
+      });
   }
  
   /**
