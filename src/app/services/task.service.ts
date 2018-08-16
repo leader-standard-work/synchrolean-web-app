@@ -113,8 +113,9 @@ export class TaskService {
   getEndDate(): Date {
     console.log('TaskService: Creating end date');
     let today = new Date();
+    let day = today.getDay();
     let endDate = new Date();
-    endDate.setDate(today.getDate() - 7);
+    endDate.setDate(today.getDate() - (7 - (6 - day)));
     return endDate;
   }
 
