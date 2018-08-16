@@ -49,4 +49,14 @@ export class TeamListComponent implements OnInit {
     this.teamService.updateObservableState(this.teams);
   }
 
+  /**
+   * Updates the displayed team list after a team has
+   * been deleted.
+   * @param deletedTeam The team that is being deleted
+   */
+  onTeamDeleted(deletedTeam: Team) {
+    this.teams = this.teams.filter(team => team.id != deletedTeam.id);
+    this.teamService.updateObservableState(this.teams);
+  }
+
 }

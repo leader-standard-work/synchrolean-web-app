@@ -5,7 +5,6 @@ import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
-import { AddUserRequest } from '../../models/AddUserRequest';
 
 @Component({
   selector: 'app-team-info',
@@ -14,8 +13,7 @@ import { AddUserRequest } from '../../models/AddUserRequest';
 })
 export class TeamInfoComponent implements OnInit {
   public team: Team;
-  public accounts: Account[];
-  public isTeamMember: boolean;
+  public accounts: Account[] = [];
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
 
@@ -50,10 +48,37 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Checks if the current user is the owner of the team
+   * Verifies if current user is team owner
    */
   isOwnerOfTeam() {
-      return this.authService.getEmail() == this.team.ownerEmail;
+    let email = this.authService.getEmail();
+    return email == this.team.ownerEmail;
+  }
+
+  /**
+   * Verifies if current user is team member
+   */
+  isMemberOfTeam() {
+    let email = this.authService.getEmail();
+    var teamMember: boolean;
+
+    for (let account of this.accounts) {
+      if (email == account.email)
+        teamMember = true;
+    }
+    return teamMember;
+  }
+
+  /**
+   * Updates the team list after 
+   */
+  updateTeamList() {
+    let teamsList: Team[];
+    this.teamService.getAllTeams()
+      .subscribe((teams: Team[]) => {
+        teamsList = teams;
+      }, err => console.log(err));
+    this.teamService.updateObservableState(teamsList);
   }
 
   /**
@@ -110,6 +135,15 @@ export class TeamInfoComponent implements OnInit {
     let today = new Date();
     today.setDate(today.getDate() + 1);
     return today;
+  }
+
+  deleteTeam() {
+    console.log("TeamInfoComponent: Deleting team");
+    this.teamService.deleteTeam(this.team.id)
+      .subscribe(() => {}, (err) => {
+        console.log(err);
+      });
+      this.updateTeamList();
   }
  
   /**
