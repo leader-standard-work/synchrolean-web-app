@@ -25,6 +25,7 @@ import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
+import { RollupComponent } from './components/rollup/rollup.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { PermissionsComponent } from './components/permissions/permissions.compo
     TaskInfoComponent,
     LoginFormComponent,
     SidebarComponent,
-    PermissionsComponent
+    PermissionsComponent,
+    RollupComponent
   ],
   imports: [
     BrowserModule,
