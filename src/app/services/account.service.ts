@@ -1,23 +1,26 @@
+import { Team } from './../models/Team';
+import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Account } from '../models/Account';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private apiBase: string = '/accounts/';
-  /**
-   * I'm thinking it would be nice to store the user account for the
-   * currently logged in user here. We can then reference this when 
-   * creating new tasks, teams, invites... etc. Would involve having
-   * some kind of method for "login" purposes.
-   */
-  private currentUser:Account;
+  private accountsSubject: BehaviorSubject<Account[]>;
+  private accountsObservable: Observable<Account[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+  private authService: AuthService) { 
+    console.log('AccountService created.'); // For logging purposes
+    this.accountsSubject = new BehaviorSubject([]);
+    this.accountsObservable = this.accountsSubject.asObservable();
+  }
 
   /**
    * Takes an account and sends request to server to add that account to
@@ -25,13 +28,9 @@ export class AccountService {
    * @param account The account to add to the database
    * @returns       The newly created account response from the server
    */
-  addAccount(newAccount:Account) {
+  addAccount(newAccount:Account): Observable<Account> {
     const endpoint = environment.baseServerUrl + this.apiBase;
-    let account:Account;
-    this.http.post(endpoint, newAccount, { withCredentials: true })
-      .subscribe((acc:Account) => { account = acc }, 
-      (err) => { console.log(err) });
-    return account;
+    return this.http.post<Account>(endpoint, newAccount);
   }
 
   /**
@@ -40,9 +39,9 @@ export class AccountService {
    * @param ownerId The ownerId for the account you are looking to fetch
    * @returns       The account matching the supplied ownerId 
    */
-  getAccountById(ownerId:number) {
+  getAccountById(ownerId:number): Observable<Account> {
     const endpoint = environment.baseServerUrl + this.apiBase + 'owner/' + ownerId;
-    return this.http.get(endpoint, { withCredentials: true });
+    return this.http.get<Account>(endpoint);
   }
 
   /**
@@ -53,8 +52,7 @@ export class AccountService {
    */
   getAccountByEmail(email:string) {
     const endpoint = environment.baseServerUrl + this.apiBase + email;
-    let account:Account;
-    return this.http.get<Account>(endpoint, { withCredentials: true });
+    return this.http.get<Account>(endpoint);
   }
 
   /**
@@ -64,7 +62,7 @@ export class AccountService {
    * @returns      A list of accounts for users that belong to the given teamId 
    */
   getAccountsByTeamId(teamId:number) {
-    const endpoint = environment.baseServerUrl + this.apiBase + 'member/' + teamId;
+    const endpoint = environment.baseServerUrl + 'teams/member/' + teamId;
     let accounts:Account[];
     this.http.get<Account[]>(endpoint, { withCredentials: true })
       .subscribe((accs) => {
@@ -73,6 +71,16 @@ export class AccountService {
         console.log(err) 
       });
     return accounts;
+  }
+
+  /**
+   * Retrieves the teams that a user is on
+   * @param email The email of the user we are retrieving teams for
+   * @returns Observable array of teams the user is on
+   */
+  getTeamsByAccountEmail(email: string): Observable<Team[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}teams/${email}`;
+    return this.http.get<Team[]>(endpoint);
   }
 
   /**

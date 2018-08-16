@@ -1,23 +1,33 @@
+export enum Frequency {
+    Once,
+    Daily,
+    Weekly,
+    Monthly
+}
+
+export const Weekdays: string[] = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+]
+
 export class Task {
     id: number;
-    ownerId: number;
     name: string;
     description: string;
     isRecurring: boolean;
-    isCompleted: boolean;
-    isRemoved: boolean;
+    weekdays: number;
     creationDate: Date;
-    updatedDate: Date;
+    isCompleted: boolean;
     completionDate: Date;
+    isDeleted: boolean;
+    ownerEmail: string;
+    frequency: Frequency;
+    teamId: number;
     
-    constructor() {
-        /**
-         * When the task is created the creation date is set
-         * and it defaults to a state of not complete and not
-         * removed.
-         */
-        this.creationDate = new Date();
-        this.isCompleted = false;
-        this.isRemoved = false;
-    }
+    constructor() {}
 }

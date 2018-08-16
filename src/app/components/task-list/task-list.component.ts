@@ -3,6 +3,7 @@ import { Task } from '../../models/Task';
 import { TaskService } from '../../services/task.service';
 import { ActivatedRoute } from '@angular/router';
 import { AccountService } from '../../services/account.service';
+import { Account } from '../../models/Account';
 
 @Component({
   selector: 'app-task-list',
@@ -11,6 +12,7 @@ import { AccountService } from '../../services/account.service';
 })
 export class TaskListComponent implements OnInit {
   public tasks: Task[] = [];
+  public ownerEmail: string;
   public userId: number;
   public user: Account;
   public complete: string = 'Done';
@@ -22,22 +24,26 @@ export class TaskListComponent implements OnInit {
     private accountService: AccountService) {
     console.log('TaskListComponent: Created');
     this.route.params.subscribe(p => {
-      this.userId = +p['id'];
+      console.log(p);
+      if (p['email']) {
+        this.ownerEmail = p['email'];
+      }
     })
   }
 
   ngOnInit() {
     console.log('TaskListComponent: Fetching tasks');
     this.getAllTasks();
-    this.accountService.getAccountById(this.userId)
-      .subscribe((acc: Account) => {
+    this.accountService.getAccountByEmail(this.ownerEmail)
+      .subscribe((acc) => {
         this.user = acc;
       }, (err) => console.log(err));
   }
 
   getAllTasks() {
     console.log('TaskListComponent: Getting all tasks');
-    this.taskService.fetchTasks(this.userId)
+    this.taskService.fetchTasks(localStorage.getItem('email'))
+    this.taskService.fetchTasks(this.ownerEmail)
       .subscribe((tasks: Task[]) => {
         this.tasks = tasks;
       }, err => console.log(err));

@@ -4,10 +4,13 @@
  * AddUserRequests).
  */
 export class AddUserRequest {
-    inviteId: number;
-    inviterId: number;
-    inviteeId: number;
+    // inviteId: number;
+    // inviterId: number;
+    // inviteeId: number;
+    inviteeEmail: string;
+    inviterEmail: string;
     teamId: number;
+    isAuthorized: boolean;
     
     constructor() {}
 }

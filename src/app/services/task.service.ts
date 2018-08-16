@@ -10,22 +10,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TaskService {
-  /**
-   * Base url is provided in the environment file under src/environments/environment.ts.
-   * Production version of this url should be in src/environments/environment.prod.ts.
-   */
-  private apiBase: string = '/tasks/'; // Api addition to the url
+  private apiBase: string = '/tasks';
   private tasksSubject: BehaviorSubject<Task[]>;
   private tasksObservable: Observable<Task[]>;
 
   constructor(private http: HttpClient,
   private authService: AuthService) { 
-    console.log('TaskService created.'); // For logging purposes
+    console.log('TaskService created.');
     this.tasksSubject = new BehaviorSubject([]);
     this.tasksObservable = this.tasksSubject.asObservable();
-    if (this.authService.isCurrentUser()) {
-      this.tasksObservable = this.fetchTasks(this.authService.getCurrentUserId());
-    }
+    this.tasksObservable = this.fetchTasks(this.authService.getEmail());
   }
 
   /**
@@ -33,8 +27,9 @@ export class TaskService {
    * @param id The id of the user to retrieve tasks for
    * @returns  A list of tasks belonging to the user matching id arg
    */
-  fetchTasks(id:number): Observable<Task[]> {
-    const endpoint = environment.baseServerUrl + this.apiBase + id;
+  fetchTasks(email: string): Observable<Task[]> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/${email}`;
+    // const endpoint = environment.baseServerUrl + this.apiBase + '/' + email;
     console.log('TaskService: Fetching tasks from server');
     return this.http.get<Task[]>(endpoint);
   }
@@ -54,9 +49,74 @@ export class TaskService {
    * @param taskId The id of the task that we want to get
    */
   getTaskById(taskId: number): Observable<Task> {
-    let ownerId = this.authService.getCurrentUserId();
-    const endpoint = environment.baseServerUrl + this.apiBase + ownerId + '/' + taskId;
+    console.log('TaskService: Fetching task by ID');
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/${taskId}/${this.authService.getEmail()}`;
     return this.http.get<Task>(endpoint);
+  }
+
+  /**
+   * Gets the user's task metrics for the prior week
+   * @param ownerId The id of the user we are retrieving metrics for
+   * @returns Observable<number> representing the user's task metrics 
+   */
+  getWeeklyTaskMetrics(email: string) {
+    console.log('TaskService: Fetching weekly metrics for user');
+    let startDate: Date = this.getStartDate();
+    let endDate: Date = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/${startDate}/${endDate}/${email}`;
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Gets the user's team metrics for the prior week
+   * @param teamId The id of the team we are retrieving metrics for
+   * @returns Observable<number> representing the user's team metrics
+   */
+  getWeeklyTeamMetrics(teamId: number): Observable<number> {
+    console.log('TaskService: Fetching weekly metrics for team');
+    let startDate: Date = this.getStartDate();
+    let endDate: Date = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`;
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Gets total metrics for all teams user is on
+   * @param email The email of the user being requested
+   * @returns Observable<number> representing the user's teams metrics
+   */
+  getAllUserTeamsMetrics(email: string): Observable<number> {
+    console.log('TaskService: Fetching weekly metrics for all teams user is on');
+    let startDate: Date = this.getStartDate();
+    let endDate: Date = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/teams/${startDate}/${endDate}/${email}`
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Sets the start date for retrieving a user's metric information
+   * @returns The start date for the user's weekly user/team metrics
+   */
+  getStartDate(): Date {
+    console.log('TaskService: Creating start date');
+    let today = new Date();
+    let day = today.getDay();
+    let startDate = new Date();
+    startDate.setDate(today.getDate() - (7 + day));
+    return startDate;
+  }
+
+  /**
+   * Sets the start date for retrieving a user's metric information
+   * @returns The start date for the user's weekly user/team metrics
+   */
+  getEndDate(): Date {
+    console.log('TaskService: Creating end date');
+    let today = new Date();
+    let day = today.getDay();
+    let endDate = new Date();
+    endDate.setDate(today.getDate() - (7 - (6 - day)));
+    return endDate;
   }
 
   /**
@@ -64,10 +124,10 @@ export class TaskService {
    * @param newTask The task to be added to the database
    * @returns       Returns the newly created task back to the client
    */
-  addTask(newTask: Task) {
+  addTask(newTask: Task): Observable<Task> {
+    console.log('TaskService: Adding new task');
     const endpoint = environment.baseServerUrl + this.apiBase;
     return this.http.post<Task>(endpoint, newTask);
-      // .subscribe((newTask:Task) => this.tasks.push(newTask));
   }
 
   /**
@@ -75,14 +135,15 @@ export class TaskService {
    * @param updatedTask The updated task whose changes will be saved to the database
    * @returns       Returns the newly updated task back to the client
    */
-  editTask(updatedTask: Task) {
-    let id = this.authService.getCurrentUserId();
-    const endpoint = environment.baseServerUrl + this.apiBase + id + '/' + updatedTask.id;
+  editTask(updatedTask: Task): Observable<Task> {
+    console.log('TaskService: Editing existing task');
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/${updatedTask.id}`;
     return this.http.put<Task>(endpoint, updatedTask);
   }
 
   /**
-   * Updates the state of the observable array of tasks
+   * Updates the state of the observable array of tasks so that page's can
+   * update their view with new information
    */
   updateObservableState(tasks: Task[]) {
     this.tasksSubject.next(tasks);

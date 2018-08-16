@@ -1,4 +1,4 @@
-<div class="card">
+<!-- <div class="card">
   <div class="card-header text-center">
     <p class="card-text">
       Create Account
@@ -68,4 +68,93 @@
   <div class="card-footer">
     <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid || !passwordMatch()" (click)="addAccount()" [routerLink]="['/tasks']">Create Account</button>
   </div>
+</div> -->
+
+<!-- Modal version -->
+<div class="modal" id="accountModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Header content -->
+      <div class="modal-header lean-bg">
+        <h4 class="modal-title lean-text ml-auto mr-auto">{{action}}</h4>
+        <button type="button" class="close lean-text" data-dismiss="modal" (click)="clear()">&times;</button>
+      </div>
+
+      <!-- Body content -->
+      <div class="modal-body">
+        <form [formGroup]="accountForm">
+
+          <!-- First name -->
+          <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" formControlName="firstName" placeholder="Enter your first name">
+            <div *ngIf="accountForm.controls['firstName'].invalid && accountForm.controls['firstName'].touched">
+              <p class="text-danger">A first name is required.</p>
+            </div>
+          </div>
+
+          <!-- Last name -->
+          <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" class="form-control" formControlName="lastName" placeholder="Enter your last name">
+            <div *ngIf="accountForm.controls['lastName'].invalid && accountForm.controls['lastName'].touched">
+              <p class="text-danger">A last name is required.</p>
+            </div>
+          </div>
+          <hr>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" class="form-control" formControlName="email" placeholder="Enter your email">
+            <div *ngIf="accountForm.controls['email'].invalid && accountForm.controls['email'].touched">
+              <p class="text-danger">An email is required.</p>
+            </div>
+          </div>
+
+          <!-- Passwords -->
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" formControlName="password">
+                <div *ngIf="accountForm.controls['password'].invalid && accountForm.controls['password'].touched">
+                  <label class="text-danger">A password is required.</label>
+                </div>
+              </div>
+              <div class="col">
+                <label for="password">Confirm:</label>
+                <input type="password" class="form-control" formControlName="confirmPassword">
+                <div *ngIf="accountForm.controls['confirmPassword'].touched && !passwordMatch()">
+                  <p class="text-danger">Passwords must match.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Footer content -->
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid || !passwordMatch()" 
+          (click)="addAccount()" data-dismiss="modal">
+          Create Account
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>
+
+
+
+
+
+
+
+
+
+

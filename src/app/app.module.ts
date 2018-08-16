@@ -1,7 +1,7 @@
-import { TaskService } from './services/task.service';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,6 +22,10 @@ import { InviteMemberComponent } from './components/invite-member/invite-member.
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { PermissionsComponent } from './components/permissions/permissions.component';
+import { RollupComponent } from './components/rollup/rollup.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,10 @@ import { TaskInfoComponent } from './components/task-info/task-info.component';
     AccountFormComponent,
     TaskListComponent,
     TaskInfoComponent,
+    LoginFormComponent,
+    SidebarComponent,
+    PermissionsComponent,
+    RollupComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +56,9 @@ import { TaskInfoComponent } from './components/task-info/task-info.component';
     CollapseModule,
     BsDropdownModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
