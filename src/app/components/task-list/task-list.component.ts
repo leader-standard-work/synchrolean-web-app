@@ -25,7 +25,9 @@ export class TaskListComponent implements OnInit {
     console.log('TaskListComponent: Created');
     this.route.params.subscribe(p => {
       console.log(p);
-      this.ownerEmail = p['email'];
+      if (p['email']) {
+        this.ownerEmail = p['email'];
+      }
     })
   }
 

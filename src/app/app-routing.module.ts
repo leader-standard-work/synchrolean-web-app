@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'tasks', component: TaskPageComponent, canActivate: [AuthGuard] },
   { path: 'tasks/:id', component: TaskInfoComponent, canActivate: [AuthGuard] },
   { path: 'addtask', component: TaskFormComponent, canActivate: [AuthGuard] },
-  { path: 'teams', component: TeamListComponent, canActivate: [AuthGuard] },
+  { path: 'teams', component: TeamListComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
   { path: 'teams/new', component: TeamFormComponent, canActivate: [AuthGuard] },
   { path: 'teams/edit/:id', component: TeamFormComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id', component: TeamInfoComponent, canActivate: [AuthGuard] },
@@ -30,7 +30,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})
   ],
   exports: [
     RouterModule

@@ -67,8 +67,10 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
           this.userMetrics = metrics;
+          console.log("UserMetrics: ", metrics);
         } else {
           this.userMetrics = 0;
+          console.log("UserMetrics (isNaN): ", metrics);
         }
       }, (err) => {
         this.userMetrics = 0;

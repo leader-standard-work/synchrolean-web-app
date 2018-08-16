@@ -70,18 +70,6 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Updates the team list after 
-   */
-  updateTeamList() {
-    let teamsList: Team[];
-    this.teamService.getAllTeams()
-      .subscribe((teams: Team[]) => {
-        teamsList = teams;
-      }, err => console.log(err));
-    this.teamService.updateObservableState(teamsList);
-  }
-
-  /**
    * Gets previous weeks team metrics
    */
   getLastWeekTeamMetrics() {
@@ -137,13 +125,15 @@ export class TeamInfoComponent implements OnInit {
     return today;
   }
 
+  /**
+   * Deletes the current team
+   */
   deleteTeam() {
     console.log("TeamInfoComponent: Deleting team");
     this.teamService.deleteTeam(this.team.id)
       .subscribe(() => {}, (err) => {
         console.log(err);
       });
-      this.updateTeamList();
   }
  
   /**
