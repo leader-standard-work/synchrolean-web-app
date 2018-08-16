@@ -34,6 +34,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
     console.log('TeamListComponent: Fetching teams');
     // Grab the teams from the team service
     this.getAllTeams();
+    this.teamService.updateObservableState(this.teams);
   }
 
   /**
