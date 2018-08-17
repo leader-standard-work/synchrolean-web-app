@@ -3,7 +3,7 @@ import { TeamService } from './../../services/team.service';
 import { TaskService } from './../../services/task.service';
 import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 
 @Component({
@@ -21,7 +21,8 @@ export class TeamInfoComponent implements OnInit {
     private teamService: TeamService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private router: Router
   ) {
     this.team = new Team();
     this.route.params.subscribe(p => {
@@ -103,8 +104,6 @@ export class TeamInfoComponent implements OnInit {
       });
   }
 
-  
-
   /**
    * Gets the start of current week
    * @returns previous Sunday's date
@@ -138,6 +137,18 @@ export class TeamInfoComponent implements OnInit {
       }, (err) => {
         console.log(err);
       });
+  }
+
+  /**
+   * Determines and routes to correct component based on user email
+   * @param email The email to determine which page to go to
+   */
+  getRoute(email: string) {
+    if (email != this.authService.getEmail()) {
+      this.router.navigate([`users/${email}/tasks`]);
+    } else {
+      this.router.navigate(['tasks']);
+    }
   }
  
   /**

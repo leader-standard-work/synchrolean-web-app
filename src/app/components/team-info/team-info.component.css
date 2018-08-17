@@ -17,3 +17,13 @@
     border-style: solid;
     background-color: lightblue;
 }
+
+li {
+    cursor: pointer;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: none;
+    text-shadow: 1px 1px 1px #555;
+}
