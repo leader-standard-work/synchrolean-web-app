@@ -1,3 +1,4 @@
+import { AddUserRequest } from './../../models/AddUserRequest';
 import { Account } from './../../models/Account';
 import { TeamService } from './../../services/team.service';
 import { TaskService } from './../../services/task.service';
@@ -16,6 +17,7 @@ export class TeamInfoComponent implements OnInit {
   public accounts: Account[] = [];
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
+  public toAuthorize: AddUserRequest[];
 
   constructor(
     private teamService: TeamService,
@@ -30,6 +32,9 @@ export class TeamInfoComponent implements OnInit {
     });
     this.getLastWeekTeamMetrics();
     this.getThisWeekTeamMetrics();
+    this.toAuthorize = [];
+    if (this.isOwnerOfTeam())
+      this.getInvitesToAuthorize();
    }
 
   ngOnInit() {
@@ -68,6 +73,14 @@ export class TeamInfoComponent implements OnInit {
         teamMember = true;
     }
     return teamMember;
+  }
+
+  hasAuthorizations(): boolean {
+    if (this.toAuthorize.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -158,6 +171,56 @@ export class TeamInfoComponent implements OnInit {
    */
   onTeamUpdated(updatedTeam: Team) {
     this.team = updatedTeam;
+  }
+
+  /**
+   * Rescinds a team invite to a team
+   * @param invite The team invite to rescind
+   */
+  rescindTeamInvite(invite: AddUserRequest) {
+    console.log('NotificationsPage: Rescinding invite')
+    this.teamService.rescindTeamInvite(invite.teamId, invite.inviteeEmail)
+      .subscribe((data) => {
+        console.log('Invite rescinded.');
+      }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Owner only**
+   * Authorizes an invite request sent by a non-owner user of a team
+   * @param invite The invite to authorize
+   */
+  authorizeTeamInvite(invite: AddUserRequest) {
+    console.log('NotificationsComponent: Authorizing invite')
+    this.teamService.authorizeTeamInvite(invite.teamId, invite.inviteeEmail)
+      .subscribe(data => { 
+        console.log('Invite authorized.')
+      }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Owner only**
+   * Vetos an invite request sent by a non-owner user of a team
+   * @param invite The invite to veto
+   */
+  vetoTeamInvite(invite: AddUserRequest) {
+    console.log('NotificationsComponent: Vetoing invite')
+    this.teamService.vetoTeamInvite(invite.teamId, invite.inviteeEmail)
+      .subscribe((data) => {
+        console.log('Invite vetoed.')
+      }, (err) => { console.log(err) })
+  }
+
+  /**
+   * Owner only**
+   * Retrieves all invites that a team owner has to authorize
+   */
+  getInvitesToAuthorize() {
+    console.log('NotificationsComponent: Getting invites to authorize')
+    this.teamService.getInvitesToAuthorize()
+      .subscribe((authorizations) => {
+        this.toAuthorize = authorizations;
+      }, (err) => { console.log(err) })
   }
 
 }

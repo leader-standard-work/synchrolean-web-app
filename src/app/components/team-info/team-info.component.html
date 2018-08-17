@@ -10,7 +10,11 @@
       <li class="list-inline-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#deleteModal">Delete Team</a>
       </li>
-      <li class="list-inline-item"><a class="nav-link" href="#">Invite Authorizations</a></li>
+      <li class="list-inline-item">
+        <a href="#" data-toggle="modal" data-target="#authorizeModal">
+          Invite Authorizations
+        </a>
+      </li>
       <li class="list-inline-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#permissionModal">Permissions</a>
       </li>
@@ -83,6 +87,41 @@
         <a routerLink=".."><button type="button" class="btn btn-info" style="background-color: orange;border: ridge" 
           data-dismiss="modal" (click)="deleteTeam()">Yes, Delete Team</button></a>
         <button type="button" class="btn btn-info" style="background-color: lightblue;border: ridge" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="authorizeModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header lean-bg">
+        <h4 class="modal-title lean-text">Authorizations</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+  
+      <div class="modal-body">
+        <ul class="list-group" *ngIf="hasAuthorizations()">
+          <li class="list-group-item align-items-start" *ngFor="let authorizations of toAuthorize">
+            <div class="row">
+              <div class="col-9">
+                {{ authorization.inviteeEmail }}
+              </div>
+              <div class="col-3">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-success">Authorize</button>
+                  <button type="button" class="btn btn-danger">Veto</button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <h5 *ngIf="!hasAuthorizations()">You currently don't have any invites to authorize.</h5>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
