@@ -1,0 +1,33 @@
+<div class="jumbotron text-center">
+  <h1 class="display-3">{{ team.teamName }}</h1>
+  <p class="lead">{{ team.teamDescription }}</p>
+  <hr>
+</div>
+<form [formGroup]="rangeForm">
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <label for="range">Select Date Range</label>
+          <div class="row">
+            <div class="col">
+              <input formControlName="range" type="text" class="form-control"
+                bsDaterangepicker [bsConfig]="datePickerConfig">
+            </div>
+            <div class="col-4">
+              <button type="button" (click)="getMetrics()">Submit
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4"></div>
+      </div>
+      <hr>
+      <div class="col-md-6">
+        <p>Team's performance:</p>
+        <div class="metric-container team-metric">{{ teamMetrics | percent }}</div>
+      </div>
+    </div>
+  </div>
+</form>

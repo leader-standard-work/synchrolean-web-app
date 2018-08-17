@@ -153,7 +153,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Determines and routes to correct component based on user email
+   * Determines and routes to correct user page based on account email
    * @param email The email to determine which page to go to
    */
   getRoute(email: string) {

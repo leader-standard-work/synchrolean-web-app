@@ -12,6 +12,7 @@ import { TeamFormComponent } from './components/team-form/team-form.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { RollupComponent } from './components/rollup/rollup.component';
+import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 
 // Routes to different components go here.
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'teams/edit/:id', component: TeamFormComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id', component: TeamInfoComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id/invite', component: InviteMemberComponent, canActivate: [AuthGuard] },
+  { path: 'teams/:id/metrics', component: TeamMetricsComponent, canActivate: [AuthGuard] },
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
   { path: 'users/:email/tasks', component: TaskListComponent, canActivate: [AuthGuard] },
   { path: 'rollup/:id', component: RollupComponent, canActivate: [AuthGuard] }

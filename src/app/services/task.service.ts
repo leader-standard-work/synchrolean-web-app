@@ -94,6 +94,18 @@ export class TaskService {
   }
 
   /**
+   * Gets metrics for user defined date range
+   * @param teamId The id of the team we are retrieving metrics for
+   * @param startDate User defined metric starting date
+   * @param endDate User defined metric ending date
+   */
+  getTeamMetricsByDateRange(teamId: number, startDate: Date, endDate: Date): Observable<number> {
+    console.log('TaskService: Fetching metrics for user defined date range');
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`;
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
    * Sets the start date for retrieving a user's metric information
    * @returns The start date for the user's weekly user/team metrics
    */

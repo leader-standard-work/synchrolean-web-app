@@ -26,6 +26,8 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { RollupComponent } from './components/rollup/rollup.component';
+import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
+import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { RollupComponent } from './components/rollup/rollup.component';
     LoginFormComponent,
     SidebarComponent,
     PermissionsComponent,
-    RollupComponent
+    RollupComponent,
+    TeamMetricsComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { RollupComponent } from './components/rollup/rollup.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     CollapseModule,
-    BsDropdownModule
+    BsDropdownModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

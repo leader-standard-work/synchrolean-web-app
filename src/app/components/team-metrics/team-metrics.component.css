@@ -1,0 +1,14 @@
+.metric-container {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 24px;
+}
+
+.team-metric {
+    border-color: rgb(63, 63, 252);
+    border-style: solid;
+    background-color: lightblue;
+}
