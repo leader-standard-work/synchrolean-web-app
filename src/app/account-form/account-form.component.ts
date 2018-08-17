@@ -68,9 +68,29 @@ export class AccountFormComponent implements OnInit {
       }, (err) => { console.log(err) });
   }
 
+  // Password case validations
   passwordMatch() {
     return this.accountForm.controls['password'].value == this.accountForm.controls['confirmPassword'].value;
   }
+
+  hasUpper() {
+    let upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
+    console.log(upper);
+    return upper;
+  }
+
+  hasLower() {
+    let lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
+    console.log(lower);
+    return lower;
+  }
+
+  hasNumber() {
+    let number = (/[0-9]/.test(this.accountForm.controls['password'].value));
+    console.log(number);
+    return number;
+  }
+  // End case validations
 
   /**
    * Clear the account form so that when the user closes the modal or
