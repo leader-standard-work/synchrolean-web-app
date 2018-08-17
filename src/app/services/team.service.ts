@@ -205,6 +205,17 @@ export class TeamService {
   }
 
   /**
+   * Get all teams granted permission to a team
+   * @param objectId The id of the team whose permissions are being searched
+   * @returns Observable<Team[]>
+   */
+  getTeamPermissions(objectId: number): Observable<Team[]> {
+    console.log('TeamService: Fetching team permissions');
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}permissions/${objectId}`;
+    return this.http.get<Team[]>(endpoint);
+  }
+
+  /**
    * Grant permission for subject team to view tasks/metrics to object team
    * @param objectId The id of the team granting permission
    * @param subjectId The id of the team receiving permission

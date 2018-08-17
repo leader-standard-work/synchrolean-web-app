@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class PermissionsComponent implements OnInit {
   public teams: Team[] = [];
+  public permissionTeams: Team[] = [];
   @Input() public teamId: number;
 
   constructor(
@@ -25,6 +26,7 @@ export class PermissionsComponent implements OnInit {
     console.log('PermissionsComponent: Fetching teams');
     // Grab the teams from the team service
     this.getAllTeams();
+    this.getTeamPermissions();
   }
 
   /**
@@ -35,7 +37,33 @@ export class PermissionsComponent implements OnInit {
     this.teamService.getAllTeams()
       .subscribe((teams: Team[]) => {
         this.teams = teams;
-      }, err => console.log(err));
+      }, (err) => {
+        console.log(err)
+      });
+  }
+
+  /**
+   * Gets teams that have permissions
+   */
+  getTeamPermissions() {
+    console.log('PermissionsComponent: Getting team permissions');
+    this.teamService.getTeamPermissions(this.teamId)
+      .subscribe((teams: Team[]) => {
+        this.permissionTeams = teams;
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  /**
+   * Determines if team has permission
+   */
+  isPermitted(teamId: number) {
+    for (let team of this.permissionTeams) {
+      if (team.id == teamId) {
+        return true;
+      }
+    }
   }
 
   /**
@@ -45,7 +73,11 @@ export class PermissionsComponent implements OnInit {
   grantTeamPermission(teamId: number) {
     console.log('PermissionsComponent: Granting permission');
     this.teamService.grantTeamPermission(this.teamId, teamId)
-      .subscribe();
+      .subscribe(() => {
+
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   /**
@@ -55,6 +87,10 @@ export class PermissionsComponent implements OnInit {
   revokeTeamPermission(teamId: number) {
     console.log('PermissionsComponent: Revoking permission');
     this.teamService.revokeTeamPermission(this.teamId, teamId)
-      .subscribe();
+      .subscribe(() => {
+
+      }, (err) => {
+        console.log(err);
+      });
   }
 }
