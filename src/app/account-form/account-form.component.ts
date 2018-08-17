@@ -75,19 +75,16 @@ export class AccountFormComponent implements OnInit {
 
   hasUpper() {
     let upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
-    console.log(upper);
     return upper;
   }
 
   hasLower() {
     let lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
-    console.log(lower);
     return lower;
   }
 
   hasNumber() {
     let number = (/[0-9]/.test(this.accountForm.controls['password'].value));
-    console.log(number);
     return number;
   }
   // End case validations
