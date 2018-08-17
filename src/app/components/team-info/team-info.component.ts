@@ -133,7 +133,9 @@ export class TeamInfoComponent implements OnInit {
   deleteTeam() {
     console.log("TeamInfoComponent: Deleting team");
     this.teamService.deleteTeam(this.team.id)
-      .subscribe(() => {}, (err) => {
+      .subscribe(() => {
+        
+      }, (err) => {
         console.log(err);
       });
   }
