@@ -5,7 +5,7 @@
  */
 export class Team {
     id: number;
-    ownerId: number;
+    ownerEmail: string;
     teamName: string;
     teamDescription: string;
     

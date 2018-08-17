@@ -2,12 +2,9 @@
  * Model for client-side accounts.
  */
 export class Account {
-    ownerId: number;
-    teamId: number;
+    email: string;
+    password: string;
     firstName: string;
     lastName: string;
-    email: string;
     isDeleted: boolean;
-
-    constructor() {}
 }

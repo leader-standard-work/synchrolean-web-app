@@ -1,0 +1,9 @@
+<div class="container-fluid bg-light bg-secondary h-100 pl-0 pr-0">
+  <section class="jumbotron text-center">
+    <h4 class="display-4">Weekly Rollup</h4>
+  </section>
+
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let task of rollupTasks">{{ task.name }}</li>
+  </ul>
+</div>

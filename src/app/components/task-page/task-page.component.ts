@@ -1,6 +1,4 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '../../../../node_modules/@angular/router';
 
 import { TaskService } from './../../services/task.service';
 import { Task } from '../../models/Task';
@@ -12,15 +10,15 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./task-page.component.css']
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
-  public pageTitle: string = 'My Tasks';  // Page title
+  // public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
-  public currentIndex: number = 0;        // The index of the currently referenced task from the list
-  public complete: string = 'Done';
-  public incomplete: string = 'In-Progress';
+  public complete: string = 'Complete';
+  public incomplete: string = 'Incomplete';
+  public userMetrics: number;
+  public teamMetrics: number;
 
   constructor(private taskService: TaskService,
-    private authService: AuthService,
-    private router: Router) {
+    private authService: AuthService) {
     console.log('TaskPageComponent: Created');
   }
 
@@ -31,6 +29,12 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
     this.getAllTasks();
+    this.getWeeklyUserMetrics();
+    this.getWeeklyTeamMetrics();
+  }
+
+  ngOnDestroy() {
+    
   }
 
   /**
@@ -44,21 +48,49 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       }, (err) => { console.log(err) });
   }
 
-  editTask(index: number) {
-    this.currentIndex = index;
-  }
-
   /**
    * Adds a new task to the list
    * @param newTask The new task to add to the list
    */
   onTaskAdded(newTask: Task) {
-    console.log(newTask);
+    console.log('TaskPageComponent: Adding task and updating observable state');
     this.tasks.push(newTask);
     this.taskService.updateObservableState(this.tasks);
   }
 
-  ngOnDestroy() {
-    
+  /**
+   * Get the users metrics from the prior week
+   */
+  getWeeklyUserMetrics() {
+    console.log('TaskPageComponent: Getting weekly user metrics');
+    this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
+      .subscribe((metrics) => {
+        if (!isNaN(metrics)) {
+          this.userMetrics = metrics;
+          console.log("UserMetrics: ", metrics);
+        } else {
+          this.userMetrics = 0;
+          console.log("UserMetrics (isNaN): ", metrics);
+        }
+      }, (err) => {
+        this.userMetrics = 0;
+      });
+  }
+
+  /**
+   * Get the users metrics from the prior week
+   */
+  getWeeklyTeamMetrics() {
+    console.log('TaskPageComponent: Getting weekly team metrics');
+    this.taskService.getAllUserTeamsMetrics(this.authService.getEmail())
+      .subscribe((metrics) => {
+        if (!isNaN(metrics)) {
+          this.teamMetrics = metrics;
+        } else {
+          this.teamMetrics = 0;
+        }
+      }, (err) => {
+        this.teamMetrics = 0; // Until the call is actually working
+      });
   }
 }

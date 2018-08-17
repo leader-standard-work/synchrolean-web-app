@@ -1,14 +1,31 @@
-<div class="container">
-  <ul class="notifications">
-    <li class="card notification-item" *ngFor="let invite of invites">
-      <div class="row">
-        <div class="col-md-10">
-          <p class="card-text text-center notification-description">Team Id: {{ invite.teamId }}</p>
-        </div>
-        <div class="col-md-2">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success btn-sm" (click)="acceptTeamInvite(invite)">Accept</button>
-            <button type="button" class="btn btn-danger" (click)="declineTeamInvite(invite)">Decline</button>
+<section class="lean-bg text-center mb-5" style="height: 200px;">
+  <div class="jumbotron" style="background-color: transparent !important;">
+    <h2 class="text-white">Invites</h2>
+  </div>
+</section>
+
+<div class="container" *ngIf="isTeamNames">
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let invite of invites; let i = index">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h3>{{ inviterTeams[i].teamName }}</h3>
+            <h5>{{ invite.inviterEmail }}</h5>
+          </div>
+          <div class="col">
+            <h4>{{ inviterTeams[i].teamName }} would like you to join their team.</h4>
+          </div>
+          <div class="col">
+            <div class="btn-group">
+              <button type="button" class="btn btn-success btn-md" (click)="acceptTeamInvite(invite)">
+                Accept
+              </button>
+              <button type="button" class="btn btn-danger btn-md" (click)="declineTeamInvite(invite)">
+                Decline
+              </button>
+            </div>
           </div>
         </div>
       </div>

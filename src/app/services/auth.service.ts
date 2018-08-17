@@ -1,8 +1,8 @@
-import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Account } from '../models/Account';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,86 +10,83 @@ import { Account } from '../models/Account';
 export class AuthService {
   private currentUser: Account;
 
-  constructor(private http: HttpClient,
-    private router: Router) {
-    //this.currentUser = new Account(); // Not sure if this is neccessary
-   }
+  constructor(private http: HttpClient) {}
 
   /**
-   * Login method to handle a request to the server to login and
-   * recieve a valid JWT back. For now this will simply request the
-   * user account by email address.
+   * Gets a JSON Web Token for the person logging in
+   * @param email The email entered for login purposes
+   * @param password The password entered for login purposes
+   * @returns Observable containing the JWT for the session or error
    */
-  login(email: string) {
-    const endpoint = environment.baseServerUrl + '/accounts/' + email;
-    this.http.get(endpoint)
-      .subscribe((userAccount: Account) => {
-        this.currentUser = new Account();
-        this.currentUser = userAccount;
-        this.setSession(this.currentUser);
-        this.getCurrentUserInfo();
-        this.router.navigate(['/tasks']);
-      }, (err) => {
-        alert('Your email or password is incorrect.');
-        console.log(err);
-      });
+  login(email: string, password: string): Observable<any> {
+    console.log('AuthService: Logging user in');
+    const endpoint = `${environment.baseServerUrl}/auth/login`;
+    const credentials = { email, password };
+    return this.http.post<any>(endpoint, credentials);
   }
 
   /**
-   * Adds the current user's id to local storage to create a session
-   * We can figure out what we want to store in localStorage as things
-   * change... (JWT)
+   * Takes an email and returns the account associated with that email
+   * @param email The email of the account we want to fetch
+   * @returns The account associated with the email we are looking for
    */
-  setSession(account: Account) {
-    localStorage.setItem('userId', JSON.stringify(account.ownerId));
-    localStorage.setItem('userName', account.firstName);
+  getUserAccountByEmail(email: string): Observable<Account> {
+    console.log('AuthService: Fetching user account');
+    const endpoint = `${environment.baseServerUrl}/accounts/${email}`;
+    return this.http.get<Account>(endpoint);
   }
 
   /**
-   * Method to logout of the application (not called yet)
+   * Sets the current user account to the given account arg
+   * @param account The account that we want to set the current user to
+   */
+  setCurrentUser(account: Account) {
+    this.currentUser = new Account();
+    this.currentUser = account;
+  }
+
+  /**
+   * Sets the JWT in localStorage to persist across page refreshes.
+   * @param token The token to set in localStorage
+   */
+  setSession(token) {
+    localStorage.setItem('jwt', token);
+  }
+
+  /**
+   * Sets the user's email to localStorage for operations that require the
+   * email and persistence across page refreshes
+   */
+  setEmail() {
+    localStorage.setItem('email', this.currentUser.email);
+  }
+
+  /**
+   * Clears all information from localStorage to essentially logout a user
    */
   logout() {
+    console.log('AuthService: Loggint user out');
     this.currentUser = null;
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userName');
-  }
-
-  // Just a method for testing...
-  getCurrentUserInfo() {
-    console.log('OwnerId:', this.currentUser.ownerId);
-    console.log('Email:', this.currentUser.email);
-    console.log('Name: ' + this.currentUser.firstName + ' ' + this.currentUser.lastName);
-    console.log('Account Status:', this.currentUser.isDeleted ? 'InActive' : 'Active');
+    localStorage.removeItem('email');
+    localStorage.removeItem('jwt');
   }
 
   /**
-   * Check to see if there is a current user
-   * @returns true if there is a current user else false
+   * Retrieves the current user's email address for api calls
+   * @returns The current user's email address from localStorage
    */
-  isCurrentUser() {
-    let uid = localStorage.getItem('userId');
-    return (this.currentUser != null) || (uid != null);
+  getEmail() {
+    let email = localStorage.getItem('email');
+    if (this.currentUser)
+      return this.currentUser.email;
+    else if (email)
+      return email;
   }
 
   /**
-   * Get the ownerId property from the current user for fetching tasks
-   * @returns The ownerId of the current user
+   * Return the current user to access certain user information for api calls
    */
-  getCurrentUserId() {
-    let uid = +localStorage.getItem('userId');
-    if (this.currentUser) // If a page refresh hasn't occurred
-      return this.currentUser.ownerId;
-    else if (uid != null) // If a page refresh has occurred
-      return uid;
-    else return -1; // Tough luck
-  }
-
-  /**
-   * Get the name of the current user
-   * @returns Current users name
-   */
-  getCurrentUserName() {
-    let userName = localStorage.getItem('userName');
-    return userName || '';
+  getUser() {
+    return this.currentUser;
   }
 }
