@@ -17,7 +17,7 @@ export class TeamInfoComponent implements OnInit {
   public accounts: Account[] = [];
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
-  public toAuthorize: AddUserRequest[];
+  public toAuthorize: AddUserRequest[] = [];
 
   constructor(
     private teamService: TeamService,
@@ -30,17 +30,18 @@ export class TeamInfoComponent implements OnInit {
     this.route.params.subscribe(p => {
       this.team.id = p['id'];
     });
-    this.getLastWeekTeamMetrics();
-    this.getThisWeekTeamMetrics();
-    this.toAuthorize = [];
-    if (this.isOwnerOfTeam())
-      this.getInvitesToAuthorize();
    }
 
   ngOnInit() {
     this.teamService.getTeam(this.team.id)
       .subscribe((loadedTeam: Team) => {
         this.team = loadedTeam;
+        
+        if (this.isOwnerOfTeam())
+          this.getInvitesToAuthorize();
+        
+        this.getLastWeekTeamMetrics();
+        this.getThisWeekTeamMetrics();
       }, err => {
         console.log(err);
       });
@@ -75,18 +76,18 @@ export class TeamInfoComponent implements OnInit {
     return teamMember;
   }
 
+  /**
+   * For conditionally displaying content on the authorizations modal
+   */
   hasAuthorizations(): boolean {
-    if (this.toAuthorize.length > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.toAuthorize.length > 0;
   }
 
   /**
    * Gets previous weeks team metrics
    */
   getLastWeekTeamMetrics() {
+    console.log('TeamInfoComponent: Getting team metrics for prior week');
     this.taskService.getWeeklyTeamMetrics(this.team.id)
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
@@ -104,6 +105,7 @@ export class TeamInfoComponent implements OnInit {
    * Gets metrics for team for previous week
    */
   getThisWeekTeamMetrics() {
+    console.log('TeamInfoComponent: Getting team metrics for current');
     this.teamService.getTeamCompletionRate(this.team.id, this.getWeekStartDate(), this.getWeekEndDate())
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
@@ -178,7 +180,7 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The team invite to rescind
    */
   rescindTeamInvite(invite: AddUserRequest) {
-    console.log('NotificationsPage: Rescinding invite')
+    console.log('TeamInfoComponent: Rescinding invite');
     this.teamService.rescindTeamInvite(invite.teamId, invite.inviteeEmail)
       .subscribe((data) => {
         console.log('Invite rescinded.');
@@ -191,7 +193,7 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The invite to authorize
    */
   authorizeTeamInvite(invite: AddUserRequest) {
-    console.log('NotificationsComponent: Authorizing invite')
+    console.log('TeamInfoComponent: Authorizing invite');
     this.teamService.authorizeTeamInvite(invite.teamId, invite.inviteeEmail)
       .subscribe(data => { 
         console.log('Invite authorized.')
@@ -204,7 +206,7 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The invite to veto
    */
   vetoTeamInvite(invite: AddUserRequest) {
-    console.log('NotificationsComponent: Vetoing invite')
+    console.log('TeamInfoComponent: Vetoing invite');
     this.teamService.vetoTeamInvite(invite.teamId, invite.inviteeEmail)
       .subscribe((data) => {
         console.log('Invite vetoed.')
@@ -216,7 +218,7 @@ export class TeamInfoComponent implements OnInit {
    * Retrieves all invites that a team owner has to authorize
    */
   getInvitesToAuthorize() {
-    console.log('NotificationsComponent: Getting invites to authorize')
+    console.log('TeamInfoComponent: Getting invites to authorize');
     this.teamService.getInvitesToAuthorize()
       .subscribe((authorizations) => {
         this.toAuthorize = authorizations;

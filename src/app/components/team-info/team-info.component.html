@@ -127,15 +127,16 @@
   
       <div class="modal-body">
         <ul class="list-group" *ngIf="hasAuthorizations()">
-          <li class="list-group-item align-items-start" *ngFor="let authorizations of toAuthorize">
+          <p class="lead">Invites to accept or decline.</p>
+          <li class="list-group-item align-items-start" *ngFor="let invite of toAuthorize">
             <div class="row">
-              <div class="col-9">
-                {{ authorization.inviteeEmail }}
+              <div class="col-8">
+                {{ invite.inviteeEmail }}
               </div>
-              <div class="col-3">
+              <div class="col-4">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-success">Authorize</button>
-                  <button type="button" class="btn btn-danger">Veto</button>
+                  <button type="button" class="btn btn-success" (click)="authorizeTeamInvite(invite)">&#10004;</button>
+                  <button type="button" class="btn btn-danger" (click)="vetoTeamInvite(invite)">&times;</button>
                 </div>
               </div>
             </div>
