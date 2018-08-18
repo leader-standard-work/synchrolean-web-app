@@ -16,6 +16,7 @@ import { ChangeOwnerComponent } from './components/change-owner/change-owner.com
 import { PermissionsComponent } from './components/permissions/permissions.component';
 import { RollupComponent } from './components/rollup/rollup.component';
 import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
+import { RemoveMemberComponent } from './components/remove-member/remove-member.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -49,7 +50,8 @@ import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker'
     PermissionsComponent,
     RollupComponent,
     TeamMetricsComponent,
-    ChangeOwnerComponent
+    ChangeOwnerComponent,
+    RemoveMemberComponent
   ],
   imports: [
     BrowserModule,
