@@ -6,6 +6,7 @@ import { Team } from './../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-team-info',
@@ -21,9 +22,10 @@ export class TeamInfoComponent implements OnInit {
 
   constructor(
     private teamService: TeamService,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private taskService: TaskService,
+    private accountService: AccountService,
+    private route: ActivatedRoute,
     private router: Router
   ) {
     this.team = new Team();
@@ -173,6 +175,10 @@ export class TeamInfoComponent implements OnInit {
    */
   onTeamUpdated(updatedTeam: Team) {
     this.team = updatedTeam;
+  }
+
+  onAccountsUpdated(updatedAccounts: Account[]) {
+    this.accounts = updatedAccounts;
   }
 
   /**

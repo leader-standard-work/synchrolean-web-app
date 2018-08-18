@@ -37,21 +37,5 @@ export class InviteMemberComponent implements OnInit {
         console.log('InviteMemberComponent: Invite was not created');
       });
   }
-  /*
-  submit() {
-    this.accountService.getAccountByEmail(this.email)
-      .subscribe((acc) => {
-        let inviteeAccount = acc;
-        this.route.params.subscribe(p => {
-          let teamId = +p['id'];
-          this.teamService.inviteMemberToTeam(teamId, inviteeAccount.email)
-            .subscribe();
-          this.router.navigate(['/teams/' + teamId])
-        });
-      }, (err) => {
-        console.log(err)
-      });
-  }
-  */
 
 }

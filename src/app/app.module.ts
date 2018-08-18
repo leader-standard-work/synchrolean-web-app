@@ -12,6 +12,10 @@ import { TeamFormComponent } from './components/team-form/team-form.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { TaskPageComponent } from './components/task-page/task-page.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
+import { ChangeOwnerComponent } from './components/change-owner/change-owner.component';
+import { PermissionsComponent } from './components/permissions/permissions.component';
+import { RollupComponent } from './components/rollup/rollup.component';
+import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -24,9 +28,6 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { PermissionsComponent } from './components/permissions/permissions.component';
-import { RollupComponent } from './components/rollup/rollup.component';
-import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
 
 @NgModule({
@@ -47,7 +48,8 @@ import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker'
     SidebarComponent,
     PermissionsComponent,
     RollupComponent,
-    TeamMetricsComponent
+    TeamMetricsComponent,
+    ChangeOwnerComponent
   ],
   imports: [
     BrowserModule,
