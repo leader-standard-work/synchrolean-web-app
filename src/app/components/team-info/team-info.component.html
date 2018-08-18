@@ -48,7 +48,7 @@
       </a>
     </li>
     <li class="list-inline-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" (click)="leaveTeam()">
         Leave Team
       </a>
     </li>
@@ -88,7 +88,7 @@
 
 <app-team-form [teamId]="team.id" (teamUpdated)="onTeamUpdated($event)"></app-team-form>
 
-<app-change-owner [team]="team" (updatedTeam)="onTeamUpdated($event)" (updatedAccounts)="onAccountsUpdated($event)"></app-change-owner>
+<app-change-owner [team]="team" [accounts]="accounts" (updatedTeam)="onTeamUpdated($event)" (updatedAccounts)="onAccountsUpdated($event)"></app-change-owner>
 
 <div class="modal" id="inviteMember">
     <app-invite-member [teamId]="team.id"></app-invite-member>

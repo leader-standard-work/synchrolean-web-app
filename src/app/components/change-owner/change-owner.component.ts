@@ -13,6 +13,7 @@ import { FormGroup, FormControl, Validators } from '../../../../node_modules/@an
 export class ChangeOwnerComponent implements OnInit {
   public newOwnerForm: FormGroup;
   @Input() team = new Team();
+  @Input() accounts: Account[];
   @Output() updatedTeam = new EventEmitter<Team>();
   @Output() updatedAccounts = new EventEmitter<Account[]>();
 
@@ -38,23 +39,31 @@ export class ChangeOwnerComponent implements OnInit {
         this.team.ownerEmail = email;
         this.teamService.editTeam(this.team)
           .subscribe((team) => {
-            // If team edit successful remove owner from team
+            // If team edit successful, remove owner from team
             this.team = team;
             this.teamService.removeTeamMember(this.team.id, oldOwnerEmail)
               .subscribe(() => {
-                // Take out account in accounts[]
+                // If remove owner from team successful, remove old owners account
+                this.teamService.fetchTeamMembers(this.team.id)
+                  .subscribe((newAccounts: Account[]) => {
+                    this.accounts = newAccounts;
+                  })
+                this.updatedAccounts.emit(this.accounts);
+                this.updatedTeam.emit(this.team);
               }, (err) => {
                 // If remove member was unsuccessful, revert changes back to normal
                 this.team.ownerEmail = oldOwnerEmail;
                 this.teamService.editTeam(this.team)
                   .subscribe(() => {
-
+                    //this.updatedAccounts.emit(this.accounts);
+                    //this.updatedTeam.emit(this.team);
                   }, (err) => {
                     console.log(err);
                   });
               });
           }, (err) => {
             this.team.ownerEmail = oldOwnerEmail;
+            this.updatedTeam.emit(this.team);
             console.log(err);
           });
       }, (err) => {

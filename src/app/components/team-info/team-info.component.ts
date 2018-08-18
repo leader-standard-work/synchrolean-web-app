@@ -177,8 +177,30 @@ export class TeamInfoComponent implements OnInit {
     this.team = updatedTeam;
   }
 
+  /**
+   * Updates the account members list (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * @param updatedAccounts The updated account information
+   */
   onAccountsUpdated(updatedAccounts: Account[]) {
     this.accounts = updatedAccounts;
+  }
+
+  /**
+   * Removes owner from team (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * @param email The email of the member leaving the team
+   */
+  leaveTeam() {
+    this.teamService.removeTeamMember(this.team.id, this.authService.getEmail())
+      .subscribe(() => {
+        this.teamService.fetchTeamMembers(this.team.id)
+          .subscribe((accounts: Account[]) => {
+            this.accounts = accounts;
+          }, (err) => {
+            console.log(err);
+          })
+      }, (err) => {
+        console.log(err);
+      })
   }
 
   /**
