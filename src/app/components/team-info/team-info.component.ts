@@ -3,7 +3,7 @@ import { Account } from './../../models/Account';
 import { TeamService } from './../../services/team.service';
 import { TaskService } from './../../services/task.service';
 import { Team } from './../../models/Team';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { AccountService } from '../../services/account.service';
@@ -144,13 +144,14 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
+   * Owner only**
    * Deletes the current team
    */
   deleteTeam() {
-    console.log("TeamInfoComponent: Deleting team");
+    console.log('TeamInfoComponent: Deleting team');
     this.teamService.deleteTeam(this.team.id)
       .subscribe(() => {
-        
+        console.log('TeamInfoComponent: Team deleted');
       }, (err) => {
         console.log(err);
       });
