@@ -1,0 +1,12 @@
+<div class="jumbotron">
+  <div class="row">
+    <div class="col">
+      <h4>Last week's performance:</h4>
+      <div class="metric-container user-metric">{{ metrics.userValue | percent }}</div>
+    </div>
+    <div *ngIf="metrics.teamValue !== null" class="col">
+      <h4>Last week's team performance:</h4>
+      <div class="metric-container team-metric">{{ metrics.teamValue | percent }}</div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Task, Weekdays } from '../../models/Task';
 import { TaskService } from '../../services/task.service';
@@ -13,7 +13,8 @@ export class TaskInfoComponent implements OnInit {
   public daysOfWeek: string[] = [];
 
   constructor(private taskService: TaskService,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute,
+    private router: Router) { 
       this.task = new Task();
       this.route.params.subscribe(p => {
         this.task.id = p['id'];
@@ -59,6 +60,8 @@ export class TaskInfoComponent implements OnInit {
     this.taskService.editTask(this.task)
       .subscribe((removedTask) => {
         this.task = removedTask;
+        alert('Task successfully deleted');
+        this.router.navigate(['/tasks']);
       }, (err) => { console.log(err) });
   }
 

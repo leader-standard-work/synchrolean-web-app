@@ -1,20 +1,42 @@
-.metric-container {
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
-    text-align: center;
-    line-height: 100px;
-    font-size: 24px;
+.btn-group.header {
+    display: flex;
 }
 
-.user-metric {
-    border-color: rgb(14, 209, 14);
-    border-style: solid;
-    background-color: lightgreen;
+.header .btn {
+    flex: 1;
 }
 
-.team-metric {
-    border-color: rgb(63, 63, 252);
-    border-style: solid;
-    background-color: lightblue;
+.btn-outline-lean {
+    color: #e39e2c;
+    background-color: transparent;
+    background-image: none;
+    border-color: #e39e2c;
+    border-radius: 0;
+}
+
+.btn-outline-lean:hover {
+    color: #fff;
+    background-color: #e39e2c;
+    border-color: #e39e2c;
+}
+
+.btn-outline-lean:focus, .btn-outline-lean.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0);
+}
+
+.btn-outline-lean.disabled, .btn-outline-lean:disabled {
+    color: #e39e2c;
+    background-color: transparent;
+}
+
+.btn-outline-lean:not(:disabled):not(.disabled):active, .btn-outline-lean:not(:disabled):not(.disabled).active,
+.show > .btn-outline-lean.dropdown-toggle {
+    color: #fff;
+    background-color: #e39e2c;
+    border-color: #e39e2c;
+}
+
+.btn-outline-lean:not(:disabled):not(.disabled):active:focus, .btn-outline-lean:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-lean.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0);
 }

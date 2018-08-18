@@ -30,6 +30,8 @@ import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
+import { TaskTableComponent } from './components/task-table/task-table.component';
+import { MetricsBannerComponent } from './components/metrics-banner/metrics-banner.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker'
     RollupComponent,
     TeamMetricsComponent,
     ChangeOwnerComponent,
-    RemoveMemberComponent
+    RemoveMemberComponent,
+    TaskTableComponent,
+    MetricsBannerComponent
   ],
   imports: [
     BrowserModule,
