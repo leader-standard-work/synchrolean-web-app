@@ -5,15 +5,21 @@ export enum Frequency {
     Monthly
 }
 
-export const Weekdays: string[] = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday'
-]
+export class Weekday {
+    value: number;
+    displayName: string;
+    fullName: string;
+}
+
+export const Weekdays: Weekday[] = [
+    { value: 1, displayName: 'Sun', fullName: 'Sunday' },
+    { value: 2, displayName: 'Mon', fullName: 'Monday' },
+    { value: 4, displayName: 'Tue', fullName: 'Tuesday' },
+    { value: 8, displayName: 'Wed', fullName: 'Wednesday' },
+    { value: 16, displayName: 'Thu', fullName: 'Thursday' },
+    { value: 32, displayName: 'Fri', fullName: 'Friday' },
+    { value: 64, displayName: 'Sat', fullName: 'Saturday' },
+];
 
 export class Task {
     id: number;

@@ -69,9 +69,9 @@ export class TaskInfoComponent implements OnInit {
   getWeekdaysAsArray(weekdays: number) {
     let days: number = weekdays;
     let weekdaysArray: string[] = [];
-    for(let i = 0; days > 0; i++) {
+    for (let i = 0; days > 0; i++) {
         if (days & 1) {
-            weekdaysArray.push(Weekdays[i]);
+            weekdaysArray.push(Weekdays[i].fullName);
         }
         days >>= 1;
     }

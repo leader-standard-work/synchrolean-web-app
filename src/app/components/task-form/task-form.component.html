@@ -47,21 +47,18 @@
           <p class="text-succeed">Tasks that occur once are set for today's date.</p>
         </div>
         <div *ngIf="getFrequency() == 1">
-          <p class="text-succeed">Daily tasks occur on each day of the week.</p>
-        </div>
-        <div *ngIf="getFrequency() == 2">
           <div class="form-group">
-            <p class="text-succeed">Tasks that occur weekly occur on the days you choose.</p>
+            <p class="text-succeed">Tasks that occur on specific days.</p>
             <div class="btn-group btn-block text-white">
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(1)">Mon</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(2)">Tues</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(4)">Weds</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(8)">Thurs</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(16)">Fri</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(32)">Sat</a>
-              <a class="btn btn-primary btn-md day-choice" (click)="addWeekday(64)">Sun</a>
+              <a *ngFor="let weekday of availableDays" class="btn btn-md day-choice" 
+                 [ngClass]="{'lean-bg': weekdayIsSelected(weekday.value), 'btn-secondary': !weekdayIsSelected(weekday.value)}" 
+                 (click)="toggleWeekday(weekday.value)">{{ weekday.displayName}}
+              </a>
             </div>
           </div>
+        </div>
+        <div *ngIf="getFrequency() == 2">
+          <p class="text-succeed">Tasks that occur sometime during the week.</p>
         </div>
         <!-- <div *ngIf="getFrequency() == 3">
           <div class="form-group">

@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { TaskService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
-import { Task, Frequency, Weekdays } from './../../models/Task';
+import { Task, Frequency, Weekdays, Weekday } from './../../models/Task';
 
 @Component({
   selector: 'task-form',
@@ -18,22 +18,25 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Input() taskId: number;
   @Output() addedTask = new EventEmitter<Task>();
   @Output() editedTask = new EventEmitter<Task>();
-  public weekdays: number; // The numerical days value for a task
+  public weekdays: number[];
+  public availableDays: Weekday[];
   private teams: Team[];
+  private loadedTask: Task;
 
   /**
    * Communicates with the task service
    */
-  constructor(private taskService: TaskService, 
+  constructor(private taskService: TaskService,
     private authService: AuthService,
     private accountService: AccountService) { // Will need account service to fetch team that user is on
       console.log('TaskForm: Created');
-      this.weekdays = 0;
+      this.weekdays = [];
+      this.availableDays = Weekdays;
       // Fetch the teams the user is on so they can pick which team the task belongs to
       this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
       .subscribe((teams) => {
         this.teams = teams;
-      }, (err) => { console.log(err) });
+      }, (err) => { console.log(err); });
   }
 
   ngOnInit() {
@@ -56,21 +59,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.action = 'Edit';
       this.taskService.getTaskById(this.taskId)
         .subscribe((task) => {
-          this.taskForm.setValue({
-            name: task.name,
-            description: task.description,
-            recurring: task.isRecurring,
-            completed: task.isCompleted,
-            deleted: task.isDeleted,
-            frequency: task.frequency,
-            teamId: task.teamId
-          });
-        }, (err) => { console.log(err) });
+          this.loadedTask = task;
+          this.setFormValues();
+        }, (err) => { console.log(err); });
     } else {
       this.action = 'Add';
     }
   }
-  
+
   /**
    * When the component is destroyed
    */
@@ -81,11 +77,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   /**
    * Provides the task that the form is working with to the task
-   * service so that the task can be added to the db. 
-   * 
+   * service so that the task can be added to the db.
+   *
    * This is the most basic working example. From here we will want
    * to get validation going and include other fields on the form that
-   * the user can manipulate. 
+   * the user can manipulate.
    */
   submit() {
     let task: Task = new Task();
@@ -95,8 +91,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.taskService.editTask(task)
         .subscribe((updatedTask) => {
           this.editedTask.emit(updatedTask);
+          this.loadedTask = updatedTask;
           this.clear();
-        }, (err) => { console.log(err) });
+        }, (err) => { console.log(err); });
     } else {
       // Set properties on the task we are creating
       this.setAddTask(task);
@@ -105,7 +102,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           console.log(newTask);
           this.addedTask.emit(newTask);
           this.clear();
-        }, (err) => { console.log(err) });
+        }, (err) => { console.log(err); });
     }
   }
 
@@ -130,10 +127,17 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Adds a day to the numerical weekdays value
    * @param dayValue The day value to add to the task
    */
-  addWeekday(dayValue: number) {
-    if (this.taskForm.controls['frequency'].value === 2) {
-      this.weekdays += dayValue;
+  toggleWeekday(dayValue: number) {
+    const index = this.weekdays.indexOf(dayValue);
+    if (index > -1) {
+      this.weekdays.splice(index, 1);
+    } else {
+      this.weekdays.push(dayValue);
     }
+  }
+
+  weekdayIsSelected(dayValue: number) {
+    return this.weekdays.includes(dayValue);
   }
 
   /**
@@ -144,18 +148,17 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.id = this.taskId;
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
-    task.isRecurring = this.taskForm.controls['recurring'].value; 
+    task.isRecurring = this.taskForm.controls['recurring'].value;
     task.isCompleted = this.taskForm.controls['completed'].value;
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
     task.teamId = this.taskForm.controls['teamId'].value;
-    if (task.frequency == 0) {
-      task.weekdays = 0;
-    } else if (task.frequency == 1) {
-      task.weekdays = 31; // Mon-Fri
+    if (task.frequency === 1) {
+      // Sum the values in the weekdays array
+      task.weekdays = this.weekdays.reduce((a, b) => a + b, 0);
     } else {
-      task.weekdays = this.weekdays; // Specific days
+      task.weekdays = 0;
     }
   }
 
@@ -173,12 +176,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.teamId = this.taskForm.controls['teamId'].value;
-    if (task.frequency == 0) {
+    if (task.frequency === 1) {
+      // Sum the values in the weekdays array
+      task.weekdays = this.weekdays.reduce((a, b) => a + b, 0);
+    } else {
       task.weekdays = 0;
-    } else if (task.frequency == 1) {
-      task.weekdays = 31;
-    } else if (task.frequency == 2) {
-      task.weekdays = this.weekdays;
     }
   }
 
@@ -194,6 +196,40 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Clears the form. Used for when the close or cancel button are clicked.
    */
   clear() {
-    this.taskForm.reset();
+    if (!this.taskId) {
+      this.taskForm.reset();
+      this.weekdays = [];
+    } else {
+      this.setFormValues();
+    }
+  }
+
+  setFormValues() {
+    this.taskForm.setValue({
+      name: this.loadedTask.name,
+      description: this.loadedTask.description,
+      recurring: this.loadedTask.isRecurring,
+      completed: this.loadedTask.isCompleted,
+      deleted: this.loadedTask.isDeleted,
+      frequency: this.loadedTask.frequency,
+      teamId: this.loadedTask.teamId
+    });
+    this.weekdays = this.getWeekdaysAsArray(this.loadedTask.weekdays);
+  }
+
+  /**
+   * Bitshifts the weekdays number to get the days that the task occurs on
+   * @returns The weekdays property as an array of strings of the days the task occurs on
+   */
+  getWeekdaysAsArray(weekdays: number) {
+    let days: number = weekdays;
+    let weekdaysArray: number[] = [];
+    for (let i = 0; days > 0; i++) {
+        if (days & 1) {
+          weekdaysArray.push(Weekdays[i].value);
+        }
+        days >>= 1;
+    }
+    return weekdaysArray;
   }
 }
