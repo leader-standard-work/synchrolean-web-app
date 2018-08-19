@@ -17,7 +17,7 @@ export class TeamService {
    * Base url is provided in the environment file under src/environments/environment.ts.
    * Production version of this url should be in src/environments/environment.prod.ts.
    */
-  private apiBase: string = '/teams/'; // Api addition to the url
+  private apiBase = '/teams/'; // Api addition to the url
   private teamsSubject: BehaviorSubject<Team[]>;
   private teamsObservable: Observable<Team[]>;
 

@@ -1,8 +1,11 @@
+import { Metric } from './../../models/Metric';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { TaskService } from './../../services/task.service';
 import { Task } from '../../models/Task';
 import { AuthService } from '../../services/auth.service';
+import { Team } from '../../models/Team';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'task-page',
@@ -12,14 +15,21 @@ import { AuthService } from '../../services/auth.service';
 export class TaskPageComponent implements OnInit, OnDestroy {
   // public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
-  public complete: string = 'Complete';
-  public incomplete: string = 'Incomplete';
-  public userMetrics: number;
+  private teams: Team[];
+  public complete = 'Complete';
+  public incomplete = 'Incomplete';
+  public metrics: Metric[] = [];
   public teamMetrics: number;
 
   constructor(private taskService: TaskService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private accountService: AccountService) {
     console.log('TaskPageComponent: Created');
+    // Fetch the teams the user is on so they can pick which team the task belongs to
+    this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
+    .subscribe((teams) => {
+      this.teams = teams;
+    }, (err) => { console.log(err); });
   }
 
   /**
@@ -28,13 +38,13 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     console.log('TaskPageComponent: Fetching tasks');
+    this.getUserTeams();
     this.getAllTasks();
     this.getWeeklyUserMetrics();
-    this.getWeeklyTeamMetrics();
   }
 
   ngOnDestroy() {
-    
+
   }
 
   /**
@@ -46,6 +56,24 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       .subscribe((tasks) => {
         this.tasks = tasks;
       }, (err) => { console.log(err) });
+  }
+
+  /**
+   * Get all teams for the current user
+   */
+  getUserTeams() {
+    console.log('TaskPageComponent: Getting all teams');
+    this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
+      .subscribe((teams) => {
+        this.teams = teams;
+        // Teams need to be fetched before
+        // we can fetch the team metrics
+        this.getWeeklyTeamMetrics();
+      }, (err) => { console.log(err); });
+  }
+
+  getFilteredTasks(teamId: number) {
+    return this.tasks.filter(task => task.teamId === teamId);
   }
 
   /**
@@ -65,16 +93,36 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     console.log('TaskPageComponent: Getting weekly user metrics');
     this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
       .subscribe((metrics) => {
+        const newMetric = new Metric();
         if (!isNaN(metrics)) {
-          this.userMetrics = metrics;
-          console.log("UserMetrics: ", metrics);
+          newMetric.teamId = null;
+          newMetric.teamValue = null;
+          newMetric.userValue = metrics;
+          this.metrics.push(newMetric);
+          console.log('UserMetrics: ', metrics);
         } else {
-          this.userMetrics = 0;
-          console.log("UserMetrics (isNaN): ", metrics);
+          newMetric.teamId = null;
+          newMetric.teamValue = null;
+          newMetric.userValue = 0;
+          this.metrics.push(newMetric);
+          console.log('UserMetrics (isNaN): ', metrics);
         }
       }, (err) => {
-        this.userMetrics = 0;
+        const newMetric = new Metric();
+        newMetric.teamId = null;
+        newMetric.teamValue = null;
+        newMetric.userValue = 0;
+        this.metrics.push(newMetric);
       });
+  }
+
+  getFilteredMetrics(teamId: number) {
+    const filteredMetrics = this.metrics.find(metric => metric.teamId === teamId);
+    if (filteredMetrics) {
+      return filteredMetrics;
+    } else {
+      return new Metric();
+    }
   }
 
   /**
@@ -82,15 +130,20 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    */
   getWeeklyTeamMetrics() {
     console.log('TaskPageComponent: Getting weekly team metrics');
-    this.taskService.getAllUserTeamsMetrics(this.authService.getEmail())
-      .subscribe((metrics) => {
-        if (!isNaN(metrics)) {
-          this.teamMetrics = metrics;
-        } else {
-          this.teamMetrics = 0;
-        }
-      }, (err) => {
-        this.teamMetrics = 0; // Until the call is actually working
-      });
+    this.teams.forEach(team => {
+      this.taskService.getWeeklyTeamMetrics(team.id)
+        .subscribe((fetchedTeamMetrics) => {
+          this.taskService.getUserTeamMetrics(team.id, this.authService.getEmail())
+            .subscribe((fetchedUserMetrics) => {
+              const teamMetrics = (!isNaN(fetchedTeamMetrics)) ? fetchedTeamMetrics : 0;
+              const userMetrics = (!isNaN(fetchedUserMetrics)) ? fetchedUserMetrics : 0;
+              const newMetric = new Metric();
+              newMetric.teamId = team.id;
+              newMetric.teamValue = teamMetrics;
+              newMetric.userValue = userMetrics;
+              this.metrics.push(newMetric);
+            }, (err) => { console.log(err); });
+        }, (err) => { console.log(err); });
+    });
   }
 }

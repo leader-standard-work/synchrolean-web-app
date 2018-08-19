@@ -34,6 +34,7 @@ export class Task {
     ownerEmail: string;
     frequency: Frequency;
     teamId: number;
-    
+    isActive: boolean;
+
     constructor() {}
 }

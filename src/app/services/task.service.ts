@@ -10,22 +10,23 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiBase: string = '/tasks';
+  private apiBase = '/tasks';
   private tasksSubject: BehaviorSubject<Task[]>;
   private tasksObservable: Observable<Task[]>;
 
   constructor(private http: HttpClient,
-  private authService: AuthService) { 
+  private authService: AuthService) {
     console.log('TaskService created.');
+    // Fetch tasks
     this.tasksSubject = new BehaviorSubject([]);
     this.tasksObservable = this.tasksSubject.asObservable();
     this.tasksObservable = this.fetchTasks(this.authService.getEmail());
   }
 
   /**
-   * Fetches all tasks corresponding to the id given as an argument.
-   * @param id The id of the user to retrieve tasks for
-   * @returns  A list of tasks belonging to the user matching id arg
+   * Fetches all tasks corresponding to the email given as an argument.
+   * @param email The email of the user to retrieve tasks for
+   * @returns  A list of tasks belonging to the user
    */
   fetchTasks(email: string): Observable<Task[]> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/${email}`;
@@ -61,8 +62,8 @@ export class TaskService {
    */
   getWeeklyTaskMetrics(email: string) {
     console.log('TaskService: Fetching weekly metrics for user');
-    let startDate: Date = this.getStartDate();
-    let endDate: Date = this.getEndDate();
+    const startDate: string = this.getStartDate();
+    const endDate: string = this.getEndDate();
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/${startDate}/${endDate}/${email}`;
     return this.http.get<number>(endpoint);
   }
@@ -74,8 +75,8 @@ export class TaskService {
    */
   getWeeklyTeamMetrics(teamId: number): Observable<number> {
     console.log('TaskService: Fetching weekly metrics for team');
-    let startDate: Date = this.getStartDate();
-    let endDate: Date = this.getEndDate();
+    const startDate: string = this.getStartDate();
+    const endDate: string = this.getEndDate();
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`;
     return this.http.get<number>(endpoint);
   }
@@ -87,9 +88,22 @@ export class TaskService {
    */
   getAllUserTeamsMetrics(email: string): Observable<number> {
     console.log('TaskService: Fetching weekly metrics for all teams user is on');
-    let startDate: Date = this.getStartDate();
-    let endDate: Date = this.getEndDate();
-    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/teams/${startDate}/${endDate}/${email}`
+    let startDate: string = this.getStartDate();
+    let endDate: string = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/teams/${startDate}/${endDate}/${email}`;
+    return this.http.get<number>(endpoint);
+  }
+
+  /**
+   * Gets metrics for a user's tasks assigned to a specific team
+   * @param teamId The id of the team which the user's tasks are on
+   * @param email The email of the user being requested
+   * @returns Observable<number> representing the user's team task metrics
+   */
+  getUserTeamMetrics(teamId: number, email: string): Observable<number> {
+    const startDate: string = this.getStartDate();
+    const endDate: string = this.getEndDate();
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/team/${teamId}/${startDate}/${endDate}/${email}`;
     return this.http.get<number>(endpoint);
   }
 
@@ -109,26 +123,26 @@ export class TaskService {
    * Sets the start date for retrieving a user's metric information
    * @returns The start date for the user's weekly user/team metrics
    */
-  getStartDate(): Date {
+  getStartDate(): string {
     console.log('TaskService: Creating start date');
     let today = new Date();
     let day = today.getDay();
     let startDate = new Date();
     startDate.setDate(today.getDate() - (7 + day));
-    return startDate;
+    return startDate.toDateString();
   }
 
   /**
    * Sets the start date for retrieving a user's metric information
    * @returns The start date for the user's weekly user/team metrics
    */
-  getEndDate(): Date {
+  getEndDate(): string {
     console.log('TaskService: Creating end date');
     let today = new Date();
     let day = today.getDay();
     let endDate = new Date();
     endDate.setDate(today.getDate() - (7 - (6 - day)));
-    return endDate;
+    return endDate.toDateString();
   }
 
   /**
@@ -138,6 +152,7 @@ export class TaskService {
    */
   addTask(newTask: Task): Observable<Task> {
     console.log('TaskService: Adding new task');
+    console.log(newTask);
     const endpoint = environment.baseServerUrl + this.apiBase;
     return this.http.post<Task>(endpoint, newTask);
   }
