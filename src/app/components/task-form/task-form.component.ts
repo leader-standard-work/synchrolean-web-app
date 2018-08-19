@@ -61,7 +61,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         .subscribe((task) => {
           this.loadedTask = task;
           this.setFormValues();
-        }, (err) => { console.log(err); });
+        }, err => console.log(err));
     } else {
       this.action = 'Add';
     }
@@ -71,7 +71,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * When the component is destroyed
    */
   ngOnDestroy() {
-    console.log('TaskForm: Destroyed');
     this.clear();
   }
 
@@ -84,7 +83,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * the user can manipulate.
    */
   submit() {
-    let task: Task = new Task();
+    const task: Task = new Task();
     if (this.taskId) {
       // Set task information for the task we edited
       this.setEditTask(task);
@@ -93,16 +92,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
           this.editedTask.emit(updatedTask);
           this.loadedTask = updatedTask;
           this.clear();
-        }, (err) => { console.log(err); });
+        }, err => console.log(err));
     } else {
       // Set properties on the task we are creating
       this.setAddTask(task);
       this.taskService.addTask(task)
         .subscribe((newTask) => {
-          console.log(newTask);
           this.addedTask.emit(newTask);
           this.clear();
-        }, (err) => { console.log(err); });
+        }, err => console.log(err));
     }
   }
 
@@ -224,7 +222,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   getWeekdaysAsArray(weekdays: number) {
     let days: number = weekdays;
-    let weekdaysArray: number[] = [];
+    const weekdaysArray: number[] = [];
     for (let i = 0; days > 0; i++) {
         if (days & 1) {
           weekdaysArray.push(Weekdays[i].value);

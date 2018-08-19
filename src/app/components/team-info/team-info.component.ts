@@ -24,7 +24,6 @@ export class TeamInfoComponent implements OnInit {
     private teamService: TeamService,
     private authService: AuthService,
     private taskService: TaskService,
-    private accountService: AccountService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -38,42 +37,40 @@ export class TeamInfoComponent implements OnInit {
     this.teamService.getTeam(this.team.id)
       .subscribe((loadedTeam: Team) => {
         this.team = loadedTeam;
-        
-        if (this.isOwnerOfTeam())
+
+        if (this.isOwnerOfTeam()) {
           this.getInvitesToAuthorize();
-        
+        }
+
         this.getLastWeekTeamMetrics();
         this.getThisWeekTeamMetrics();
-      }, err => {
-        console.log(err);
-      });
-    
+      }, err => console.log(err));
+
     this.teamService.fetchTeamMembers(this.team.id)
       .subscribe((accountList: Account[]) => {
         this.accounts = accountList;
-      }, err => {
-        console.log(err);
-      });
+      }, err => console.log(err));
   }
 
   /**
    * Verifies if current user is team owner
    */
   isOwnerOfTeam() {
-    let email = this.authService.getEmail();
-    return email == this.team.ownerEmail;
+    const email = this.authService.getEmail();
+    return email === this.team.ownerEmail;
   }
 
   /**
    * Verifies if current user is team member
    */
   isMemberOfTeam() {
-    let email = this.authService.getEmail();
-    var teamMember: boolean;
+    const email = this.authService.getEmail();
+    let teamMember: boolean;
 
-    for (let account of this.accounts) {
-      if (email == account.email)
+    for (const account of this.accounts) {
+      if (email === account.email) {
         teamMember = true;
+      }
     }
     return teamMember;
   }
@@ -89,7 +86,6 @@ export class TeamInfoComponent implements OnInit {
    * Gets previous weeks team metrics
    */
   getLastWeekTeamMetrics() {
-    console.log('TeamInfoComponent: Getting team metrics for prior week');
     this.taskService.getWeeklyTeamMetrics(this.team.id)
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
@@ -97,7 +93,7 @@ export class TeamInfoComponent implements OnInit {
         } else {
           this.lastWeeksMetrics = 0;
         }
-      }, (err) => {
+      }, err => {
         this.lastWeeksMetrics = 0; // Until the call is actually working
         console.log(err);
       });
@@ -107,7 +103,6 @@ export class TeamInfoComponent implements OnInit {
    * Gets metrics for team for previous week
    */
   getThisWeekTeamMetrics() {
-    console.log('TeamInfoComponent: Getting team metrics for current');
     this.teamService.getTeamCompletionRate(this.team.id, this.getWeekStartDate(), this.getWeekEndDate())
       .subscribe((metrics) => {
         if (!isNaN(metrics)) {
@@ -115,7 +110,7 @@ export class TeamInfoComponent implements OnInit {
         } else {
           this.thisWeeksMetrics = 0;
         }
-      }, (err) => {
+      }, err => {
         this.thisWeeksMetrics = 0; // Until the call is actually working
         console.log(err);
       });
@@ -126,9 +121,9 @@ export class TeamInfoComponent implements OnInit {
    * @returns previous Sunday's date
    */
   getWeekStartDate(): Date {
-    let today = new Date();
-    let day = today.getDay();
-    let startDate = new Date();
+    const today = new Date();
+    const day = today.getDay();
+    const startDate = new Date();
     startDate.setDate(today.getDate() - day);
     return startDate;
   }
@@ -138,7 +133,7 @@ export class TeamInfoComponent implements OnInit {
    * @returns next days date to catch all tasks for today
    */
   getWeekEndDate(): Date {
-    let today = new Date();
+    const today = new Date();
     today.setDate(today.getDate() + 1);
     return today;
   }
@@ -147,13 +142,8 @@ export class TeamInfoComponent implements OnInit {
    * Deletes the current team
    */
   deleteTeam() {
-    console.log("TeamInfoComponent: Deleting team");
     this.teamService.deleteTeam(this.team.id)
-      .subscribe(() => {
-        
-      }, (err) => {
-        console.log(err);
-      });
+      .subscribe(() => {}, err => console.log(err));
   }
 
   /**
@@ -161,13 +151,13 @@ export class TeamInfoComponent implements OnInit {
    * @param email The email to determine which page to go to
    */
   getRoute(email: string) {
-    if (email != this.authService.getEmail()) {
+    if (email !== this.authService.getEmail()) {
       this.router.navigate([`users/${email}/tasks`]);
     } else {
       this.router.navigate(['tasks']);
     }
   }
- 
+
   /**
    * Updates the displayed team information
    * after it has been edited.
@@ -195,12 +185,8 @@ export class TeamInfoComponent implements OnInit {
         this.teamService.fetchTeamMembers(this.team.id)
           .subscribe((accounts: Account[]) => {
             this.accounts = accounts;
-          }, (err) => {
-            console.log(err);
-          })
-      }, (err) => {
-        console.log(err);
-      })
+          }, err => console.log(err));
+      }, (err) => console.log(err));
   }
 
   /**
@@ -208,11 +194,8 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The team invite to rescind
    */
   rescindTeamInvite(invite: AddUserRequest) {
-    console.log('TeamInfoComponent: Rescinding invite');
     this.teamService.rescindTeamInvite(invite.teamId, invite.inviteeEmail)
-      .subscribe((data) => {
-        console.log('Invite rescinded.');
-      }, (err) => { console.log(err) });
+      .subscribe((data) => {}, err => console.log(err));
   }
 
   /**
@@ -221,11 +204,8 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The invite to authorize
    */
   authorizeTeamInvite(invite: AddUserRequest) {
-    console.log('TeamInfoComponent: Authorizing invite');
     this.teamService.authorizeTeamInvite(invite.teamId, invite.inviteeEmail)
-      .subscribe(data => { 
-        console.log('Invite authorized.')
-      }, (err) => { console.log(err) });
+      .subscribe(data => {}, err => console.log(err));
   }
 
   /**
@@ -234,11 +214,8 @@ export class TeamInfoComponent implements OnInit {
    * @param invite The invite to veto
    */
   vetoTeamInvite(invite: AddUserRequest) {
-    console.log('TeamInfoComponent: Vetoing invite');
     this.teamService.vetoTeamInvite(invite.teamId, invite.inviteeEmail)
-      .subscribe((data) => {
-        console.log('Invite vetoed.')
-      }, (err) => { console.log(err) })
+      .subscribe((data) => {}, err => console.log(err));
   }
 
   /**
@@ -246,11 +223,10 @@ export class TeamInfoComponent implements OnInit {
    * Retrieves all invites that a team owner has to authorize
    */
   getInvitesToAuthorize() {
-    console.log('TeamInfoComponent: Getting invites to authorize');
     this.teamService.getInvitesToAuthorize()
       .subscribe((authorizations) => {
         this.toAuthorize = authorizations;
-      }, (err) => { console.log(err) })
+      }, err => console.log(err));
   }
 
 }

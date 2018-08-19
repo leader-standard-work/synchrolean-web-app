@@ -14,13 +14,8 @@ import { FormGroup, FormControl, Validators } from '../../../../node_modules/@an
 export class InviteMemberComponent implements OnInit {
   public inviteForm: FormGroup;
   @Input() teamId: number;
-  
-  constructor(
-    //private accountService: AccountService,
-    private teamService: TeamService,
-    //private authService: AuthService,
-    //private route: ActivatedRoute,
-    /*private router: Router*/) { }
+
+  constructor(private teamService: TeamService) { }
 
   ngOnInit() {
     this.inviteForm = new FormGroup({
@@ -28,14 +23,12 @@ export class InviteMemberComponent implements OnInit {
         Validators.email,
         Validators.maxLength(50)
       ])
-    })
+    });
   }
 
   submit() {
     this.teamService.inviteMemberToTeam(this.teamId, this.inviteForm.controls['email'].value)
-      .subscribe(() => {}, (err) => {
-        console.log('InviteMemberComponent: Invite was not created');
-      });
+      .subscribe(() => {}, (err) => console.log('Invite was not created. Error: ' + err));
   }
 
 }

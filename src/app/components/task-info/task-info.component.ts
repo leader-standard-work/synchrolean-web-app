@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Task, Weekdays } from '../../models/Task';
@@ -11,8 +12,11 @@ import { TaskService } from '../../services/task.service';
 export class TaskInfoComponent implements OnInit {
   public task: Task;
   public daysOfWeek: string[] = [];
+  public taskBelongsToMe = false;
 
-  constructor(private taskService: TaskService,
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router) { 
       this.task = new Task();
@@ -25,8 +29,9 @@ export class TaskInfoComponent implements OnInit {
     this.taskService.getTaskById(this.task.id)
       .subscribe((loadedTask) => {
         this.task = loadedTask;
+        this.taskBelongsToMe = this.task.ownerEmail === this.authService.getEmail();
         this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   /**
@@ -43,13 +48,12 @@ export class TaskInfoComponent implements OnInit {
    */
   completeTask() {
     this.task.isCompleted = true;
-    console.log('Before', this.task);
     this.taskService.editTask(this.task)
       .subscribe((completedTask) => {
-        console.log('Response', completedTask);
         this.task = completedTask;
-        console.log('Task is now', this.task);
-      }, (err) => { console.log(err) });
+        alert('Task successfully completed');
+        this.router.navigate(['/tasks']);
+      }, err => console.log(err));
   }
 
   /**
@@ -62,7 +66,7 @@ export class TaskInfoComponent implements OnInit {
         this.task = removedTask;
         alert('Task successfully deleted');
         this.router.navigate(['/tasks']);
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   /**
@@ -71,7 +75,7 @@ export class TaskInfoComponent implements OnInit {
    */
   getWeekdaysAsArray(weekdays: number) {
     let days: number = weekdays;
-    let weekdaysArray: string[] = [];
+    const weekdaysArray: string[] = [];
     for (let i = 0; days > 0; i++) {
         if (days & 1) {
             weekdaysArray.push(Weekdays[i].fullName);

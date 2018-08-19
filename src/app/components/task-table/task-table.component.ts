@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Task } from '../../models/Task';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-task-table',
@@ -8,8 +9,11 @@ import { Task } from '../../models/Task';
 })
 export class TaskTableComponent implements OnInit {
   @Input() tasks: Task[];
+  @Input() ownerEmail: string;
+  public complete = 'Complete';
+  public incomplete = 'Incomplete';
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }

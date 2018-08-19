@@ -19,7 +19,6 @@ export class TeamFormComponent implements OnInit {
 
   constructor(
     private teamService: TeamService,
-    private router: Router,
     private authService: AuthService) { }
 
   ngOnInit() {
@@ -47,20 +46,16 @@ export class TeamFormComponent implements OnInit {
       id: new FormControl(false),
       ownerEmail: new FormControl(false)
     });
-    if(this.teamId) {
+    if (this.teamId) {
       this.action = 'Edit';
       this.teamService.getTeam(this.teamId)
         .subscribe((loadedTeam: Team) => {
           this.teamForm.controls['id'].setValue(loadedTeam.id);
-          //this.teamForm.controls['ownerId'].setValue(loadedTeam.ownerId);
           this.teamForm.controls['ownerEmail'].setValue(loadedTeam.ownerEmail);
           this.teamForm.controls['name'].setValue(loadedTeam.teamName);
           this.teamForm.controls['description'].setValue(loadedTeam.teamDescription);
-        }, err => {
-          console.log(err);
-        });
-    } 
-    else {
+        }, err => console.log(err));
+    } else {
       this.action = 'Add';
     }
   }
@@ -71,10 +66,9 @@ export class TeamFormComponent implements OnInit {
    * or editing an existing team.
    */
   submit() {
-    let team = new Team();
+    const team = new Team();
     if (this.teamId) {
       team.id = this.teamForm.controls['id'].value;
-      //team.ownerId = this.teamForm.controls['ownerId'].value;
       team.ownerEmail = this.teamForm.controls['ownerEmail'].value;
       team.teamName = this.teamForm.controls['name'].value;
       team.teamDescription = this.teamForm.controls['description'].value;
@@ -82,9 +76,7 @@ export class TeamFormComponent implements OnInit {
         .subscribe((updatedTeam: Team) => {
           this.teamUpdated.emit(updatedTeam);
         }, err => console.log(err));
-    }
-    else {
-      //team.ownerId = this.authService.getCurrentUserId();
+    } else {
       team.ownerEmail = this.authService.getEmail();
       team.teamName = this.teamForm.controls['name'].value;
       team.teamDescription = this.teamForm.controls['description'].value;

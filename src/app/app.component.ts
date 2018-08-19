@@ -1,3 +1,4 @@
+import { Account } from './models/Account';
 import { AuthService } from './services/auth.service';
 import { Component } from '@angular/core';
 
@@ -7,30 +8,44 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  brand: string = 'lean';
-  isCollapsed: boolean = true;
+  brand = 'lean';
+  isCollapsed = true;
+  user: Account;
 
   /**
    * We could use AppComponent for login logic and inject the
-   * required services to handle this since the navbar includes 
-   * a login button. 
+   * required services to handle this since the navbar includes
+   * a login button.
    */
   constructor(private authService: AuthService) {
-    // this.userName = this.authService.getCurrentUserName();
+    if (this.isCurrentUser()) {
+      this.authService.getUserAccountByEmail(this.authService.getEmail())
+        .subscribe(user => {
+          this.user = user;
+        }, err => console.log(err));
+    }
   }
 
   /**
-   * Logout 
+   * Logout
    */
   logout() {
     this.authService.logout();
+    this.user = null;
   }
 
   /**
    * Check to see if a user is logged in
    */
   isCurrentUser() {
-    let jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
     return jwt != null;
+  }
+
+  onUserLoggedIn() {
+    this.authService.getUserAccountByEmail(this.authService.getEmail())
+      .subscribe(user => {
+        this.user = user;
+      }, err => console.log(err));
   }
 }

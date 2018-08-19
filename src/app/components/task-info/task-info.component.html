@@ -27,13 +27,13 @@
     <div class="card-footer">
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-block btn-danger" (click)="removeTask()">Remove</button>
+          <button type="button" class="btn btn-block btn-danger" (click)="removeTask()" *ngIf="taskBelongsToMe">Remove</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-block btn-success" (click)="completeTask()">Complete</button>
+          <button type="button" class="btn btn-block btn-success" (click)="completeTask()" *ngIf="taskBelongsToMe">Complete</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
+          <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#editModal" *ngIf="taskBelongsToMe">Edit</button>
         </div>
       </div>
     </div>

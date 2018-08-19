@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
 
 @Component({
@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from '../../../../node_modules/@an
   styleUrls: ['./login-form.component.css']
 })
 export class LoginFormComponent implements OnInit {
+  @Output() userLoggedIn = new EventEmitter();
   public loginForm: FormGroup;
 
   constructor(private authService: AuthService,
@@ -33,14 +34,15 @@ export class LoginFormComponent implements OnInit {
             this.authService.setCurrentUser(account);
             this.authService.setEmail();
             this.clear();
+            this.userLoggedIn.emit();
             this.router.navigate(['/tasks']);
-          }, (err) => { 
+          }, err => {
             console.log(err);
-            this.clear(); 
+            this.clear();
           });
-      }, (err) => {
+      }, err => {
         console.log(err);
-        alert("Invalid login credentials");
+        alert('Invalid login credentials');
         this.clear();
         this.router.navigate(['/home']);
       });

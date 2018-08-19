@@ -1,12 +1,18 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
         <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
+<<<<<<< HEAD
         <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link pull-right" (click)="logout()">Logout</a></h4>
+=======
+        <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link" (click)="logout()">Logout</a></h4>
+        <ul *ngIf="user" class="navbar-nav ml-auto"><h4 class="lean-text">{{ user.firstName }}</h4></ul>
+        
+>>>>>>> 7e16d066e4495d4b0226cad0ab17ea8daf4401b9
     </div>
     
     <div class="row mr-0">
         <div class="col-2 pr-0">
-            <sidebar></sidebar>
+            <sidebar (userLoggedIn)="onUserLoggedIn($event)"></sidebar>
         </div>
         <div class="col pl-0 pr-0">
             <router-outlet></router-outlet>

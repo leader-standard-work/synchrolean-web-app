@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./team-list.component.css']
 })
 export class TeamListComponent implements OnInit, OnDestroy {
-  public pageTitle: string = 'Teams';  // Page title
+  public pageTitle = 'Teams';  // Page title
   public allTeams: Team[] = []; // List of teams from the TeamService
   public myTeams: Team[] = []; // List of teams user is on
   public myList = false;
@@ -21,11 +21,9 @@ export class TeamListComponent implements OnInit, OnDestroy {
     private router: Router,
     private accountService: AccountService,
     private authService: AuthService) {
-    console.log('TeamListComponent: Created');
     this.navigationSubscription = this.router.events
       .subscribe((e: any) => {
-        if(e instanceof NavigationEnd) {
-          console.log("TeamListComponent: Updating teams list");
+        if (e instanceof NavigationEnd) {
           this.teamService.updateObservableState(this.allTeams);
           this.teamService.updateObservableState(this.myTeams);
         }
@@ -37,7 +35,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
    * the teams.
    */
   ngOnInit() {
-    console.log('TeamListComponent: Fetching teams');
     // Grab the teams from the team service
     this.getAllTeams();
     this.getMyTeams();
@@ -49,26 +46,20 @@ export class TeamListComponent implements OnInit, OnDestroy {
    * Gets all teams.
    */
   getAllTeams() {
-    console.log('TeamListComponent: Getting all teams');
     this.teamService.getAllTeams()
       .subscribe((teams: Team[]) => {
         this.allTeams = teams;
-      }, (err) => {
-        console.log(err)
-      });
+      }, err => console.log(err));
   }
 
   /**
    * Filters out my teams.
    */
   getMyTeams() {
-    console.log('TeamListComponent: Filtering out my teams');
     this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
       .subscribe((teams: Team[]) => {
         this.myTeams = teams;
-      }, (err) => {
-        console.log(err);
-      })
+      }, err => console.log(err));
   }
 
   /**
@@ -78,8 +69,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
    * team list.
    */
   onTeamAdded(newTeam: Team) {
-    console.log("Added new team")
-    console.log(newTeam);
     this.allTeams.push(newTeam);
     this.myTeams.push(newTeam);
     this.teamService.updateObservableState(this.allTeams);
@@ -87,9 +76,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    console.log("TeamListComponent: Destroyed");
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
     }

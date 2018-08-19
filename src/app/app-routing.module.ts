@@ -10,7 +10,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
-import { TaskListComponent } from './components/task-list/task-list.component';
 import { RollupComponent } from './components/rollup/rollup.component';
 import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 
@@ -28,7 +27,7 @@ const routes: Routes = [
   { path: 'teams/:id/invite', component: InviteMemberComponent, canActivate: [AuthGuard] },
   { path: 'teams/:id/metrics', component: TeamMetricsComponent, canActivate: [AuthGuard] },
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
-  { path: 'users/:email/tasks', component: TaskListComponent, canActivate: [AuthGuard] },
+  { path: 'users/:email/tasks', component: TaskPageComponent, canActivate: [AuthGuard] },
   { path: 'rollup/:id', component: RollupComponent, canActivate: [AuthGuard] }
 ];
 

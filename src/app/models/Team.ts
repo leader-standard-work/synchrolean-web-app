@@ -8,6 +8,6 @@ export class Team {
     ownerEmail: string;
     teamName: string;
     teamDescription: string;
-    
+
     constructor() {}
 }
