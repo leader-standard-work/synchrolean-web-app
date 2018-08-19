@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 export class TaskTableComponent implements OnInit {
   @Input() tasks: Task[];
   @Input() ownerEmail: string;
+  public complete = 'Complete';
+  public incomplete = 'Incomplete';
 
   constructor(private authService: AuthService) { }
 

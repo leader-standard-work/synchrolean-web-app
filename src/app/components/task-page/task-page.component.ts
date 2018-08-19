@@ -22,8 +22,6 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   private permissions: Permission[] = [];
   public viewerIsOwner: boolean;
   public ownerEmail: string;
-  public complete = 'Complete';
-  public incomplete = 'Incomplete';
   public metrics: Metric[] = [];
   public teamMetrics: number;
 
