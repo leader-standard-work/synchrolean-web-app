@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../../services/auth.service';
+import { Account } from './../../models/Account';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

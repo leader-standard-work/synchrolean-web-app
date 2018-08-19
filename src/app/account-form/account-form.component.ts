@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -16,11 +16,8 @@ export class AccountFormComponent implements OnInit {
   public accountForm: FormGroup;
   private passwordValidatorArray = [];
   private nameValidatorArray = [];
-  @Input() private newAccount: EventEmitter<Account>; // Event emitter for creating a new account
 
-  constructor(private accountService: AccountService,
-    private authService: AuthService,
-    private router: Router) { 
+  constructor(private accountService: AccountService) { 
       // Validation setup
       this.passwordValidatorArray.push(Validators.required);
       this.passwordValidatorArray.push(Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}"));
@@ -28,7 +25,6 @@ export class AccountFormComponent implements OnInit {
       this.nameValidatorArray.push(Validators.maxLength(25));
 
       this.action = 'Create a new account';
-      this.newAccount = new EventEmitter<Account>();
     }
 
   ngOnInit() {
@@ -62,8 +58,6 @@ export class AccountFormComponent implements OnInit {
     account.password = this.accountForm.controls['password'].value;
     this.accountService.addAccount(account)
       .subscribe((newAcc) => {
-        console.log(newAcc);
-        this.newAccount.emit(newAcc);
         this.clear();
       }, (err) => { console.log(err) });
   }

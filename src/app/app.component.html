@@ -1,8 +1,9 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
         <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
-        <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link" (click)="logout()">Logout</a></h4>
+        <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link pull-right" (click)="logout()">Logout</a></h4>
     </div>
+    
     <div class="row mr-0">
         <div class="col-2 pr-0">
             <sidebar></sidebar>
