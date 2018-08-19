@@ -1,38 +1,46 @@
 <section class="jumbotron text-center">
-  <h2 class="display-2">My Invites</h2>
-</section>
-
-<div class="container" *ngIf="isTeamNames">
-  <ul class="list-group">
-    <li class="list-group-item list-group-item-action flex-column align-items-start"
-      *ngFor="let invite of invites; let i = index">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <h3>{{ inviterTeams[i].teamName }}</h3>
-            <h5>{{ invite.inviterEmail }}</h5>
-          </div>
-          <div class="col">
-            <h4>{{ inviterTeams[i].teamName }} would like you to join their team.</h4>
-          </div>
-          <div class="col">
-            <div class="btn-group">
-              <button type="button" class="btn btn-success btn-md" (click)="acceptTeamInvite(invite)">
-                Accept
-              </button>
-              <button type="button" class="btn btn-danger btn-md" (click)="declineTeamInvite(invite)">
-                Decline
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <h2 class="display-2">Invites</h2>
+  <hr>
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a class="nav-link" (click)="displayPending = false;">My Invites</a>
+    </li>
+    <li class="list-inline-item">
+      <a class="nav-link" (click)="displayPending = true;">Pending Invites</a>
     </li>
   </ul>
-</div>
+</section>
 
-<div class="container text-center" *ngIf="!isTeamNames">
-  <h5 class="display-5">
-    You currently have no team invitations.
-  </h5>
+<div class="container">
+  <table class="table table-bordered table-hover" [hidden]="displayPending">
+    <thead class="lean-bg">
+      <th scope="col" class="lean-text">Team</th>
+      <th scope="col" class="lean-text">From</th>
+      <th scope="col" class="lean-text">Status</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invite of invites; let i = index">
+        <td>The Avengers</td>
+        <td>{{ invite.inviterEmail }}</td>
+        <td>
+          <div class="btn-group d-flex">
+            <button type="button" class="btn btn-success btn-md w-100" (click)="acceptTeamInvite(invite)">Acc</button>
+            <button type="button" class="btn btn-danger btn-md w-100" (click)="declineTeamInvite(invite)">Dec</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-bordered table-hover" [hidden]="!displayPending" *ngIf="pending">
+    <thead class="lean-bg">
+      <th scope="col" class="lean-text">To</th>
+      <th scope="col" class="lean-text">Email</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invite of pending">
+        <td>{{ invite.inviteeEmail }}</td>
+        <td>{{ invite.inviteeEmail }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

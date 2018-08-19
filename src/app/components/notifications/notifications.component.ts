@@ -11,27 +11,23 @@ import { Team } from '../../models/Team';
 })
 export class NotificationsComponent implements OnInit {
   public invites: AddUserRequest[]; // List of all invites a user has
-  public toAuthorize: AddUserRequest[]; // List of all invites that an owner needs to authorize
-  public inviterTeams: Team[];
-  public isTeamNames: boolean = false;
+  public pending: AddUserRequest[]; // List of invites a user has sent that are pending
+  public displayPending: boolean = false;
 
   constructor(private teamService: TeamService,
     private router: Router) {}
 
   ngOnInit() {
     // Grab the notifications from the team service
-    this.inviterTeams = [];
     this.teamService.fetchTeamInvites()
       .subscribe((invites) => { 
         this.invites = invites;
-        this.invites.forEach(invite => {
-          this.teamService.getTeam(invite.teamId)
-            .subscribe((team) => {
-              this.inviterTeams.push(team);
-              this.isTeamNames = true;
-          }, (err) => { console.log(err) });
-        })
       }, (err) => { console.log(err) });
+
+    this.teamService.getCreatedInvites()
+      .subscribe((createdInvites) => {
+        this.pending = createdInvites;
+      }, (err) => { console.log(err) })
   }
 
   /**
