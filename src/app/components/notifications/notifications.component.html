@@ -14,13 +14,13 @@
 <div class="container">
   <table class="table table-bordered table-hover" [hidden]="displayPending">
     <thead class="lean-bg">
-      <th scope="col" class="lean-text">Team</th>
       <th scope="col" class="lean-text">From</th>
+      <th scope="col" class="lean-text">Email</th>
       <th scope="col" class="lean-text">Status</th>
     </thead>
     <tbody>
       <tr *ngFor="let invite of invites; let i = index">
-        <td>The Avengers</td>
+        <td>{{ inviterAccounts[i].firstName }} {{ inviterAccounts[i].lastName }}</td>
         <td>{{ invite.inviterEmail }}</td>
         <td>
           <div class="btn-group d-flex">
@@ -37,8 +37,8 @@
       <th scope="col" class="lean-text">Email</th>
     </thead>
     <tbody>
-      <tr *ngFor="let invite of pending">
-        <td>{{ invite.inviteeEmail }}</td>
+      <tr *ngFor="let invite of pending; let i = index">
+        <td>{{ pendingAccounts[i].firstName }} {{ pendingAccounts[i].lastName }}</td>
         <td>{{ invite.inviteeEmail }}</td>
       </tr>
     </tbody>
