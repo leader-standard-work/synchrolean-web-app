@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
 
   // Route guard
   canActivate(): boolean {
-    let token = localStorage.getItem('jwt');
+    const token = localStorage.getItem('jwt');
 
     // Check to make sure the token is there
     if (token) {

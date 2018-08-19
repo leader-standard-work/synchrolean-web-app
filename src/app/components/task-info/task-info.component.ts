@@ -31,7 +31,7 @@ export class TaskInfoComponent implements OnInit {
         this.task = loadedTask;
         this.taskBelongsToMe = this.task.ownerEmail === this.authService.getEmail();
         this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   /**
@@ -48,13 +48,12 @@ export class TaskInfoComponent implements OnInit {
    */
   completeTask() {
     this.task.isCompleted = true;
-    console.log('Before', this.task);
     this.taskService.editTask(this.task)
       .subscribe((completedTask) => {
         this.task = completedTask;
         alert('Task successfully completed');
         this.router.navigate(['/tasks']);
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   /**
@@ -67,7 +66,7 @@ export class TaskInfoComponent implements OnInit {
         this.task = removedTask;
         alert('Task successfully deleted');
         this.router.navigate(['/tasks']);
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   /**
@@ -76,7 +75,7 @@ export class TaskInfoComponent implements OnInit {
    */
   getWeekdaysAsArray(weekdays: number) {
     let days: number = weekdays;
-    let weekdaysArray: string[] = [];
+    const weekdaysArray: string[] = [];
     for (let i = 0; days > 0; i++) {
         if (days & 1) {
             weekdaysArray.push(Weekdays[i].fullName);

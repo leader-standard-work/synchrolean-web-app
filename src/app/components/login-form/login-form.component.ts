@@ -36,11 +36,11 @@ export class LoginFormComponent implements OnInit {
             this.clear();
             this.userLoggedIn.emit();
             this.router.navigate(['/tasks']);
-          }, (err) => {
+          }, err => {
             console.log(err);
             this.clear();
           });
-      }, (err) => {
+      }, err => {
         console.log(err);
         alert('Invalid login credentials');
         this.clear();

@@ -31,9 +31,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private teamService: TeamService,
     private route: ActivatedRoute) {
-    console.log('TaskPageComponent: Created');
     this.route.params.subscribe(p => {
-      console.log(p);
       if (p['email']) {
         this.ownerEmail = p['email'] || null;
         this.viewerIsOwner = false;
@@ -46,7 +44,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
     this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
     .subscribe((teams) => {
       this.teams = teams;
-    }, (err) => { console.log(err); });
+    }, err => console.log(err));
   }
 
   /**
@@ -70,7 +68,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
       this.taskService.getAllTasks()
       .subscribe((tasks) => {
         this.tasks = tasks;
-      }, (err) => { console.log(err); });
+      }, err => console.log(err));
     } else {
       this.taskService.fetchTasks(this.ownerEmail)
         .subscribe((tasks: Task[]) => {
@@ -97,10 +95,10 @@ export class TaskPageComponent implements OnInit, OnDestroy {
                 newPermission.teamId = team.id;
                 newPermission.isPermitted = isPermitted;
                 this.permissions.push(newPermission);
-              }, (err) => console.log(err));
+              }, err => console.log(err));
           });
         }
-      }, (err) => console.log(err));
+      }, err => console.log(err));
   }
 
   userIsPermittedToSeeTeam(teamId: number) {

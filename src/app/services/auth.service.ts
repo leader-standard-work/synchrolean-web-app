@@ -19,7 +19,6 @@ export class AuthService {
    * @returns Observable containing the JWT for the session or error
    */
   login(email: string, password: string): Observable<any> {
-    console.log('AuthService: Logging user in');
     const endpoint = `${environment.baseServerUrl}/auth/login`;
     const credentials = { email, password };
     return this.http.post<any>(endpoint, credentials);
@@ -31,7 +30,6 @@ export class AuthService {
    * @returns The account associated with the email we are looking for
    */
   getUserAccountByEmail(email: string): Observable<Account> {
-    console.log('AuthService: Fetching user account');
     const endpoint = `${environment.baseServerUrl}/accounts/${email}`;
     return this.http.get<Account>(endpoint);
   }
@@ -65,7 +63,6 @@ export class AuthService {
    * Clears all information from localStorage to essentially logout a user
    */
   logout() {
-    console.log('AuthService: Loggint user out');
     this.currentUser = null;
     localStorage.removeItem('email');
     localStorage.removeItem('jwt');
@@ -76,11 +73,12 @@ export class AuthService {
    * @returns The current user's email address from localStorage
    */
   getEmail() {
-    let email = localStorage.getItem('email');
-    if (this.currentUser)
+    const email = localStorage.getItem('email');
+    if (this.currentUser) {
       return this.currentUser.email;
-    else if (email)
+    } else if (email) {
       return email;
+    }
   }
 
   /**

@@ -26,12 +26,12 @@ export class ChangeOwnerComponent implements OnInit {
         Validators.email,
         Validators.maxLength(50)
       ])
-    })
+    });
   }
 
   changeOwner() {
-    let email = this.newOwnerForm.controls['email'].value;
-    let oldOwnerEmail = this.team.ownerEmail;
+    const email = this.newOwnerForm.controls['email'].value;
+    const oldOwnerEmail = this.team.ownerEmail;
     // Validate account exists
     this.accountService.getAccountByEmail(email)
       .subscribe((account: Account) => {
@@ -47,28 +47,25 @@ export class ChangeOwnerComponent implements OnInit {
                 this.teamService.fetchTeamMembers(this.team.id)
                   .subscribe((newAccounts: Account[]) => {
                     this.accounts = newAccounts;
-                  })
+                  });
                 this.updatedAccounts.emit(this.accounts);
                 this.updatedTeam.emit(this.team);
-              }, (err) => {
+              }, err => {
                 // If remove member was unsuccessful, revert changes back to normal
+                console.log(err);
                 this.team.ownerEmail = oldOwnerEmail;
                 this.teamService.editTeam(this.team)
                   .subscribe(() => {
-                    //this.updatedAccounts.emit(this.accounts);
-                    //this.updatedTeam.emit(this.team);
-                  }, (err) => {
-                    console.log(err);
-                  });
+                    // this.updatedAccounts.emit(this.accounts);
+                    // this.updatedTeam.emit(this.team);
+                  }, err2 => console.log(err2));
               });
-          }, (err) => {
+          }, err => {
             this.team.ownerEmail = oldOwnerEmail;
             this.updatedTeam.emit(this.team);
             console.log(err);
           });
-      }, (err) => {
-        console.log(err);
-      });
+      }, err => console.log(err));
   }
 
 }

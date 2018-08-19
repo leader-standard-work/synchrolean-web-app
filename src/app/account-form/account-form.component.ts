@@ -20,10 +20,10 @@ export class AccountFormComponent implements OnInit {
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
-    private router: Router) { 
+    private router: Router) {
       // Validation setup
       this.passwordValidatorArray.push(Validators.required);
-      this.passwordValidatorArray.push(Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}"));
+      this.passwordValidatorArray.push(Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}'));
       this.nameValidatorArray.push(Validators.required);
       this.nameValidatorArray.push(Validators.maxLength(25));
 
@@ -54,7 +54,7 @@ export class AccountFormComponent implements OnInit {
   }
 
   addAccount() {
-    let account = new Account();
+    const account = new Account();
     account.firstName = this.accountForm.controls['firstName'].value;
     account.lastName = this.accountForm.controls['lastName'].value;
     account.email = this.accountForm.controls['email'].value;
@@ -62,29 +62,28 @@ export class AccountFormComponent implements OnInit {
     account.password = this.accountForm.controls['password'].value;
     this.accountService.addAccount(account)
       .subscribe((newAcc) => {
-        console.log(newAcc);
         this.newAccount.emit(newAcc);
         this.clear();
-      }, (err) => { console.log(err) });
+      }, err => console.log(err));
   }
 
   // Password case validations
   passwordMatch() {
-    return this.accountForm.controls['password'].value == this.accountForm.controls['confirmPassword'].value;
+    return this.accountForm.controls['password'].value === this.accountForm.controls['confirmPassword'].value;
   }
 
   hasUpper() {
-    let upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
+    const upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
     return upper;
   }
 
   hasLower() {
-    let lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
+    const lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
     return lower;
   }
 
   hasNumber() {
-    let number = (/[0-9]/.test(this.accountForm.controls['password'].value));
+    const number = (/[0-9]/.test(this.accountForm.controls['password'].value));
     return number;
   }
   // End case validations

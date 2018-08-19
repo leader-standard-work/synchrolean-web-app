@@ -12,9 +12,9 @@ import { FormGroup, FormBuilder } from '../../../../node_modules/@angular/forms'
   templateUrl: './team-metrics.component.html',
   styleUrls: ['./team-metrics.component.css']
 })
-export class TeamMetricsComponent implements OnInit { 
+export class TeamMetricsComponent implements OnInit {
   datePickerConfig: Partial<BsDatepickerConfig>;
-  public team: Team
+  public team: Team;
   rangeForm: FormGroup;
   public startDate: Date;
   public endDate: Date;
@@ -28,9 +28,9 @@ export class TeamMetricsComponent implements OnInit {
       this.route.params.subscribe(p => {
         this.team.id = p['id'];
       });
-      this.datePickerConfig = Object.assign({}, 
-        { 
-          containerClass: 'theme-dark-blue', 
+      this.datePickerConfig = Object.assign({},
+        {
+          containerClass: 'theme-dark-blue',
           showWeekNumbers: false,
       });
      }
@@ -39,27 +39,23 @@ export class TeamMetricsComponent implements OnInit {
     this.teamService.getTeam(this.team.id)
       .subscribe((loadedTeam) => {
         this.team = loadedTeam;
-      }, (err) => {
-        console.log(err);
-      })
+      }, err => console.log(err));
     this.rangeForm = this.formBuilder.group({
       range: null
-    })
+    });
   }
 
   getMetrics() {
-    let range = this.rangeForm.controls['range'].value;
+    const range = this.rangeForm.controls['range'].value;
     this.startDate = range[0];
     this.endDate = range[1];
     this.taskService.getTeamMetricsByDateRange(this.team.id, this.startDate, this.endDate)
       .subscribe((metrics) => {
-        if(!isNaN(metrics)) {
+        if (!isNaN(metrics)) {
           this.teamMetrics = metrics;
         } else {
           this.teamMetrics = 0;
         }
-      }, (err) => {
-        console.log(err);
-      });
+      }, (err) => console.log(err));
   }
 }

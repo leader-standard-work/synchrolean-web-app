@@ -8,6 +8,6 @@ export class AddUserRequest {
     inviterEmail: string;
     teamId: number;
     isAuthorized: boolean;
-    
+
     constructor() {}
 }

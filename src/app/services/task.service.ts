@@ -54,7 +54,7 @@ export class TaskService {
   /**
    * Gets the user's task metrics for the prior week
    * @param ownerId The id of the user we are retrieving metrics for
-   * @returns Observable<number> representing the user's task metrics 
+   * @returns Observable<number> representing the user's task metrics
    */
   getWeeklyTaskMetrics(email: string) {
     const startDate: string = this.getStartDate();
@@ -81,8 +81,8 @@ export class TaskService {
    * @returns Observable<number> representing the user's teams metrics
    */
   getAllUserTeamsMetrics(email: string): Observable<number> {
-    let startDate: string = this.getStartDate();
-    let endDate: string = this.getEndDate();
+    const startDate: string = this.getStartDate();
+    const endDate: string = this.getEndDate();
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/teams/${startDate}/${endDate}/${email}`;
     return this.http.get<number>(endpoint);
   }
@@ -116,9 +116,9 @@ export class TaskService {
    * @returns The start date for the user's weekly user/team metrics
    */
   getStartDate(): string {
-    let today = new Date();
-    let day = today.getDay();
-    let startDate = new Date();
+    const today = new Date();
+    const day = today.getDay();
+    const startDate = new Date();
     startDate.setDate(today.getDate() - (7 + day));
     return startDate.toDateString();
   }
@@ -128,9 +128,9 @@ export class TaskService {
    * @returns The start date for the user's weekly user/team metrics
    */
   getEndDate(): string {
-    let today = new Date();
-    let day = today.getDay();
-    let endDate = new Date();
+    const today = new Date();
+    const day = today.getDay();
+    const endDate = new Date();
     endDate.setDate(today.getDate() - (7 - (6 - day)));
     return endDate.toDateString();
   }

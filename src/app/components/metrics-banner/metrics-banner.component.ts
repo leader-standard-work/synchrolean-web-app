@@ -36,24 +36,20 @@ export class MetricsBannerComponent implements OnInit {
    * Get the users metrics from the prior week
    */
   getWeeklyUserMetrics() {
-    console.log('TaskPageComponent: Getting weekly user metrics');
     this.taskService.getWeeklyTaskMetrics(this.ownerEmail)
       .subscribe((metrics) => {
         const newMetric = new Metric();
+        newMetric.teamId = null;
+        newMetric.teamValue = null;
         if (!isNaN(metrics)) {
-          newMetric.teamId = null;
-          newMetric.teamValue = null;
           newMetric.userValue = metrics;
           this.metrics = newMetric;
-          console.log('UserMetrics: ', metrics);
         } else {
-          newMetric.teamId = null;
-          newMetric.teamValue = null;
           newMetric.userValue = 0;
           this.metrics = newMetric;
-          console.log('UserMetrics (isNaN): ', metrics);
         }
       }, (err) => {
+        console.log(err);
         const newMetric = new Metric();
         newMetric.teamId = null;
         newMetric.teamValue = null;
@@ -66,7 +62,6 @@ export class MetricsBannerComponent implements OnInit {
    * Get the users metrics from the prior week
    */
   getWeeklyTeamMetrics() {
-    console.log('TaskPageComponent: Getting weekly team metrics');
     this.taskService.getWeeklyTeamMetrics(this.teamId)
       .subscribe((fetchedTeamMetrics) => {
         this.taskService.getUserTeamMetrics(this.teamId, this.ownerEmail)

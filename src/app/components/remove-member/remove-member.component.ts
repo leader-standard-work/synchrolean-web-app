@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Account } from '../../models/Account';
 import { TeamService } from '../../services/team.service';
-import { listener } from '../../../../node_modules/@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-remove-member',
@@ -23,14 +22,11 @@ export class RemoveMemberComponent implements OnInit {
     this.teamService.removeTeamMember(this.teamId, this.email)
       .subscribe(() => {
         this.updatedAccounts.emit(this.accounts);
-      }, (err) => {
-        console.log(err);
-      });
+      }, err => console.log(err));
   }
 
   getEmail(email: string) {
     this.email = email;
-    console.log("email = ", email);
   }
 
 }
