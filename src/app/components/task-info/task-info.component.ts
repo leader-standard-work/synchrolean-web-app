@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Task, Weekdays } from '../../models/Task';
@@ -11,8 +12,11 @@ import { TaskService } from '../../services/task.service';
 export class TaskInfoComponent implements OnInit {
   public task: Task;
   public daysOfWeek: string[] = [];
+  public taskBelongsToMe = false;
 
-  constructor(private taskService: TaskService,
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router) { 
       this.task = new Task();
@@ -25,6 +29,7 @@ export class TaskInfoComponent implements OnInit {
     this.taskService.getTaskById(this.task.id)
       .subscribe((loadedTask) => {
         this.task = loadedTask;
+        this.taskBelongsToMe = this.task.ownerEmail === this.authService.getEmail();
         this.daysOfWeek = this.getWeekdaysAsArray(this.task.weekdays);
       }, (err) => { console.log(err) });
   }

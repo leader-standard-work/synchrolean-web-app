@@ -106,6 +106,9 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   }
 
   userIsPermittedToSeeTeam(teamId: number) {
+    if (this.viewerIsOwner) {
+      return true;
+    }
     const teamPermission = this.permissions.find(permission => permission.teamId === teamId);
     if (teamPermission) {
       return teamPermission.isPermitted;
