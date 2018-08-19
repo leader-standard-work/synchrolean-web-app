@@ -10,5 +10,5 @@
   </ul>
 </nav>
 
-<login-form></login-form>
+<login-form (userLoggedIn)="onUserLoggedIn($event)"></login-form>
 <account-form (newAccount)="onCreateAccount($event)"></account-form>
