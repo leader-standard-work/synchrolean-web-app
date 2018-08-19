@@ -1,3 +1,5 @@
+import { TeamService } from './../../services/team.service';
+import { ActivatedRoute } from '@angular/router';
 import { Metric } from './../../models/Metric';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -6,6 +8,7 @@ import { Task } from '../../models/Task';
 import { AuthService } from '../../services/auth.service';
 import { Team } from '../../models/Team';
 import { AccountService } from '../../services/account.service';
+import { Permission } from '../../models/Permission';
 
 @Component({
   selector: 'task-page',
@@ -15,16 +18,32 @@ import { AccountService } from '../../services/account.service';
 export class TaskPageComponent implements OnInit, OnDestroy {
   // public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
-  private teams: Team[];
+  private teams: Team[] = [];
+  private permissions: Permission[] = [];
+  public viewerIsOwner: boolean;
+  public ownerEmail: string;
   public complete = 'Complete';
   public incomplete = 'Incomplete';
   public metrics: Metric[] = [];
   public teamMetrics: number;
 
-  constructor(private taskService: TaskService,
+  constructor(
+    private taskService: TaskService,
     private authService: AuthService,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private teamService: TeamService,
+    private route: ActivatedRoute) {
     console.log('TaskPageComponent: Created');
+    this.route.params.subscribe(p => {
+      console.log(p);
+      if (p['email']) {
+        this.ownerEmail = p['email'] || null;
+        this.viewerIsOwner = false;
+      } else {
+        this.ownerEmail = this.authService.getEmail();
+        this.viewerIsOwner = true;
+      }
+    });
     // Fetch the teams the user is on so they can pick which team the task belongs to
     this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
     .subscribe((teams) => {
@@ -37,10 +56,8 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * is displayed to the end user
    */
   ngOnInit() {
-    console.log('TaskPageComponent: Fetching tasks');
     this.getUserTeams();
     this.getAllTasks();
-    this.getWeeklyUserMetrics();
   }
 
   ngOnDestroy() {
@@ -51,25 +68,48 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * Get all tasks for the current user
    */
   getAllTasks() {
-    console.log('TaskPageComponent: Getting all tasks');
-    this.taskService.getAllTasks()
+    if (this.viewerIsOwner) {
+      this.taskService.getAllTasks()
       .subscribe((tasks) => {
         this.tasks = tasks;
-      }, (err) => { console.log(err) });
+      }, (err) => { console.log(err); });
+    } else {
+      this.taskService.fetchTasks(this.ownerEmail)
+        .subscribe((tasks: Task[]) => {
+          this.tasks = tasks;
+        }, err => console.log(err));
+    }
   }
 
   /**
    * Get all teams for the current user
    */
   getUserTeams() {
-    console.log('TaskPageComponent: Getting all teams');
-    this.accountService.getTeamsByAccountEmail(this.authService.getEmail())
+    this.accountService.getTeamsByAccountEmail(this.ownerEmail)
       .subscribe((teams) => {
         this.teams = teams;
-        // Teams need to be fetched before
-        // we can fetch the team metrics
-        this.getWeeklyTeamMetrics();
-      }, (err) => { console.log(err); });
+        if (!this.viewerIsOwner) {
+          // If the user is viewing another member's page
+          // determine the permissions they have for the
+          // member's teams.
+          this.teams.forEach(team => {
+            this.teamService.userIsPermittedToSeeTeam(team.id)
+              .subscribe((isPermitted) => {
+                const newPermission = new Permission();
+                newPermission.teamId = team.id;
+                newPermission.isPermitted = isPermitted;
+                this.permissions.push(newPermission);
+              }, (err) => console.log(err));
+          });
+        }
+      }, (err) => console.log(err));
+  }
+
+  userIsPermittedToSeeTeam(teamId: number) {
+    const teamPermission = this.permissions.find(permission => permission.teamId === teamId);
+    if (teamPermission) {
+      return teamPermission.isPermitted;
+    }
   }
 
   getFilteredTasks(teamId: number) {
@@ -81,69 +121,7 @@ export class TaskPageComponent implements OnInit, OnDestroy {
    * @param newTask The new task to add to the list
    */
   onTaskAdded(newTask: Task) {
-    console.log('TaskPageComponent: Adding task and updating observable state');
     this.tasks.push(newTask);
     this.taskService.updateObservableState(this.tasks);
-  }
-
-  /**
-   * Get the users metrics from the prior week
-   */
-  getWeeklyUserMetrics() {
-    console.log('TaskPageComponent: Getting weekly user metrics');
-    this.taskService.getWeeklyTaskMetrics(this.authService.getEmail())
-      .subscribe((metrics) => {
-        const newMetric = new Metric();
-        if (!isNaN(metrics)) {
-          newMetric.teamId = null;
-          newMetric.teamValue = null;
-          newMetric.userValue = metrics;
-          this.metrics.push(newMetric);
-          console.log('UserMetrics: ', metrics);
-        } else {
-          newMetric.teamId = null;
-          newMetric.teamValue = null;
-          newMetric.userValue = 0;
-          this.metrics.push(newMetric);
-          console.log('UserMetrics (isNaN): ', metrics);
-        }
-      }, (err) => {
-        const newMetric = new Metric();
-        newMetric.teamId = null;
-        newMetric.teamValue = null;
-        newMetric.userValue = 0;
-        this.metrics.push(newMetric);
-      });
-  }
-
-  getFilteredMetrics(teamId: number) {
-    const filteredMetrics = this.metrics.find(metric => metric.teamId === teamId);
-    if (filteredMetrics) {
-      return filteredMetrics;
-    } else {
-      return new Metric();
-    }
-  }
-
-  /**
-   * Get the users metrics from the prior week
-   */
-  getWeeklyTeamMetrics() {
-    console.log('TaskPageComponent: Getting weekly team metrics');
-    this.teams.forEach(team => {
-      this.taskService.getWeeklyTeamMetrics(team.id)
-        .subscribe((fetchedTeamMetrics) => {
-          this.taskService.getUserTeamMetrics(team.id, this.authService.getEmail())
-            .subscribe((fetchedUserMetrics) => {
-              const teamMetrics = (!isNaN(fetchedTeamMetrics)) ? fetchedTeamMetrics : 0;
-              const userMetrics = (!isNaN(fetchedUserMetrics)) ? fetchedUserMetrics : 0;
-              const newMetric = new Metric();
-              newMetric.teamId = team.id;
-              newMetric.teamValue = teamMetrics;
-              newMetric.userValue = userMetrics;
-              this.metrics.push(newMetric);
-            }, (err) => { console.log(err); });
-        }, (err) => { console.log(err); });
-    });
   }
 }

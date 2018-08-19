@@ -2,7 +2,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -25,7 +25,6 @@ import { AccountFormComponent } from './account-form/account-form.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
-import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -45,7 +44,6 @@ import { MetricsBannerComponent } from './components/metrics-banner/metrics-bann
     TeamInfoComponent,
     NotificationsComponent,
     AccountFormComponent,
-    TaskListComponent,
     TaskInfoComponent,
     LoginFormComponent,
     SidebarComponent,

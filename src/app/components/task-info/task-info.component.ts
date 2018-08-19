@@ -46,9 +46,9 @@ export class TaskInfoComponent implements OnInit {
     console.log('Before', this.task);
     this.taskService.editTask(this.task)
       .subscribe((completedTask) => {
-        console.log('Response', completedTask);
         this.task = completedTask;
-        console.log('Task is now', this.task);
+        alert('Task successfully completed');
+        this.router.navigate(['/tasks']);
       }, (err) => { console.log(err) });
   }
 

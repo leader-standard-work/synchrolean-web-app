@@ -80,6 +80,11 @@ export class TeamService {
     return this.http.get<Team>(endpoint);
   }
 
+  userIsPermittedToSeeTeam(teamId: number): Observable<boolean> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}permissions/team/${teamId}`;
+    return this.http.get<boolean>(endpoint);
+  }
+
   /**
    * Fetches all team members for the team with the specified id.
    * @param teamId The id of the team to fetch the members of
