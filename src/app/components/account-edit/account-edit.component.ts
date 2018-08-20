@@ -48,8 +48,8 @@ export class AccountEditComponent implements OnInit {
         Validators.compose(this.passwordValidatorArray)
       ])
     });
-    console.log("AccountEditComponent: account = ", this.account);
     this.setFormValue();
+    console.log("AccountEditComponent: account = ", this.account);
   }
   
   // Password case validations

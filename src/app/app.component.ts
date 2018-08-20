@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   brand = 'lean';
-  isCollapsed = true;
-  user: Account;
+  public isCollapsed = true;
+  public user: Account;
 
   /**
    * We could use AppComponent for login logic and inject the

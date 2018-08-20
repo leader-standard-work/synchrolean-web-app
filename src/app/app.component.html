@@ -1,13 +1,17 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
         <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
-        <!--<h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link" (click)="logout()">Logout</a></h4>-->
-        <!--<ul *ngIf="user" class="navbar-nav ml-auto"><h4 class="lean-text">{{ user.firstName }}</h4></ul>-->
-        <div class="dropdown ml-auto lean-bg" *ngIf="user">
-            <button class="dropbtn lean-bg"><h4 class="lean-text lean-bg">{{ user.firstName }}</h4></button>
-            <div class="dropdown-content">
-                <h4 *ngIf="isCurrentUser()"><a href="#" data-toggle="modal" data-target="#editAccountModal">Edit Account</a></h4>
-                <h4 *ngIf="isCurrentUser()"><a href="#" class="lean-text nav-link" (click)="logout()">Logout</a></h4>
+        <div class="dropdown ml-auto" *ngIf="user">
+            <button class="dropdown-toggle btn lean-bg lean-text" type="button" data-toggle="dropdown" id="userDropdown" 
+                aria-haspopup="true" aria-expanded="false">
+                {{ user.firstName }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                <a href="#" class="lean-text nav-link" data-toggle="modal" data-target="#editAccountModal" 
+                    *ngIf="isCurrentUser()">
+                    Edit Account
+                </a>
+                <a href="#" class="lean-text nav-link" *ngIf="isCurrentUser()" (click)="logout()">Logout</a>
             </div>
         </div>
     </div>
@@ -22,4 +26,6 @@
     </div>
 </div>
 
-<app-account-edit [account]="user" (updatedAccount)="updateAccount($event)"><app-account-edit>
+<div *ngIf="user">
+    <app-account-edit [account]="user" (updatedAccount)="updateAccount($event)"></app-account-edit>
+</div>
