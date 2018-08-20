@@ -31,7 +31,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TaskTableComponent } from './components/task-table/task-table.component';
 import { MetricsBannerComponent } from './components/metrics-banner/metrics-banner.component';
-import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -66,7 +65,6 @@ import { ChartsModule } from 'ng2-charts';
     CollapseModule,
     BsDropdownModule,
     BsDatepickerModule.forRoot(),
-    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
