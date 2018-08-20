@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../models/Account';
 import { AuthService } from '../../services/auth.service';
+import { Chart } from 'node_modules/chart.js';
 
 @Component({
   selector: 'app-team-metrics',
@@ -25,6 +26,7 @@ export class TeamMetricsComponent implements OnInit {
   public week: string[] = [];                 // each Sunday contained within startDate and endDate (including start and end dates)
   public accounts: Account[] = [];            // team members
   public accountPercentages: number[] = [];   // completion percentages per week per team member
+  LineChart = [];
 
   constructor(private teamService: TeamService,
     private taskService: TaskService,
@@ -60,6 +62,33 @@ export class TeamMetricsComponent implements OnInit {
     this.rangeForm = this.formBuilder.group({
       range: null
     });
+    this.LineChart = new Chart('lineChart', {
+      type: 'line',
+      data: {
+        labels: this.week,
+        datasets: [{
+          label: 'Team Metrics',
+          data: this.teamPercentages,
+          fill: false,
+          lineTension: 0.2,
+          borderColor: "red",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          tesxt: "Line Chart",
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    })
   }
 
   /**
@@ -98,6 +127,7 @@ export class TeamMetricsComponent implements OnInit {
         })
     }
     this.getWeeklyTeamMetrics();
+    this.fillTable();
     console.log('TeamMetricsComponent: accountPercentages = ', this.accountPercentages);
   }
 
@@ -109,7 +139,7 @@ export class TeamMetricsComponent implements OnInit {
       console.log('TeamMetricsComponent: for ' , this.week[i], ' thru ' , this.week[i + 1]);
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.week[i], this.week[i + 1])
         .subscribe((percentage) => {
-          this.teamPercentages.push(percentage);
+          this.teamPercentages.push(percentage * 100);
         })
     }
     console.log('TeamMetricsComponent: Team percentages: ', this.teamPercentages);
@@ -140,62 +170,38 @@ export class TeamMetricsComponent implements OnInit {
     console.log("TeamMetricsComponent: Weeks: ", this.week);
   }
 
-
-    // lineChart
-    public lineChartData:Array<any> = [
-      //{data: this.accountPercentages, label: 'Team Metrics'}
-      {data: this.teamPercentages, label: 'Team Metrics'}
-    ];
-    public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    public lineChartOptions:any = {
-      responsive: true
-    };
-    public lineChartColors:Array<any> = [
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  fillTable() {
+    this.LineChart = new Chart('lineChart', {
+      type: 'line',
+      data: {
+        labels: this.week,
+        datasets: [{
+          label: 'Team Metrics',
+          data: this.teamPercentages,
+          fill: false,
+          lineTension: 0.2,
+          borderColor: "red",
+          borderWidth: 1
+        }]
       },
-      { // dark grey
-        backgroundColor: 'rgba(77,83,96,0.2)',
-        borderColor: 'rgba(77,83,96,1)',
-        pointBackgroundColor: 'rgba(77,83,96,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(77,83,96,1)'
-      },
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-      }
-    ];
-    public lineChartLegend:boolean = true;
-    public lineChartType:string = 'line';
-  
-    public randomize():void {
-      let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-      for (let i = 0; i < this.lineChartData.length; i++) {
-        _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-        for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-          _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+      options: {
+        title: {
+          tesxt: "Line Chart",
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
         }
       }
-      this.lineChartData = _lineChartData;
-    }
-  
-    // events
-    public chartClicked(e:any):void {
-      console.log(e);
-    }
-  
-    public chartHovered(e:any):void {
-      console.log(e);
-    }
+    })
+  }
+
+  dateRangeSet() {
+    return this.week.length === 0;
+  }
+
 }
