@@ -20,7 +20,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Output() editedTask = new EventEmitter<Task>();
   public weekdays: number[];
   public availableDays: Weekday[];
-  private teams: Team[];
+  public teams: Team[];
   private loadedTask: Task;
 
   /**
