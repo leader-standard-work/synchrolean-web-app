@@ -3,8 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-  baseServerUrl: 'https://synchrolean-server.appspot.com/api'
+  production: false,
+  baseServerUrl: 'http://localhost:55542/api'
+  //production: true,
+  //baseServerUrl: 'https://synchrolean-server.appspot.com/api'
 };
 
 /*
