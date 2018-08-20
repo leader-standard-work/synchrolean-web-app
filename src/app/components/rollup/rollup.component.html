@@ -1,9 +1,67 @@
 <div class="container-fluid bg-light bg-secondary h-100 pl-0 pr-0">
   <section class="jumbotron text-center">
-    <h4 class="display-4">Weekly Rollup</h4>
+    <h2 class="display-2" *ngIf="team">{{ team.teamName }}</h2>
+    <h5 class="display-5 lead">Weekly Rollup</h5>
   </section>
 
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let task of rollupTasks">{{ task.name }}</li>
-  </ul>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-3">
+        <h5>Members</h5>
+        <ul class="list-group" *ngIf="teamMembers">
+          <li class="list-group-item" *ngFor="let member of teamMembers">
+            <p class="lead member-name" (click)="selectUserTasks(member.email)">
+              {{ member.firstName }} {{ member.lastName }}
+            </p>
+            <p>{{ member.email }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h5 class="display-5 member-name" (click)="showAll()">All Team Tasks</h5>
+        <ul class="list-group" *ngIf="rollupTasks && showAllTasks">
+          <li class="list-group-item tasks" *ngFor="let task of rollupTasks">
+            <div class="container">
+              <div class="row">
+                <div class="col-3">
+                  <p class="lead">{{ task.name }}</p>
+                </div>
+                <div class="col">
+                  <p>{{ task.description }}</p>
+                </div>
+                <div class="col-3">
+                  <h4 class="{{ task.isActive ? 'uncomplete' : 'complete' }}">
+                    {{ task.isActive ? uncomplete : complete }}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul class="list-group" *ngIf="rollupTasks && !showAllTasks">
+          <li class="list-group-item" *ngFor="let task of userTasks">
+            <div class="container">
+              <div class="row">
+                <div class="col-3">
+                  <p class="lead">{{ task.name }}</p>
+                </div>
+                <div class="col">
+                  <p>{{ task.description }}</p>
+                </div>
+                <div class="col">
+                  <p class="{{ task.isActive ? 'uncomplete' : 'complete' }}">
+                    {{ task.isActive ? uncomplete : complete }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
 </div>

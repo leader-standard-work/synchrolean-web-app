@@ -20,7 +20,7 @@ export class AccountFormComponent implements OnInit {
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router) { 
       // Validation setup
       this.passwordValidatorArray.push(Validators.required);
       this.passwordValidatorArray.push(Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}'));
