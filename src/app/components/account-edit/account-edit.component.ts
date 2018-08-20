@@ -28,56 +28,57 @@ export class AccountEditComponent implements OnInit {
 
   ngOnInit() {
     this.accountForm = new FormGroup({
-      firstName: new FormControl('', [
+      firstName: new FormControl(this.account.firstName, [
         Validators.compose(this.nameValidatorArray)
       ]),
-      lastName: new FormControl('', [
+      lastName: new FormControl(this.account.lastName, [
         Validators.compose(this.nameValidatorArray)
       ]),
       email: new FormControl(
         {value: null, disabled: true}, 
         Validators.required
       ),
-      oldPassword: new FormControl ('', [
-        Validators.compose(this.passwordValidatorArray)
-      ]),
-      password: new FormControl('', [
-        Validators.compose(this.passwordValidatorArray)
-      ]),
-      confirmPassword: new FormControl('', [
-        Validators.compose(this.passwordValidatorArray)
-      ])
+      // oldPassword: new FormControl ('', [
+      //   Validators.compose(this.passwordValidatorArray)
+      // ]),
+      // password: new FormControl('', [
+      //   Validators.compose(this.passwordValidatorArray)
+      // ]),
+      // confirmPassword: new FormControl('', [
+      //   Validators.compose(this.passwordValidatorArray)
+      // ])
     });
-    this.setFormValue();
-    console.log("AccountEditComponent: account = ", this.account);
+    // this.setFormValue();
+    // console.log("AccountEditComponent: account = ", this.account);
   }
   
   // Password case validations
-  passwordMatch() {
-    return this.accountForm.controls['password'].value === this.accountForm.controls['confirmPassword'].value;
-  }
+  // passwordMatch() {
+  //   return this.accountForm.controls['password'].value === this.accountForm.controls['confirmPassword'].value;
+  // }
 
-  hasUpper() {
-    const upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
-    return upper;
-  }
+  // hasUpper() {
+  //   const upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
+  //   return upper;
+  // }
 
-  hasLower() {
-    const lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
-    return lower;
-  }
+  // hasLower() {
+  //   const lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
+  //   return lower;
+  // }
 
-  hasNumber() {
-    const number = (/[0-9]/.test(this.accountForm.controls['password'].value));
-    return number;
-  }
+  // hasNumber() {
+  //   const number = (/[0-9]/.test(this.accountForm.controls['password'].value));
+  //   return number;
+  // }
 
   editAccount() {
     const editedAccount = new Account();
     editedAccount.firstName = this.accountForm.controls['firstName'].value;
     editedAccount.lastName = this.accountForm.controls['lastName'].value;
     editedAccount.email = this.account.email;
-    editedAccount.password = this.accountForm.controls['password'].value;
+    editedAccount.isDeleted = this.account.isDeleted;
+    // editedAccount.password = this.accountForm.controls['password'].value;
     this.accountService.updateAccount(editedAccount)
       .subscribe((updatedAccount) => {
         this.account = updatedAccount;
@@ -87,13 +88,12 @@ export class AccountEditComponent implements OnInit {
       }
   }
 
-  setFormValue() {
+  populateForm() {
     this.accountForm.setValue({
       firstName: this.account.firstName,
       lastName: this.account.lastName,
-      email: this.account.email,
-      password: this.account.password
-    })
+      email: this.account.email
+    });
   }
 
 }

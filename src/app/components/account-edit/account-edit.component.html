@@ -4,7 +4,7 @@
       <!-- Header content -->
       <div class="modal-header lean-bg">
         <h4 class="modal-title lean-text ml-auto mr-auto">Edit Account</h4>
-        <button type="button" class="close lean-text" data-dismiss="modal" (click)="setFormValue()">&times;</button>
+        <button type="button" class="close lean-text" data-dismiss="modal" (click)="populateForm()">&times;</button>
       </div>
 
       <!-- Body content -->
@@ -14,7 +14,7 @@
           <!-- First name -->
           <div class="form-group">
             <label for="firstName">First Name:</label>
-            <input *ngIf="account" type="text" class="form-control" formControlName="firstName" value="{{account.firstName}}">
+            <input *ngIf="account" type="text" class="form-control" formControlName="firstName">
             <div *ngIf="accountForm.controls['firstName'].invalid && accountForm.controls['firstName'].dirty">
               <p class="text-danger">A first name is required.</p>
             </div>
@@ -35,14 +35,10 @@
             <div class="col-sm-10">
               <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{account.email}}">
             </div>
-            <!--<input type="text" class="form-control" formControlName="email" value="{{account.email}}">
-            <div *ngIf="accountForm.controls['email'].invalid && accountForm.controls['email'].touched">
-              <p class="text-danger">An email is required.</p>
-            </div>-->
           </div>
 
           <!-- Passwords -->
-          <div class="form-group">
+          <!-- <div class="form-group">
             <div class="row">
               <label for="password">Old Password:</label>
               <input type="password" class="form-control" formControlName="oldPassword" placeholder="Enter new password">
@@ -69,18 +65,18 @@
                 <label class="text-danger" [hidden]="hasNumber()">Passwords must have at least one number.</label>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </form>
       </div>
 
       <!-- Footer content -->
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid || !passwordMatch()" 
+        <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid" 
           (click)="editAccount()" data-dismiss="modal">
           Edit Account
         </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="setFormValue()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="populateForm()">
           Cancel
         </button>
       </div>
