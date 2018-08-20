@@ -16,8 +16,11 @@ export class AccountFormComponent implements OnInit {
   public accountForm: FormGroup;
   private passwordValidatorArray = [];
   private nameValidatorArray = [];
+  @Output() userLoggedIn = new EventEmitter();
 
-  constructor(private accountService: AccountService) { 
+  constructor(private accountService: AccountService,
+    private authService: AuthService,
+    private router: Router) { 
       // Validation setup
       this.passwordValidatorArray.push(Validators.required);
       this.passwordValidatorArray.push(Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}'));
@@ -58,8 +61,28 @@ export class AccountFormComponent implements OnInit {
     account.password = this.accountForm.controls['password'].value;
     this.accountService.addAccount(account)
       .subscribe((newAcc) => {
-        this.clear();
-      }, err => console.log(err));
+        this.authService.login(account.email, account.password)
+          .subscribe((response) => {
+            const { token } = response;
+            this.authService.setSession(token);
+            this.authService.getUserAccountByEmail(account.email)
+              .subscribe((account) => {
+                this.authService.setCurrentUser(account);
+                this.authService.setEmail();
+                this.clear();
+                this.userLoggedIn.emit();
+                this.router.navigate(['/tasks']);
+              }, err => {
+                console.log(err);
+                this.clear();
+              });
+          }, err => {
+            console.log(err);
+            alert('Invalid login credentials');
+            this.clear();
+            this.router.navigate(['/home']);
+          });
+      });
   }
 
   // Password case validations

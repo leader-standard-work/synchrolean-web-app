@@ -18,7 +18,7 @@ import { Permission } from '../../models/Permission';
 export class TaskPageComponent implements OnInit, OnDestroy {
   // public pageTitle: string = this.authService.getCurrentUserName();  // Page title
   public tasks: Task[] = [];              // List of tasks from service
-  private teams: Team[] = [];
+  public teams: Team[] = [];
   private permissions: Permission[] = [];
   public viewerIsOwner: boolean;
   public ownerEmail: string;
@@ -122,5 +122,10 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   onTaskAdded(newTask: Task) {
     this.tasks.push(newTask);
     this.taskService.updateObservableState(this.tasks);
+  }
+
+  normalizeTeamName(teamName: string) {
+    console.log(teamName.replace(/ /g, ''));
+    return teamName.replace(/ /g, '');
   }
 }
