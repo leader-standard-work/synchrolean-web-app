@@ -48,4 +48,12 @@ export class AppComponent {
         this.user = user;
       }, err => console.log(err));
   }
+
+  getUser() {
+    return this.authService.getEmail();
+  }
+
+  updateAccount(updatedAccount: Account) {
+    this.user = updatedAccount;
+  }
 }

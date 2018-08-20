@@ -15,8 +15,7 @@ export class AccountService {
   private accountsSubject: BehaviorSubject<Account[]>;
   private accountsObservable: Observable<Account[]>;
 
-  constructor(private http: HttpClient,
-  private authService: AuthService) {
+  constructor(private http: HttpClient) {
     this.accountsSubject = new BehaviorSubject([]);
     this.accountsObservable = this.accountsSubject.asObservable();
   }
@@ -81,13 +80,8 @@ export class AccountService {
    * @param updatedAccount The client-side updated account object to send to the db
    * @returns              The newly updated account sent back from the server
    */
-  updateAccount(ownerId: number, updatedAccount: Account) {
-    const endpoint = environment.baseServerUrl + this.apiBase + ownerId;
-    let account: Account;
-    this.http.put(endpoint, updatedAccount, { withCredentials: true })
-      .subscribe((acc: Account) => {
-        account = acc;
-      }, err => console.log(err));
-    return account;
+  updateAccount(updatedAccount: Account): Observable<Account> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}`;
+    return this.http.put<Account>(endpoint, updatedAccount) 
   }
 }
