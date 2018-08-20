@@ -1,3 +1,4 @@
+import { WeeklyRollup } from './../models/WeeklyRollup';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -242,9 +243,9 @@ export class TeamService {
    * @param teamId The id of the team being rolled up on, yo
    * @returns Observable<Task[]> A list of all team members tasks for the team
    */
-  getTeamRollUp(teamId: number): Observable<Task[]> {
+  getTeamRollUp(teamId: number): Observable<WeeklyRollup> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}rollup/${teamId}`;
-    return this.http.get<Task[]>(endpoint);
+    return this.http.get<WeeklyRollup>(endpoint);
   }
 
   /**

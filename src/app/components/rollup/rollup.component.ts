@@ -1,3 +1,4 @@
+import { WeeklyRollup } from './../../models/WeeklyRollup';
 import { Team } from './../../models/Team';
 import { Task } from '../../models/Task';
 import { TeamService } from '../../services/team.service';
@@ -15,7 +16,9 @@ export class RollupComponent implements OnInit {
   private team: Team;
   public teamMembers: Account[];
   public rollupTasks: Task[];
+  public teamCompletion: number;
   public userTasks: Task[];
+  public rollup: WeeklyRollup;
 
   public complete: string = 'Done';
   public uncomplete: string = 'In Progress';
@@ -32,7 +35,12 @@ export class RollupComponent implements OnInit {
   ngOnInit() {
     this.teamService.getTeamRollUp(this.teamId)
       .subscribe((rollup) => {
-        this.rollupTasks = rollup;
+        this.rollupTasks = rollup.outstandingTasks;
+        if (isNaN(rollup.completion)) {
+          this.teamCompletion = 0;
+        } else {
+          this.teamCompletion = rollup.completion;
+        }
       }, err => console.log(err));
 
     this.teamService.getTeam(this.teamId)

@@ -125,7 +125,6 @@ export class TaskPageComponent implements OnInit, OnDestroy {
   }
 
   normalizeTeamName(teamName: string) {
-    console.log(teamName.replace(/ /g, ''));
     return teamName.replace(/ /g, '');
   }
 }
