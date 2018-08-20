@@ -48,7 +48,7 @@ export class AccountService {
    * @param email The email for the account you are looking to fetch
    * @returns       The account matching the supplied email
    */
-  getAccountByEmail(email: string) {
+  getAccountByEmail(email: string): Observable<Account> {
     const endpoint = environment.baseServerUrl + this.apiBase + email;
     return this.http.get<Account>(endpoint);
   }
@@ -83,5 +83,16 @@ export class AccountService {
   updateAccount(updatedAccount: Account): Observable<Account> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}`;
     return this.http.put<Account>(endpoint, updatedAccount) 
+  }
+
+  /**
+   * Changes the account password
+   * @param oldPassword The previous account password
+   * @param newPassword The new account password
+   */
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    const endpoint = `${environment.baseServerUrl}${this.apiBase}password`;
+    const credentials = { oldPassword, newPassword};
+    return this.http.post<any>(endpoint, credentials);
   }
 }

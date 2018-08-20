@@ -36,27 +36,35 @@
               <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{account.email}}">
             </div>
           </div>
-
+        </form>
+      </div>
+      <div class="modal-body">
+        <button type="submit" class="btn btn-primary" (click)="passwordChange()">Change Password</button>
+      </div>
+      <div class="modal-body" *ngIf="isPasswordChange">
+        <form [formGroup]="passwordForm">
           <!-- Passwords -->
-          <!-- <div class="form-group">
-            <div class="row">
-              <label for="password">Old Password:</label>
-              <input type="password" class="form-control" formControlName="oldPassword" placeholder="Enter new password">
-              <div *ngIf="accountForm.controls['oldPassword'].dirty">
-                <label class="text-danger">Enter new password.</label>
-                <br>
-              </div>
-              <label for="password">Password:</label>
-              <input type="password" class="form-control" formControlName="password">
-              <div *ngIf="accountForm.controls['password'].invalid && accountForm.controls['password'].dirty">
-                <label class="text-danger">A password is required.</label>
-                <br>
-              </div>
-              <label for="password">Confirm:</label>
-              <input type="password" class="form-control" formControlName="confirmPassword">
-              <div *ngIf="accountForm.controls['confirmPassword'].invalid && accountForm.controls['confirmPassword'].dirty && !passwordMatch()">
-                <p class="text-danger" *ngIf="!passwordMatch()">Passwords must match.</p>
-              </div>
+          <div class="form-group">
+            <label for="password">Old Password:</label>
+            <input type="password" class="form-control" formControlName="oldPassword" placeholder="Enter old password">
+            <div *ngIf="passwordForm.controls['oldPassword'].touched && passwordForm.controls['oldPassword'].invalid">
+              <label class="text-danger">Enter new password.</label>
+              <br>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" formControlName="newPassword" placeholder="Enter new password">
+            <div *ngIf="passwordForm.controls['newPassword'].invalid && passwordForm.controls['newPassword'].dirty">
+              <label class="text-danger">A password is required.</label>
+              <br>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Confirm New Password:</label>
+            <input type="password" class="form-control" formControlName="confirmNewPassword" placeholder="Confirm new password">
+            <div *ngIf="passwordForm.controls['confirmNewPassword'].invalid && passwordForm.controls['confirmNewPassword'].dirty">
+              <p class="text-danger" *ngIf="!passwordMatch()">Passwords must match.</p>
             </div>
             <div class="row">
               <div class="col pl-5 pt-2">
@@ -65,14 +73,13 @@
                 <label class="text-danger" [hidden]="hasNumber()">Passwords must have at least one number.</label>
               </div>
             </div>
-          </div> -->
-
+          </div>
         </form>
       </div>
 
       <!-- Footer content -->
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid" 
+        <button type="submit" class="btn btn-primary" [disabled]="(accountForm.invalid && !isPasswordChange) || (isPasswordChange && (passwordForm.invalid || !passwordMatch()))" 
           (click)="editAccount()" data-dismiss="modal">
           Edit Account
         </button>
