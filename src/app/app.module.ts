@@ -28,9 +28,10 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { TaskInfoComponent } from './components/task-info/task-info.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { BsDatepickerModule } from '../../node_modules/ngx-bootstrap/datepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TaskTableComponent } from './components/task-table/task-table.component';
 import { MetricsBannerComponent } from './components/metrics-banner/metrics-banner.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { MetricsBannerComponent } from './components/metrics-banner/metrics-bann
     BrowserAnimationsModule,
     CollapseModule,
     BsDropdownModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

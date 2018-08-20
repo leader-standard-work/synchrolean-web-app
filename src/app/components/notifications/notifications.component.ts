@@ -1,9 +1,9 @@
-import { AccountService } from './../../services/account.service';
-import { TeamService } from './../../services/team.service';
+import { AccountService } from '../../services/account.service';
+import { TeamService } from '../../services/team.service';
 import { Component, OnInit } from '@angular/core';
 import { AddUserRequest } from '../../models/AddUserRequest';
-import { Router } from '../../../../node_modules/@angular/router';
-import { Account } from './../../models/Account';
+import { Router } from '@angular/router';
+import { Account } from '../../models/Account';
 
 @Component({
   selector: 'notifications',

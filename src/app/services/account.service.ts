@@ -1,4 +1,4 @@
-import { Team } from './../models/Team';
+import { Team } from '../models/Team';
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -60,14 +60,9 @@ export class AccountService {
    * @param teamId The id of the team to retrieve accounts for
    * @returns      A list of accounts for users that belong to the given teamId
    */
-  getAccountsByTeamId(teamId: number) {
-    const endpoint = environment.baseServerUrl + 'teams/member/' + teamId;
-    let accounts: Account[];
-    this.http.get<Account[]>(endpoint, { withCredentials: true })
-      .subscribe((accs) => {
-        accounts = accs;
-      }, err => console.log(err));
-    return accounts;
+  getAccountsByTeamId(teamId:number): Observable<Account[]> {
+    const endpoint = environment.baseServerUrl + '/teams/members/' + teamId;
+    return this.http.get<Account[]>(endpoint)
   }
 
   /**

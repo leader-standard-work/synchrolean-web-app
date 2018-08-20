@@ -1,7 +1,7 @@
-import { TeamService } from './../../services/team.service';
-import { Team } from './../../models/Team';
+import { TeamService } from '../../services/team.service';
+import { Team } from '../../models/Team';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '../../../../node_modules/@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { AuthService } from '../../services/auth.service';
 

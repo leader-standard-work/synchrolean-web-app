@@ -1,5 +1,5 @@
-import { Task } from './../../models/Task';
-import { TeamService } from './../../services/team.service';
+import { Task } from '../../models/Task';
+import { TeamService } from '../../services/team.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 

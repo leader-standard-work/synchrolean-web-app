@@ -1,11 +1,11 @@
-import { Team } from './../../models/Team';
-import { AccountService } from './../../services/account.service';
+import { Team } from '../../models/Team';
+import { AccountService } from '../../services/account.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { TaskService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
-import { Task, Frequency, Weekdays, Weekday } from './../../models/Task';
+import { Task, Frequency, Weekdays, Weekday } from '../../models/Task';
 
 @Component({
   selector: 'task-form',
