@@ -31,6 +31,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TaskTableComponent } from './components/task-table/task-table.component';
 import { MetricsBannerComponent } from './components/metrics-banner/metrics-banner.component';
+import { AccountEditComponent } from './components/account-edit/account-edit.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { MetricsBannerComponent } from './components/metrics-banner/metrics-bann
     ChangeOwnerComponent,
     RemoveMemberComponent,
     TaskTableComponent,
-    MetricsBannerComponent
+    MetricsBannerComponent,
+    AccountEditComponent
   ],
   imports: [
     BrowserModule,
