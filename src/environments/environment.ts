@@ -4,9 +4,7 @@
 
 export const environment = {
   production: false,
-  baseServerUrl: 'http://localhost:55542/api'
-  //production: true,
-  //baseServerUrl: 'https://synchrolean-server.appspot.com/api'
+  baseServerUrl: 'https://synchrolean-server.appspot.com/api'
 };
 
 /*

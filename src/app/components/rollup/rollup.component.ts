@@ -13,7 +13,7 @@ import { Account } from './../../models/Account';
 })
 export class RollupComponent implements OnInit {
   private teamId: number;
-  private team: Team;
+  public team: Team;
   public teamMembers: Account[];
   public rollupTasks: Task[];
   public teamCompletion: number;
