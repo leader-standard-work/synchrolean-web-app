@@ -26,26 +26,26 @@ export class LoginFormComponent implements OnInit {
     const email = this.loginForm.controls['email'].value;
     const password = this.loginForm.controls['password'].value;
     this.authService.login(email, password)
-      .subscribe((response) => {
-        const { token } = response;
-        this.authService.setSession(token);
-        this.authService.getUserAccountByEmail(email)
-          .subscribe((account) => {
-            this.authService.setCurrentUser(account);
-            this.authService.setEmail();
-            this.clear();
-            this.userLoggedIn.emit();
-            this.router.navigate(['/tasks']);
-          }, err => {
-            console.log(err);
-            this.clear();
-          });
-      }, err => {
-        console.log(err);
-        alert('Invalid login credentials');
-        this.clear();
-        this.router.navigate(['/home']);
-      });
+    .subscribe((response) => {
+      const { token } = response;
+      this.authService.setSession(token);
+      this.authService.getUserAccountByEmail(email)
+        .subscribe((account) => {
+          this.authService.setCurrentUser(account);
+          this.authService.setEmail();
+          this.clear();
+          this.userLoggedIn.emit();
+          this.router.navigate(['/tasks']);
+        }, err => {
+          console.log(err);
+          this.clear();
+        });
+    }, err => {
+      console.log(err);
+      alert('Invalid login credentials');
+      this.clear();
+      this.router.navigate(['/home']);
+    });
   }
 
   clear() {
