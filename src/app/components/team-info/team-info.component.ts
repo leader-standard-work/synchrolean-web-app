@@ -1,11 +1,11 @@
-import { AddUserRequest } from './../../models/AddUserRequest';
-import { Account } from './../../models/Account';
-import { TeamService } from './../../services/team.service';
-import { TaskService } from './../../services/task.service';
-import { Team } from './../../models/Team';
+import { AddUserRequest } from '../../models/AddUserRequest';
+import { Account } from '../../models/Account';
+import { TeamService } from '../../services/team.service';
+import { TaskService } from '../../services/task.service';
+import { Team } from '../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { AccountService } from '../../services/account.service';
 
 @Component({

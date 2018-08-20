@@ -1,4 +1,4 @@
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Task, Weekdays } from '../../models/Task';
@@ -83,5 +83,9 @@ export class TaskInfoComponent implements OnInit {
         days >>= 1;
     }
     return weekdaysArray;
+  }
+
+  taskIsActive() {
+    return this.task.isActive;
   }
 }

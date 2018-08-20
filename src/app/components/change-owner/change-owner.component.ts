@@ -3,7 +3,7 @@ import { AccountService } from '../../services/account.service';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../models/Team';
 import { Account } from '../../models/Account';
-import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-change-owner',
@@ -41,26 +41,7 @@ export class ChangeOwnerComponent implements OnInit {
           .subscribe((team) => {
             // If team edit successful, remove owner from team
             this.team = team;
-            this.teamService.removeTeamMember(this.team.id, oldOwnerEmail)
-              .subscribe(() => {
-                // If remove owner from team successful, remove old owners account
-                this.teamService.fetchTeamMembers(this.team.id)
-                  .subscribe((newAccounts: Account[]) => {
-                    this.accounts = newAccounts;
-                  });
-                this.updatedAccounts.emit(this.accounts);
-                this.updatedTeam.emit(this.team);
               }, err => {
-                // If remove member was unsuccessful, revert changes back to normal
-                console.log(err);
-                this.team.ownerEmail = oldOwnerEmail;
-                this.teamService.editTeam(this.team)
-                  .subscribe(() => {
-                    // this.updatedAccounts.emit(this.accounts);
-                    // this.updatedTeam.emit(this.team);
-                  }, err2 => console.log(err2));
-              });
-          }, err => {
             this.team.ownerEmail = oldOwnerEmail;
             this.updatedTeam.emit(this.team);
             console.log(err);

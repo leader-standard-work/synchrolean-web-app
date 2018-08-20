@@ -1,9 +1,9 @@
-import { TeamService } from './../../services/team.service';
+import { TeamService } from '../../services/team.service';
 import { ActivatedRoute } from '@angular/router';
-import { Metric } from './../../models/Metric';
+import { Metric } from '../../models/Metric';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { TaskService } from './../../services/task.service';
+import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/Task';
 import { AuthService } from '../../services/auth.service';
 import { Team } from '../../models/Team';

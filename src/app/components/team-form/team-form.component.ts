@@ -1,7 +1,7 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from './../../services/auth.service';
-import { TeamService } from './../../services/team.service';
-import { Team } from './../../models/Team';
+import { AuthService } from '../../services/auth.service';
+import { TeamService } from '../../services/team.service';
+import { Team } from '../../models/Team';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 

@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Team } from '../models/Team';
 import { AddUserRequest } from '../models/AddUserRequest';
 import { Account } from '../models/Account';

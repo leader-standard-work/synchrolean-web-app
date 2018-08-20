@@ -1,4 +1,4 @@
-import { AccountService } from './../../services/account.service';
+import { AccountService } from '../../services/account.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Metric } from '../../models/Metric';
 import { TaskService } from '../../services/task.service';
