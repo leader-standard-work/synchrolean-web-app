@@ -56,3 +56,11 @@
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {z-index: 999}
+
+.home-brand:hover {
+    color: white;
+}
+
+.option:hover {
+    background-color: #e2e2e2;
+}

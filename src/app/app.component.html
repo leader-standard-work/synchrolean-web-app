@@ -1,17 +1,17 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
-        <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
+        <h4><a href="/home" class="lean-text nav-link home-brand">{{ brand | uppercase }}</a></h4>
         <div class="dropdown ml-auto" *ngIf="user">
             <button class="dropdown-toggle btn lean-bg lean-text" type="button" data-toggle="dropdown" id="userDropdown" 
                 aria-haspopup="true" aria-expanded="false">
-                {{ user.firstName }}
+                {{ user.firstName }} {{ user.lastName }}
             </button>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                <a href="#" class="lean-text nav-link" data-toggle="modal" data-target="#editAccountModal" 
+                <a href="#" class="lean-text nav-link option" data-toggle="modal" data-target="#editAccountModal" 
                     *ngIf="isCurrentUser()">
                     Edit Account
                 </a>
-                <a href="#" class="lean-text nav-link" *ngIf="isCurrentUser()" (click)="logout()">Logout</a>
+                <a href="#" class="lean-text nav-link option" *ngIf="isCurrentUser()" (click)="logout()">Logout</a>
             </div>
         </div>
     </div>
