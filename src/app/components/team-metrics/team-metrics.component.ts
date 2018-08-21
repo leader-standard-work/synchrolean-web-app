@@ -132,7 +132,6 @@ export class TeamMetricsComponent implements OnInit {
           console.log(err);
         })
     }
-    this.fillTable();
     console.log('TeamMetricsComponent: accountPercentages = ', this.accountPercentages);
   }
 
@@ -145,10 +144,13 @@ export class TeamMetricsComponent implements OnInit {
       console.log('TeamMetricsComponent: for ' , this.week[i], ' thru ' , this.week[i + 1]);
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.week[i], this.week[i + 1])
         .subscribe((percentage) => {
-          if(!isNaN(percentage))
+          if(!isNaN(percentage)) {
             this.teamPercentages.push(percentage * 100);
+            this.fillTable();
+          }
           else
             this.teamPercentages.push(0);
+          
         })
     }
     console.log('TeamMetricsComponent: Team percentages: ', this.teamPercentages);
