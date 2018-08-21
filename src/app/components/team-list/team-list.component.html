@@ -1,0 +1,37 @@
+<section class="jumbotron text-center mb-2">
+  <h3 class="display-3">Teams</h3>
+  <ul class="list-inline">
+    <li class="list-inline-item"><a class="nav-link" (click)="myList=false">All Teams</a></li>
+    <li class="list-inline-item"><a class="nav-link" (click)="myList=true">My Teams</a></li>
+    <li class="list-inline-item">
+      <a data-toggle="modal" data-target="#teamFormModal" class="nav-link">New Team</a>
+    </li> 
+  </ul>
+</section>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <table class="table table-bordered table-hover">
+        <thead class="lean-bg">
+          <tr>
+            <th scope="col" class="lean-text">Team Name</th>
+            <th scope="col" class="lean-text">Team Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let team of (myList ? myTeams : allTeams)">
+            <td style="width: 200px">
+              <a href="/teams/{{ team.id }}">{{ team.teamName }}</a>
+            </td>
+            <td style="width: 500px">{{ team.teamDescription }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+
+<app-team-form (teamAdded)="onTeamAdded($event)"></app-team-form>

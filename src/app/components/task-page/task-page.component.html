@@ -1,0 +1,29 @@
+<div class="nav nav-tabs btn-group lean-text header" style="width: 100%;">
+    <a class="active show btn btn-lg btn-outline-lean" data-toggle="tab" href="#All">All</a>
+    <a *ngIf="viewerIsOwner" class="btn btn-lg btn-outline-lean" data-toggle="tab" href="#Personal">Personal</a>
+    <a *ngFor="let team of teams" class="btn btn-lg btn-outline-lean" data-toggle="tab" href="#{{ normalizeTeamName(team.teamName) }}">{{ team.teamName }}</a>
+</div>
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade active show" id="All">
+    <app-metrics-banner [teamId]="null" [ownerEmail]="ownerEmail"></app-metrics-banner>
+    <app-task-table [tasks]="tasks" [ownerEmail]="ownerEmail"></app-task-table>
+  </div>
+  <div *ngIf="viewerIsOwner" class="tab-pane fade" id="Personal">
+    <app-metrics-banner [teamId]="null" [ownerEmail]="ownerEmail"></app-metrics-banner>
+    <app-task-table [tasks]="getFilteredTasks(null)" [ownerEmail]="ownerEmail"></app-task-table>
+  </div>
+  <ng-container *ngFor="let team of teams">
+    <div class="tab-pane fade" id="{{ normalizeTeamName(team.teamName) }}" *ngIf="userIsPermittedToSeeTeam(team.id)">
+      <app-metrics-banner [teamId]="team.id" [ownerEmail]="ownerEmail"></app-metrics-banner>
+      <app-task-table [tasks]="getFilteredTasks(team.id)" [ownerEmail]="ownerEmail"></app-task-table>
+    </div>
+    <div class="tab-pane fade" id="{{ normalizeTeamName(team.teamName) }}" *ngIf="!userIsPermittedToSeeTeam(team.id)">
+      <app-metrics-banner [teamId]="team.id" [ownerEmail]="ownerEmail"></app-metrics-banner>
+      <p class="text-muted pl-md-3">You do not have permissions to see tasks for this team.</p>
+    </div>
+  </ng-container>
+</div>
+
+<div class="modal" id="addModal">
+    <task-form (addedTask)="onTaskAdded($event)"></task-form>
+</div>

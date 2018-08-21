@@ -1,0 +1,81 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <!-- Header content -->
+    <div class="modal-header lean-bg">
+      <h4 class="modal-title lean-text">{{action}} Task</h4>
+      <button type="button" class="close" data-dismiss="modal" (click)="clear()">&times;</button>
+    </div>
+
+    <!-- Body content -->
+    <div class="modal-body">
+      <form [formGroup]="taskForm">
+        <div class="form-group">
+          <input type="text" class="form-control" formControlName="name" placeholder="Enter a task name">
+          <div *ngIf="taskForm.controls['name'].invalid && taskForm.controls['name'].touched">
+            <p class="text-danger">A task name between 4 and 40 characters is required.</p>
+          </div>
+        </div>
+        <hr>
+        <div class="form-group">
+          <textarea type="text" class="form-control" formControlName="description" placeholder="Enter a description"></textarea>
+          <div *ngIf="taskForm.controls['description'].invalid">
+            <p class="text-danger">Descriptions must be 250 characters or less.</p>
+          </div>
+        </div>
+        <hr>
+        <!-- Present team choices for the task to belong to -->
+        <div class="form-group text-center">
+          <p>Which team would you like to assign this task to?</p>
+          <div *ngFor="let team of teams">
+            <button type="button" class="btn btn-primary" (click)="setTaskTeamId(team.id)">
+              {{ team.teamName }}
+            </button>
+          </div>
+        </div>
+        <hr>
+        <!-- Frequency options for the user to choose -->
+        <div class="form-group text-center">
+          <p class="text-muted">How often does this task occur?</p>
+          <div class="btn-group lean-text">
+            <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(0)">Once</button>
+            <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(1)">Daily</button>
+            <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(2)">Weekly</button>
+            <!-- <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(3)">Monthly</button> -->
+          </div>
+        </div>
+        <div *ngIf="getFrequency() == 0">
+          <p class="text-succeed">Tasks that occur once are set for today's date.</p>
+        </div>
+        <div *ngIf="getFrequency() == 1">
+          <div class="form-group">
+            <p class="text-succeed">Tasks that occur on specific days.</p>
+            <div class="btn-group btn-block text-white">
+              <a *ngFor="let weekday of availableDays" class="btn btn-md day-choice" 
+                 [ngClass]="{'lean-bg': weekdayIsSelected(weekday.value), 'btn-secondary': !weekdayIsSelected(weekday.value)}" 
+                 (click)="toggleWeekday(weekday.value)">{{ weekday.displayName}}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="getFrequency() == 2">
+          <p class="text-succeed">Tasks that occur sometime during the week.</p>
+        </div>
+        <!-- <div *ngIf="getFrequency() == 3">
+          <div class="form-group">
+            <p class="text-succeed">Tasks that occur monthly occur on the dates you choose.</p>
+            <p>Monthly date picker here...</p>
+          </div>
+        </div> -->
+
+        <!-- Footer content -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="submit()" 
+            data-dismiss="modal" [disabled]="taskForm.invalid">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

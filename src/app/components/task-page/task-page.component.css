@@ -1,0 +1,42 @@
+.btn-group.header {
+    display: flex;
+}
+
+.header .btn {
+    flex: 1;
+}
+
+.btn-outline-lean {
+    color: #e39e2c;
+    background-color: transparent;
+    background-image: none;
+    border-color: #e39e2c;
+    border-radius: 0;
+}
+
+.btn-outline-lean:hover {
+    color: #fff;
+    background-color: #e39e2c;
+    border-color: #e39e2c;
+}
+
+.btn-outline-lean:focus, .btn-outline-lean.focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0);
+}
+
+.btn-outline-lean.disabled, .btn-outline-lean:disabled {
+    color: #e39e2c;
+    background-color: transparent;
+}
+
+.btn-outline-lean:not(:disabled):not(.disabled):active, .btn-outline-lean:not(:disabled):not(.disabled).active,
+.show > .btn-outline-lean.dropdown-toggle {
+    color: #fff;
+    background-color: #e39e2c;
+    border-color: #e39e2c;
+}
+
+.btn-outline-lean:not(:disabled):not(.disabled):active:focus, .btn-outline-lean:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-lean.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0);
+}

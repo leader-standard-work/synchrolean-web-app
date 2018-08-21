@@ -1,0 +1,20 @@
+.member-name:hover {
+    cursor: pointer;
+    color: lightslategray;
+}
+
+.complete {
+    color: green;
+}
+
+.uncomplete {
+    color: red;
+}
+
+.tasks:hover {
+    background-color: lightgray;
+}
+
+.users:hover {
+    background-color: lightgray;
+}

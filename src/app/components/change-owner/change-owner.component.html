@@ -1,0 +1,26 @@
+
+<div id="changeOwnerModal" class="modal">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Change Owner</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="newOwnerForm">
+          <label class="text">Enter New Owner Email</label>
+          <div class="form-group">
+            <input type="text" class="form-control" formControlName="email" placeholder="johndoe123@gmail.edu">
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a><button type="button" class="btn btn-info" style="border: ridge" 
+          data-dismiss="modal" (click)="changeOwner()">Submit Change</button></a>
+        <button type="button" class="btn btn-info" style="border: ridge" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
