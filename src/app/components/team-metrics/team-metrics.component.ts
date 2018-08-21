@@ -148,9 +148,10 @@ export class TeamMetricsComponent implements OnInit {
             this.teamPercentages.push(percentage * 100);
             this.fillTable();
           }
-          else
+          else {
             this.teamPercentages.push(0);
-          
+            this.fillTable();
+          }
         })
     }
     console.log('TeamMetricsComponent: Team percentages: ', this.teamPercentages);
