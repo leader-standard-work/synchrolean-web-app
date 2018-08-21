@@ -23,6 +23,26 @@ What you need to run the SynchroLean Web Application
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+- [Sign up for a Firebase account](https://firebase.google.com/)
+- Create a new project (Note: the url of your application will look like https://<Project Id>.firebaseapp.com/) so choose the name carefully.
+- Make sure Node and npm are installed (see Getting Started Prerequisites).
+- Open the terminal and navigate to the repository
+- Follow the Steps for setting up your first deploy section of [this article](https://medium.com/@longboardcreator/deploying-angular-6-applications-to-firebase-hosting-b5dacde9c772).
+- Your web app should now be hosted!
 
+## Built With
 
+- [Visual Studio Code](https://code.visualstudio.com) - Code editor
+- [Angular](https://angular.io) - Web framework
+
+## Authors
+
+See the list of [contributors](https://github.com/cs-capstone-team-c/synchrolean-web-app/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+We would like to acknowledge Matthew Horvat for sponsoring this project as our senior capstone.
