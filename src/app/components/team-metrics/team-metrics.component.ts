@@ -22,7 +22,8 @@ export class TeamMetricsComponent implements OnInit {
   public startDate: Date;
   public endDate: Date;
   public teamMetrics: number;
-  public teamPercentages: number[] = [];      // weekly completion rates of team
+  public teamPercentagesTuple: Array<[number, number]> = [];      // weekly completion rates of team
+  public teamPercentages: number[] = [];
   public week: string[] = [];                 // each Sunday contained within startDate and endDate (including start and end dates)
   public weekString: string[] = [];
   public accounts: Account[] = [];            // team members
@@ -32,7 +33,6 @@ export class TeamMetricsComponent implements OnInit {
   constructor(private teamService: TeamService,
     private taskService: TaskService,
     private accountService: AccountService,
-    private authService: AuthService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder) {
       this.team = new Team();
@@ -46,12 +46,10 @@ export class TeamMetricsComponent implements OnInit {
       });
       this.accountService.getAccountsByTeamId(this.team.id)
         .subscribe((accounts) => {
-          console.log('TeamMetricsComponent: accounts: ', accounts);
           this.accounts = accounts;
         }, (err) => {
           console.log(err);
         });
-      
     }
      
 
@@ -63,33 +61,6 @@ export class TeamMetricsComponent implements OnInit {
     this.rangeForm = this.formBuilder.group({
       range: null
     });
-    this.LineChart = new Chart('lineChart', {
-      type: 'line',
-      data: {
-        labels: this.weekString,
-        datasets: [{
-          label: 'Team Metrics',
-          data: this.teamPercentages,
-          fill: false,
-          lineTension: 0.2,
-          borderColor: "red",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          tesxt: "Line Chart",
-          display: true
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    })
   }
 
   /**
@@ -114,8 +85,8 @@ export class TeamMetricsComponent implements OnInit {
    */
   getLineGraphMetrics() {
     this.accountPercentages = [];
-    this.teamPercentages = [];
     this.week = [];
+    this.weekString = [];
     
     this.getWeeks();
     this.getWeekStrings();
@@ -132,49 +103,55 @@ export class TeamMetricsComponent implements OnInit {
           console.log(err);
         })
     }
-    console.log('TeamMetricsComponent: accountPercentages = ', this.accountPercentages);
   }
 
   /**
-   * Gets teams weekly methods
+   * Gets teams weekly methods.
    */
   getWeeklyTeamMetrics() {
-    console.log("getWeeklyTeamMetrics(): ", this.week);
-    for (let i = 0; this.week.length - 1 > i; i+=2) {
-      console.log('TeamMetricsComponent: for ' , this.week[i], ' thru ' , this.week[i + 1]);
+    this.teamPercentagesTuple = [];
+    for (let i = 0; i < this.week.length - 1; i+=2) {
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.week[i], this.week[i + 1])
         .subscribe((percentage) => {
           if(!isNaN(percentage)) {
-            this.teamPercentages.push(percentage * 100);
+            this.teamPercentagesTuple.push([i/2, percentage * 100]);
             this.fillTable();
           }
           else {
-            this.teamPercentages.push(0);
+            this.teamPercentagesTuple.push([i/2, 0]);
             this.fillTable();
           }
         })
     }
-    console.log('TeamMetricsComponent: Team percentages: ', this.teamPercentages);
+  }
+
+  /**
+   * Orders teamPercentagesTuple since getWeeklyTeamMetrics() taskService call does not
+   * populate array in order called
+   */
+  orderTeamPercentages() {
+    for (let i = 0; i < this.teamPercentagesTuple.length; ++i) {
+      this.teamPercentages[this.teamPercentagesTuple[i][0]] = this.teamPercentagesTuple[i][1];
+    }
   }
 
   getWeeks() {
     // Add starting date
     this.week.push(this.startDate.toDateString());
 
-    // Get the following saturday or sunday
+    // Get the following saturday
     let nextDayToAdd = new Date();
     let day = this.startDate.getDay();
     nextDayToAdd.setDate(this.startDate.getDate() + (6 - day));
 
-    // Fill weeks array with Sunday dates
+    // Fill weeks array with Sundays or Saturdays
     while(nextDayToAdd.getTime() < this.endDate.getTime()) {
-      console.log("nextDayToAdd: ", nextDayToAdd.getDay());
-      // Add Saturday and increase day to Sunday
-      // Else add Sunday and increase day to Saturday
+      // If day is Saturday, add to week array and set nextDayToAdd to Sunday
       if(nextDayToAdd.getDay() == 6) {
         this.week.push(nextDayToAdd.toDateString());
         nextDayToAdd.setDate(nextDayToAdd.getDate() + 1);
-      } else if(nextDayToAdd.getDay() == 0) {
+      } // Else if day is Sunday, add to week array and set nextDayToAdd to Saturday
+      else if(nextDayToAdd.getDay() == 0) {
         this.week.push(nextDayToAdd.toDateString());
         nextDayToAdd.setDate(nextDayToAdd.getDate() + 6);
       }
@@ -193,13 +170,13 @@ export class TeamMetricsComponent implements OnInit {
     let sunday = new Date();
     let saturday = new Date();
     let day = this.startDate.getDay();
+
+    // Enter first week date range string
     saturday.setDate(this.startDate.getDate() + (6 - day));
-    
-    // Add starting date
     this.weekString.push(this.startDate.toDateString() + "-" + saturday.toDateString());
     sunday.setDate(saturday.getDate() + 1);
 
-    // Fill weeks array with Sunday dates
+    // Fill weekString array with "<Sunday>-<Saturday>" strings
     while(saturday.getTime() < this.endDate.getTime()) {
       // Determine next sundays date
       saturday.setDate(sunday.getDate() + 6);
@@ -213,7 +190,10 @@ export class TeamMetricsComponent implements OnInit {
     this.weekString.push(sunday.toDateString() + "-" + this.endDate.toDateString());
   }
 
+  
   fillTable() {
+    this.orderTeamPercentages();
+    this.LineChart = [];
     this.LineChart = new Chart('lineChart', {
       type: 'line',
       data: {
@@ -246,5 +226,5 @@ export class TeamMetricsComponent implements OnInit {
   dateRangeSet() {
     return this.week.length === 0;
   }
-
+  
 }
