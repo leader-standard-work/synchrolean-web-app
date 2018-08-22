@@ -13,8 +13,10 @@ export class AccountEditComponent implements OnInit {
   @Input() account: Account;
   @Output() updatedAccount = new EventEmitter<Account>();
   public accountForm: FormGroup;
+  public passwordForm: FormGroup;
   public passwordValidatorArray = [];
   public nameValidatorArray = [];
+  public isPasswordChange;
 
   constructor(private authService: AuthService,
     private accountService: AccountService) {
@@ -23,7 +25,7 @@ export class AccountEditComponent implements OnInit {
     this.passwordValidatorArray.push(Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}'));
     this.nameValidatorArray.push(Validators.required);
     this.nameValidatorArray.push(Validators.maxLength(25));
-     
+    this.isPasswordChange = false;
   }
 
   ngOnInit() {
@@ -35,42 +37,46 @@ export class AccountEditComponent implements OnInit {
         Validators.compose(this.nameValidatorArray)
       ]),
       email: new FormControl(
-        {value: null, disabled: true}, 
+        {value: this.account.email, disabled: true}, 
         Validators.required
       ),
-      // oldPassword: new FormControl ('', [
-      //   Validators.compose(this.passwordValidatorArray)
-      // ]),
-      // password: new FormControl('', [
-      //   Validators.compose(this.passwordValidatorArray)
-      // ]),
-      // confirmPassword: new FormControl('', [
-      //   Validators.compose(this.passwordValidatorArray)
-      // ])
     });
-    // this.setFormValue();
-    // console.log("AccountEditComponent: account = ", this.account);
+    this.passwordForm = new FormGroup({
+      oldPassword: new FormControl ('', [
+        Validators.compose(this.passwordValidatorArray)
+      ]),
+      newPassword: new FormControl('', [
+        Validators.compose(this.passwordValidatorArray)
+      ]),
+      confirmNewPassword: new FormControl('', [
+        Validators.compose(this.passwordValidatorArray)
+      ])
+    });
   }
   
   // Password case validations
-  // passwordMatch() {
-  //   return this.accountForm.controls['password'].value === this.accountForm.controls['confirmPassword'].value;
-  // }
+  passwordMatch() {
+    return this.passwordForm.controls['newPassword'].value === this.passwordForm.controls['confirmNewPassword'].value;
+  }
 
-  // hasUpper() {
-  //   const upper = (/[A-Z]/.test(this.accountForm.controls['password'].value));
-  //   return upper;
-  // }
+  hasUpper() {
+    const upper = (/[A-Z]/.test(this.passwordForm.controls['newPassword'].value));
+    return upper;
+  }
 
-  // hasLower() {
-  //   const lower = (/[a-z]/.test(this.accountForm.controls['password'].value));
-  //   return lower;
-  // }
+  hasLower() {
+    const lower = (/[a-z]/.test(this.passwordForm.controls['newPassword'].value));
+    return lower;
+  }
 
-  // hasNumber() {
-  //   const number = (/[0-9]/.test(this.accountForm.controls['password'].value));
-  //   return number;
-  // }
+  hasNumber() {
+    const number = (/[0-9]/.test(this.passwordForm.controls['newPassword'].value));
+    return number;
+  }
+
+  passwordChange() {
+    this.isPasswordChange = !this.isPasswordChange;
+  }
 
   editAccount() {
     const editedAccount = new Account();
@@ -78,10 +84,20 @@ export class AccountEditComponent implements OnInit {
     editedAccount.lastName = this.accountForm.controls['lastName'].value;
     editedAccount.email = this.account.email;
     editedAccount.isDeleted = this.account.isDeleted;
-    // editedAccount.password = this.accountForm.controls['password'].value;
     this.accountService.updateAccount(editedAccount)
       .subscribe((updatedAccount) => {
         this.account = updatedAccount;
+        console.log("AccountEditComponent: ", this.account);
+        if(this.isPasswordChange && this.passwordCheck) {
+          var oldPassword = this.passwordForm.controls['oldPassword'].value;
+          var newPassword = this.passwordForm.controls['newPassword'].value;
+          this.accountService.changePassword(oldPassword, newPassword)
+            .subscribe(() => {
+
+            }, (err) => {
+              console.log(err);
+            })
+        }
         this.updatedAccount.emit(this.account);
       }), (err) => {
         console.log(err);
@@ -96,4 +112,9 @@ export class AccountEditComponent implements OnInit {
     });
   }
 
+  passwordCheck() {
+    return this.passwordForm.controls['oldPassword'].valid 
+      && this.passwordForm.controls['newPassword'].valid 
+      && this.passwordForm.controls['confirmNewPassword'].valid;
+  }
 }
