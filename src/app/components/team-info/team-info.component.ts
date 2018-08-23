@@ -139,6 +139,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
+   * Owner only**
    * Deletes the current team
    */
   deleteTeam() {
@@ -150,7 +151,7 @@ export class TeamInfoComponent implements OnInit {
    * Determines and routes to correct user page based on account email
    * @param email The email to determine which page to go to
    */
-  getRoute(email: string) {
+  getUserRoute(email: string) {
     if (email !== this.authService.getEmail()) {
       this.router.navigate([`users/${email}/tasks`]);
     } else {
@@ -168,7 +169,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Updates the account members list (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * Updates the account members list
    * @param updatedAccounts The updated account information
    */
   onAccountsUpdated(updatedAccounts: Account[]) {
@@ -176,7 +177,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Removes owner from team (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * Removes owner from team
    * @param email The email of the member leaving the team
    */
   leaveTeam() {
@@ -190,6 +191,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
+   * Owner only**
    * Rescinds a team invite to a team
    * @param invite The team invite to rescind
    */
@@ -227,6 +229,18 @@ export class TeamInfoComponent implements OnInit {
       .subscribe((authorizations) => {
         this.toAuthorize = authorizations;
       }, err => console.log(err));
+  }
+
+  /**
+   * Returns whether user has permission to see weekly rollup
+   */
+  userHasPermissions() {
+    this.teamService.userIsPermittedToSeeTeam(this.team.id)
+      .subscribe((isPermitted) => {
+        return isPermitted;
+      }, (err) => {
+        console.log(err);
+      });
   }
 
 }
