@@ -22,8 +22,8 @@ export class TeamMetricsComponent implements OnInit {
   public startDate: Date;
   public endDate: Date;
   public teamMetrics: number;
-  public teamPercentagesTuple: Array<[number, number]> = [];      // weekly completion rates of team
-  public teamPercentages: number[] = [];
+  public teamPercentagesTuple: Array<[number, number]> = [];       // tuple array that holds index of service call and team percentag
+  public teamPercentages: number[] = [];      // weekly completion rates of team
   public week: string[] = [];                 // each Sunday contained within startDate and endDate (including start and end dates)
   public weekString: string[] = [];
   public accounts: Account[] = [];            // team members

@@ -62,6 +62,10 @@ export class TeamListComponent implements OnInit, OnDestroy {
       }, err => console.log(err));
   }
 
+  route(teamId: number) {
+    this.router.navigate([`/teams/${teamId}`]);
+  }
+
   /**
    * Updates the displayed team list after a team has
    * been added.

@@ -93,7 +93,7 @@ export class AccountEditComponent implements OnInit {
           var newPassword = this.passwordForm.controls['newPassword'].value;
           this.accountService.changePassword(oldPassword, newPassword)
             .subscribe(() => {
-
+              // Add alert box??
             }, (err) => {
               console.log(err);
             })
