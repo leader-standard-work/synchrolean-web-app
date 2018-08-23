@@ -7,21 +7,25 @@
   <div class="form-group">
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-12">
           <label for="range">Select Date Range</label>
           <div class="row">
-            <div class="col">
+            <div class="col-3">
               <input formControlName="range" type="text" class="form-control"
                 bsDaterangepicker [bsConfig]="datePickerConfig">
             </div>
-            <div class="col-4">
-              <button type="button" (click)="getMetrics();getLineGraphMetrics()">Submit
+            <div class="col-2">
+              <button type="button" (click)="getDatePickerMetrics()">Submit
               </button>
+            </div>
+            <div class="col-1.5">
+              <button type="button" (click)="getLastWeekMetrics()">Last Week</button>
+            </div>
+            <div class="col-2">
+              <button type="button">Select Month</button>
             </div>
           </div>
         </div>
-        <div class="col-4"></div>
-        <div class="col-4"></div>
       </div>
       <hr>
       <div class="col-md-6">
