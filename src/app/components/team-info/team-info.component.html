@@ -15,7 +15,7 @@
         </a>
       </li>
       <li class="list-inline-item">
-        <a href="#" data-toggle="modal" data-target="#authorizeModal">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#authorizeModal">
           Invite Authorizations
         </a>
       </li>
@@ -36,25 +36,24 @@
       </li>
     </ul>
   </div>
-  <div *ngIf="isMemberOfTeam()">
-    <ul class="list-inline">
-      <li class="list-inline-item">
-        <a class="nav-link" href="/rollup/{{ team.id }}">
-          Weekly Roll-Up
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="nav-link" href="/teams/{{ team.id }}/metrics">
-          Advanced Metrics
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="nav-link" (click)="leaveTeam()">
-          Leave Team
-        </a>
-      </li>
-    </ul>
-  </div>
+  
+  <ul class="list-inline">
+    <li class="list-inline-item" [hidden]="!userIsPermitted && !isMemberOfTeam()">
+      <a class="nav-link" [routerLink]="['../../rollup',team.id]">
+        Weekly Roll-Up
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="nav-link" [routerLink]="['metrics']">
+        Advanced Metrics
+      </a>
+    </li>
+    <li class="list-inline-item" [hidden]="!isMemberOfTeam()">
+      <a class="nav-link" (click)="leaveTeam()">
+        Leave Team
+      </a>
+    </li>
+  </ul>
 </div>
 <div>
   <div class="row ml-2">
@@ -64,7 +63,7 @@
         <button class="btn btn-info btn-sm" [hidden]="!isMemberOfTeam()" data-toggle="modal" data-target="#inviteMember">+ Invite</button>
         <li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let account of accounts">
           <div class="d-flex justify-content-between">
-            <h5 class="mb-1"><a (click)="getUserRoute(account.email)">{{ account.firstName }} {{ account.lastName }}</a></h5>
+            <h5 class="mb-1"><a (click)="routeToUser(account.email)">{{ account.firstName }} {{ account.lastName }}</a></h5>
           </div>
           <p class="mb-1">{{ account.email }}</p>
         </li>
