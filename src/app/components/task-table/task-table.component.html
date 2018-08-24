@@ -1,51 +1,59 @@
-<div class="container pl-0 pr-0 mt-md-4">
-  <div class="row">
-    <div class="col-md-10">
-      <h4>Active Tasks</h4>
-    </div>
-    <div class="col-md-2">
-      <button *ngIf="ownerEmail === authService.getEmail()" type="button" class="btn btn-danger btn-sm float-right" data-toggle="modal"
-              data-target="#addModal">Add Task
-      </button>
-    </div>
-  </div>
-  
-  <table class="table table-bordered table-hover mb-md-5">
-    <thead class="lean-bg">
-      <tr>
-        <th scope="col" class="lean-text">Name</th>
-        <th scope="col" class="lean-text">Description</th>
-        <th scope="col" class="lean-text">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let task of tasks; let i = index">
-        <tr *ngIf="task.isActive">
-          <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
-          <td style="width: 500px">{{ task.description  }}</td>
-          <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+<div class="container-fluid  mt-md-4">
 
-  <h4>Other Tasks</h4>
-  <table class="table table-bordered table-hover">
-    <thead class="lean-bg">
-      <tr>
-        <th scope="col" class="lean-text">Name</th>
-        <th scope="col" class="lean-text">Description</th>
-        <th scope="col" class="lean-text">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let task of tasks; let i = index">
-        <tr *ngIf="!task.isActive">
-          <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
-          <td style="width: 500px">{{ task.description  }}</td>
-          <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-10">
+          <h4>Active Tasks</h4>
+        </div>
+        <div class="col-md-2">
+          <button *ngIf="ownerEmail === authService.getEmail()" type="button" class="btn btn-danger btn-sm float-right" data-toggle="modal"
+                  data-target="#addModal">Add Task
+          </button>
+        </div>
+      </div>
+      
+      <table class="table table-bordered table-hover mb-md-5">
+        <thead class="lean-bg">
+          <tr>
+            <th scope="col" class="lean-text">Name</th>
+            <th scope="col" class="lean-text">Description</th>
+            <th scope="col" class="lean-text">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let task of tasks; let i = index">
+            <tr *ngIf="task.isActive">
+              <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
+              <td style="width: 500px">{{ task.description  }}</td>
+              <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <h4>Other Tasks</h4>
+      <table class="table table-bordered table-hover mb-md-5">
+        <thead class="lean-bg">
+          <tr>
+            <th scope="col" class="lean-text">Name</th>
+            <th scope="col" class="lean-text">Description</th>
+            <th scope="col" class="lean-text">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let task of tasks; let i = index">
+            <tr *ngIf="!task.isActive">
+              <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
+              <td style="width: 500px">{{ task.description  }}</td>
+              <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 </div>
