@@ -19,6 +19,7 @@ export class TeamInfoComponent implements OnInit {
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
   public toAuthorize: AddUserRequest[] = [];
+  public userIsPermitted;
 
   constructor(
     private teamService: TeamService,
@@ -50,6 +51,7 @@ export class TeamInfoComponent implements OnInit {
       .subscribe((accountList: Account[]) => {
         this.accounts = accountList;
       }, err => console.log(err));
+    this.userIsPermitted = this.userHasPermissions();
   }
 
   /**
@@ -148,18 +150,6 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Determines and routes to correct user page based on account email
-   * @param email The email to determine which page to go to
-   */
-  getUserRoute(email: string) {
-    if (email !== this.authService.getEmail()) {
-      this.router.navigate([`users/${email}/tasks`]);
-    } else {
-      this.router.navigate(['tasks']);
-    }
-  }
-
-  /**
    * Updates the displayed team information
    * after it has been edited.
    * @param updatedTeam The updated team information
@@ -243,4 +233,15 @@ export class TeamInfoComponent implements OnInit {
       });
   }
 
+  /**
+   * Determines and routes to correct user page based on account email
+   * @param email The email to determine which page to go to
+   */
+  routeToUser(email: string) {
+    if (email !== this.authService.getEmail()) {
+      this.router.navigate([`users/${email}/tasks`]);
+    } else {
+      this.router.navigate(['tasks']);
+    }
+  }
 }

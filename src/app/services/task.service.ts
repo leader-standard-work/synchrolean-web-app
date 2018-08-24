@@ -100,13 +100,20 @@ export class TaskService {
     return this.http.get<number>(endpoint);
   }
 
+  /**
+   * Gets metrics for a user for a user defined date range
+   * @param teamId The id of the team which the user's tasks are on
+   * @param email The email of the user being requested
+   * @param startDate User defined metric starting date
+   * @param endDate User defined metric ending date
+   */
   getUserTeamMetricsByDateRange(teamId: number, email: string, startDate: string, endDate: string): Observable<number> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/user/team/${teamId}/${startDate}/${endDate}/${email}`;
     return this.http.get<number>(endpoint);
   }
 
   /**
-   * Gets metrics for user defined date range
+   * Gets metrics for a team for user defined date range
    * @param teamId The id of the team we are retrieving metrics for
    * @param startDate User defined metric starting date
    * @param endDate User defined metric ending date
@@ -115,17 +122,6 @@ export class TaskService {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/${teamId}/${startDate}/${endDate}`;
     return this.http.get<number>(endpoint);
   }
-
-  /**
-   * Gets completion log entries for user defined date range
-   * @param teamId The team id of the team we are retrieving logs for
-   * @param startDate User defined log starting date
-   * @param endDate User defined log ending date
-   *
-  getTeamCompletionLogEntries(teamId: number, startDate: string, endDate: string): Observable<LogEntry[]> {
-    const endpoint = `${environment.baseServerUrl}${this.apiBase}/metrics/team/log/${teamId}/${startDate}/${endDate}`;
-    return this.http.get<LogEntry[]>(endpoint);
-  }*/
 
   /**
    * Sets the start date for retrieving a user's metric information
