@@ -19,37 +19,42 @@ export class TeamMetricsComponent implements OnInit {
   public startDate: Date;
   public endDate: Date;
   public teamMetrics: number;
-  public teamPercentagesTuple: Array<[number, number]> = [];       // tuple array that holds index of service call and team percentag
   public teamPercentages: number[] = [];      // weekly completion rates of team
+  public days: string[] = [];                 // stores strings of the days of the week
   public week: string[] = [];                 // stores strings of sundays and saturdays of each week
   public xAxisLabel: string[] = [];           // stores strings of weekly ranges for x-axis labels on chart
-  public days: string[] = [];                 // stores strings of the days of the week
   LineChart = [];
 
   constructor(private teamService: TeamService,
     private taskService: TaskService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder) {
+      // Grab team id from url
       this.team = new Team();
       this.route.params.subscribe(p => {
         this.team.id = p['id'];
       });
+      // Configure the graph
       this.datePickerConfig = Object.assign({},
         {
           containerClass: 'theme-dark-blue',
           showWeekNumbers: false,
       });
       
+      // Initialize start and end dates
       this.startDate = new Date();
       this.endDate = new Date();
     }
      
 
   ngOnInit() {
+    // Grab team info from db
     this.teamService.getTeam(this.team.id)
       .subscribe((loadedTeam) => {
         this.team = loadedTeam;
       }, err => console.log(err));
+
+    // Create form for dateRangepicker
     this.rangeForm = this.formBuilder.group({
       range: null
     });
@@ -74,13 +79,24 @@ export class TeamMetricsComponent implements OnInit {
    */
   getDatePickerMetrics() {
     if(this.rangeForm.controls['range'].value != null) {
-      this.days = [];
+      // Reset week, x-coordinate, and graph data arrays
       this.week = [];
       this.xAxisLabel = [];
+      this.teamPercentages = [];
+
+      // Re-initialize start and end dates
+      this.startDate = new Date();
+      this.endDate = new Date();
+
+      // Grab date range from dateRangepicker
       const range = this.rangeForm.controls['range'].value;
+
+      // Set start and end dates from form
       this.startDate = range[0];
-      this.startDate.setHours(0, 0, 0, 0);
       this.endDate = range[1];
+
+      // Set appropriate start and end date hours
+      this.startDate.setHours(0, 0, 0, 0);
       this.endDate.setHours(23, 59, 59);
       this.getMetrics();                    // Gets metrics from startDate to endDate
       this.getWeeks();                      // Gets strings of each Sunday and Saturday
@@ -93,6 +109,7 @@ export class TeamMetricsComponent implements OnInit {
    * Gets weekly Sunday and Saturday days to be used in receiving weekly metrics from db
    */
   getWeeks() {
+    // Date object used to grab each day to add to week array
     let nextDayToAdd = new Date();
 
     // Add starting date
@@ -133,16 +150,16 @@ export class TeamMetricsComponent implements OnInit {
    * Gets teams weekly methods.
    */
   getWeeklyTeamMetrics() {
-    this.teamPercentagesTuple = [];
+    this.teamPercentages = [];
     for (let i = 0; i < this.week.length - 1; i+=2) {
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.week[i], this.week[i + 1])
         .subscribe((percentage) => {
           if(!isNaN(percentage)) {
-            this.teamPercentagesTuple.push([i/2, percentage * 100]);
+            this.teamPercentages[i/2] = percentage * 100;
             this.fillTable();
           }
           else {
-            this.teamPercentagesTuple.push([i/2, 0]);
+            this.teamPercentages[i/2] = 0;
             this.fillTable();
           }
         })
@@ -150,17 +167,43 @@ export class TeamMetricsComponent implements OnInit {
   }
 
   /**
-   * Sets start and end dates for previous week
+   * Sets start date for previous week
    */
   getLastWeekMetrics() {
-    this.week = [];
-    this.days = [];
-    this.xAxisLabel = [];
+    this.startDate = new Date();
+    this.endDate = new Date();
     let today = new Date();
     let day = today.getDay()
     this.startDate.setDate(today.getDate() - (7 + day));
-    this.startDate.setHours(0, 0, 0, 0);
+    this.getWeeksMetrics();
+  }
+
+  /**
+   * Sets start date for this week
+   */
+  getThisWeekMetrics() {
+    this.startDate = new Date();
+    this.endDate = new Date();
+    let today = new Date();
+    let day = today.getDay()
+    this.startDate.setDate(today.getDate() - day);
+    this.getWeeksMetrics();
+  }
+
+  /**
+   * Sets end dates and calls metrics methods for week long range
+   */
+  getWeeksMetrics() {
+    // Reset days, x-coordinate, and graph data arrays
+    this.days = [];
+    this.xAxisLabel = [];
+    this.teamPercentages = [];
+
+    // Grab the end date
     this.endDate.setDate(this.startDate.getDate() + 6);
+
+    // Set appropriate hours for start and end dates
+    this.startDate.setHours(0, 0, 0, 0);
     this.endDate.setHours(23, 59, 59);
     this.getMetrics();                    // Gets metrics from startDate to endDate
     this.getDays();                       // Gets strings of the days of the week and populates xAxisLabel
@@ -171,17 +214,20 @@ export class TeamMetricsComponent implements OnInit {
    * Gets the days of the week between startDate and endDate as strings
    */
   getDays() {
+    // Date object used to grab each day to add to days array
     let nextDayToAdd = new Date();
 
     // Add the start date 
     this.days.push(this.startDate.toDateString());
     nextDayToAdd.setDate(this.startDate.getDate() + 1);
 
+    // Add the next day of the week to days array
     while(nextDayToAdd.getTime() < this.endDate.getTime()) {
       this.days.push(nextDayToAdd.toDateString());
       nextDayToAdd.setDate(nextDayToAdd.getDate() + 1);
     }
 
+    // Set the graph x-axis labels to days array
     this.xAxisLabel = this.days;
   }
 
@@ -189,16 +235,19 @@ export class TeamMetricsComponent implements OnInit {
    * Gets team metrics for each day
    */
   getDailyTeamMetrics() {
+    // Reset graph data array
     this.teamPercentages = [];
+    
     for (let i = 0; i < this.days.length; ++i) {
+      // Retrieve the completion rate for each day in the week
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.days[i], this.days[i+1])
         .subscribe((percentage) => {
           if(!isNaN(percentage)) {
-            this.teamPercentagesTuple.push([i, percentage * 100]);
+            this.teamPercentages[i] = percentage * 100;
             this.fillTable();
           }
           else {
-            this.teamPercentagesTuple.push([i, 0]);
+            this.teamPercentages[i] = 0;
             this.fillTable();
           }
         });
@@ -206,20 +255,75 @@ export class TeamMetricsComponent implements OnInit {
   }
 
   /**
-   * Orders teamPercentagesTuple since getWeeklyTeamMetrics() taskService call does not
-   * populate array in order called
+   * Sets start date for previous year's metrics and call yearly metric method
    */
-  orderTeamPercentages() {
-    for (let i = 0; i < this.teamPercentagesTuple.length; ++i) {
-      this.teamPercentages[this.teamPercentagesTuple[i][0]] = this.teamPercentagesTuple[i][1];
+  getLastYearMetrics() {
+    this.startDate = new Date(new Date().getFullYear() - 1, 0, 1);
+    this.getYearlyMetrics();
+  }
+
+  /**
+   * Sets start date for current year's metrics and call yearly metric method
+   */
+  getThisYearMetrics() {
+    this.startDate = new Date(new Date().getFullYear(), 0, 1);
+    this.getYearlyMetrics();
+  }
+
+  /**
+   * Gets metrics for a years span
+   */
+  getYearlyMetrics() {
+    // Reset graph data and x-coordinate label arrays
+    this.teamPercentages = [];
+    this.xAxisLabel = [];
+
+    // Set end date hours for start and end dates
+    this.startDate.setHours(0, 0, 0, 0);
+    this.endDate = new Date(this.startDate.getFullYear(), 11, 31);
+    this.endDate.setHours(23, 59, 59);
+
+    // Create x-coordinate label array
+    this.xAxisLabel = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    // Create date objects to store beginning and end of each month and set hours for end date
+    let start = this.startDate;
+    let end = new Date(start.getFullYear(), start.getMonth() + 1, 0)
+    end.setHours(23, 59, 59);
+
+    // Grab completion rate for entire year
+    this.getMetrics();
+
+    for (let i = 0; end.getTime() < this.endDate.getTime(); ++i) {
+      // Retrieve completion rate for each month
+      this.taskService.getTeamMetricsByDateRange(this.team.id, start.toDateString(), end.toDateString())
+        .subscribe((percentage) => {
+          // 
+          if(!isNaN(percentage)) {
+            this.teamPercentages[i] = percentage * 100;
+            //this.teamPercentagesTuple.push([i, percentage * 100]);
+            this.fillTable();
+          } else {
+            this.teamPercentages[i] = 0;
+            //this.teamPercentagesTuple.push([i, 0]);
+            this.fillTable();
+          }
+        }, (err) => {
+          console.log(err);
+        });
+        
+      // Get the next months starting and ending dates
+      start = new Date(end.getFullYear(), end.getMonth() + 1, start.getDate());
+      end = new Date(start.getFullYear(), start.getMonth() + 1, start.getDate() - 1);
     }
   }
   
   /**
-   * Creates a new graph for dynamically changing data
+   * Creates a new graph for dynamically changing data (chart.js can't handle 
+   * dynamically changed data. Must create new graph for each data point)
    */
   fillTable() {
-    this.orderTeamPercentages();
+    // Reset and create new line graph 
     this.LineChart = [];
     this.LineChart = new Chart('lineChart', {
       type: 'line',
@@ -255,5 +359,4 @@ export class TeamMetricsComponent implements OnInit {
       }
     })
   }
-  
 }

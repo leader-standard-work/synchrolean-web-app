@@ -10,20 +10,27 @@
         <div class="col-12">
           <label for="range">Select Date Range</label>
           <div class="row">
-            <div class="col-3">
+            <div class="col-2">
               <input formControlName="range" type="text" class="form-control"
                 bsDaterangepicker [bsConfig]="datePickerConfig">
             </div>
             <div class="col-2">
-              <button type="button" (click)="getDatePickerMetrics()">Submit
+              <button type="button" (click)="getDatePickerMetrics()">Select Range
               </button>
             </div>
-            <div class="col-1.5">
+            <div class="col-2">
               <button type="button" (click)="getLastWeekMetrics()">Last Week</button>
             </div>
             <div class="col-2">
-              <button type="button">Select Month</button>
+              <button type="button" (click)="getThisWeekMetrics()">This Week</button>
             </div>
+            <div class="col-2">
+              <button type="button" (click)="getLastYearMetrics()">Last Year</button>
+            </div>
+            <div class="col-2">
+              <button type="button" (click)="getThisYearMetrics()">This Year</button>
+            </div>
+            
           </div>
         </div>
       </div>
