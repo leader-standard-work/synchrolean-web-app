@@ -109,15 +109,14 @@ export class TeamMetricsComponent implements OnInit {
    * Gets weekly Sunday and Saturday days to be used in receiving weekly metrics from db
    */
   getWeeks() {
-    // Date object used to grab each day to add to week array
-    let nextDayToAdd = new Date();
-
     // Add starting date
     this.week.push(this.startDate.toDateString());
 
     // Get the following saturday
     let day = this.startDate.getDay();
-    nextDayToAdd.setDate(this.startDate.getDate() + (6 - day));
+
+    // Date object used to grab each day to add to week array
+    let nextDayToAdd = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate() + (6 - day));
 
     // Fill weeks array with Sundays or Saturdays
     while(nextDayToAdd.getTime() < this.endDate.getTime()) {
@@ -150,7 +149,6 @@ export class TeamMetricsComponent implements OnInit {
    * Gets teams weekly methods.
    */
   getWeeklyTeamMetrics() {
-    this.teamPercentages = [];
     for (let i = 0; i < this.week.length - 1; i+=2) {
       this.taskService.getTeamMetricsByDateRange(this.team.id, this.week[i], this.week[i + 1])
         .subscribe((percentage) => {
@@ -205,9 +203,10 @@ export class TeamMetricsComponent implements OnInit {
     // Set appropriate hours for start and end dates
     this.startDate.setHours(0, 0, 0, 0);
     this.endDate.setHours(23, 59, 59);
+
     this.getMetrics();                    // Gets metrics from startDate to endDate
     this.getDays();                       // Gets strings of the days of the week and populates xAxisLabel
-    this.getDailyTeamMetrics();          // Gets team metrics for date ranges from getDays
+    this.getDailyTeamMetrics();           // Gets team metrics for date ranges from getDays
   }
   
   /**
@@ -255,6 +254,45 @@ export class TeamMetricsComponent implements OnInit {
   }
 
   /**
+   * Sets start date for previous month's metrics and call monthly metric method
+   */
+  getLastMonthMetrics() {
+    let date = new Date();
+    this.startDate = new Date(date.getFullYear(), date.getMonth() - 1);
+    this.getMonthMetrics();
+  }
+
+  /**
+   * Sets start date for current month's metrics and call monthly metric method
+   */
+  getThisMonthMetrics() {
+    let date = new Date();
+    this.startDate = new Date(date.getFullYear(), date.getMonth());
+    this.getMonthMetrics();
+  }
+
+  /**
+   * Gets metrics for a months span
+   */
+  getMonthMetrics() {
+    this.week = [];
+    this.xAxisLabel = [];
+    this.teamPercentages = [];
+
+    // Set the end date for the end of the month metrics are being requested for
+    this.endDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth() + 1, -1);
+
+    // Set appropriate hours for start and end dates
+    this.startDate.setHours(0, 0, 0, 0);
+    this.endDate.setHours(23, 59, 59);
+
+    this.getMetrics();                    // Gets metrics from startDate to endDate
+    this.getWeeks();                      // Gets strings of each Sunday and Saturday
+    this.getWeeksLabel();                 // Gets strings of week range Sunday-Saturday
+    this.getWeeklyTeamMetrics();          // Gets team metrics for date ranges from getWeeksLabel
+  }
+
+  /**
    * Sets start date for previous year's metrics and call yearly metric method
    */
   getLastYearMetrics() {
@@ -278,9 +316,11 @@ export class TeamMetricsComponent implements OnInit {
     this.teamPercentages = [];
     this.xAxisLabel = [];
 
-    // Set end date hours for start and end dates
-    this.startDate.setHours(0, 0, 0, 0);
+    // Set end date for end of year metrics are being calculated for
     this.endDate = new Date(this.startDate.getFullYear(), 11, 31);
+
+    // Set appropriate hours for start and end dates
+    this.startDate.setHours(0, 0, 0, 0);
     this.endDate.setHours(23, 59, 59);
 
     // Create x-coordinate label array
