@@ -193,7 +193,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   clear() {
     if (!this.taskId) {
       this.taskForm.reset();
-      this.taskForm.controls['recurring'].setValue(false);
       this.weekdays = [];
     } else {
       this.setFormValues();

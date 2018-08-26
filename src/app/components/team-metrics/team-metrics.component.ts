@@ -341,11 +341,9 @@ export class TeamMetricsComponent implements OnInit {
           // 
           if(!isNaN(percentage)) {
             this.teamPercentages[i] = percentage * 100;
-            //this.teamPercentagesTuple.push([i, percentage * 100]);
             this.fillTable();
           } else {
             this.teamPercentages[i] = 0;
-            //this.teamPercentagesTuple.push([i, 0]);
             this.fillTable();
           }
         }, (err) => {
