@@ -51,6 +51,8 @@ export class TaskInfoComponent implements OnInit {
     this.taskService.editTask(this.task)
       .subscribe((completedTask) => {
         this.task = completedTask;
+        this.task.completionDate = new Date();
+        this.task.isCompleted = true;
         alert('Task successfully completed');
         this.router.navigate(['/tasks']);
       }, err => console.log(err));
