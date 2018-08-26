@@ -25,7 +25,6 @@ export class Task {
     id: number;
     name: string;
     description: string;
-    isRecurring: boolean;
     weekdays: number;
     creationDate: Date;
     isCompleted: boolean;

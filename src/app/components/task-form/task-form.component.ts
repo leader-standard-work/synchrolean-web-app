@@ -49,7 +49,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       description: new FormControl('', [
         Validators.maxLength(250)
       ]),
-      recurring: new FormControl(false),
       completed: new FormControl(false),
       deleted: new FormControl(false),
       frequency: new FormControl(Frequency.Once, [ Validators.required ]),
@@ -146,7 +145,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.id = this.taskId;
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
-    task.isRecurring = this.taskForm.controls['recurring'].value;
     task.isCompleted = this.taskForm.controls['completed'].value;
     task.isDeleted = this.taskForm.controls['deleted'].value;
     task.frequency = this.taskForm.controls['frequency'].value;
@@ -168,7 +166,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.ownerEmail = this.authService.getEmail();
     task.name = this.taskForm.controls['name'].value;
     task.description = this.taskForm.controls['description'].value;
-    task.isRecurring = this.taskForm.controls['recurring'].value;
     task.creationDate = new Date();
     task.isCompleted = false;
     task.isDeleted = false;
@@ -207,7 +204,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.taskForm.setValue({
       name: this.loadedTask.name,
       description: this.loadedTask.description,
-      recurring: this.loadedTask.isRecurring,
       completed: this.loadedTask.isCompleted,
       deleted: this.loadedTask.isDeleted,
       frequency: this.loadedTask.frequency,
