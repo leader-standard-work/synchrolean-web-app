@@ -21,7 +21,7 @@ import { RemoveMemberComponent } from './components/remove-member/remove-member.
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { AccountFormComponent } from './account-form/account-form.component';
+import { AccountFormComponent } from './components/account-form/account-form.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { InviteMemberComponent } from './components/invite-member/invite-member.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
