@@ -13,20 +13,20 @@
         </div>
       </div>
       
-      <table class="table table-bordered table-hover mb-md-5">
+      <table class="table table-bordered mb-md-5">
         <thead class="lean-bg">
           <tr>
             <th scope="col" class="lean-text">Name</th>
             <th scope="col" class="lean-text">Description</th>
-            <th scope="col" class="lean-text">Status</th>
+            <!-- <th scope="col" class="lean-text">Status</th> -->
           </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let task of tasks; let i = index">
-            <tr *ngIf="task.isActive">
+            <tr *ngIf="task.isActive" class="{{ task.isCompleted ? 'complete' : 'uncomplete' }}">
               <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
               <td style="width: 500px">{{ task.description  }}</td>
-              <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
+              <!-- <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td> -->
             </tr>
           </ng-container>
         </tbody>
@@ -35,12 +35,12 @@
 
     <div class="col">
       <h4>Other Tasks</h4>
-      <table class="table table-bordered table-hover mb-md-5">
+      <table class="table table-bordered mb-md-5">
         <thead class="lean-bg">
           <tr>
             <th scope="col" class="lean-text">Name</th>
             <th scope="col" class="lean-text">Description</th>
-            <th scope="col" class="lean-text">Status</th>
+            <!-- <th scope="col" class="lean-text">Status</th> -->
           </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
             <tr *ngIf="!task.isActive">
               <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
               <td style="width: 500px">{{ task.description  }}</td>
-              <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td>
+              <!-- <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td> -->
             </tr>
           </ng-container>
         </tbody>
