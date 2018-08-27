@@ -17,7 +17,7 @@ export class AccountFormComponent implements OnInit {
   public accountForm: FormGroup;
   private passwordValidatorArray = [];
   private nameValidatorArray = [];
-  @Output() userLoggedIn = new EventEmitter<Account>();
+  @Output() userLoggedIn = new EventEmitter();
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
@@ -72,7 +72,7 @@ export class AccountFormComponent implements OnInit {
                 this.authService.setCurrentUser(account);
                 this.authService.setEmail();
                 this.clear();
-                this.userLoggedIn.emit(account);
+                this.userLoggedIn.emit();
                 this.dataSharingService.isUserLoggedIn.next(account);
                 this.router.navigate(['/tasks']);
               }, err => {

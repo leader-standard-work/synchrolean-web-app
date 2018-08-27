@@ -9,7 +9,7 @@ import { Account } from '../../models/Account';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  @Output() userLoggedIn = new EventEmitter<Account>();
+  @Output() userLoggedIn = new EventEmitter();
 
   constructor(private authService: AuthService,
     private router: Router) { }
@@ -22,8 +22,8 @@ export class SidebarComponent implements OnInit {
     return token != null;
   }
 
-  onUserLoggedIn(account: Account) {
-    this.userLoggedIn.emit(account);
+  onUserLoggedIn() {
+    this.userLoggedIn.emit();
   }
   /*
   userLogin({email, password}) {

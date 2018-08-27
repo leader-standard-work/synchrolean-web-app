@@ -53,13 +53,11 @@ export class AppComponent {
     return jwt != null;
   }
 
-  onUserLoggedIn(account: Account) {
-    this.user = account;
-    /*this.authService.getUserAccountByEmail(this.authService.getEmail())
+  onUserLoggedIn() {
+    this.authService.getUserAccountByEmail(this.authService.getEmail())
       .subscribe(user => {
         this.user = user;
       }, err => console.log(err));
-    */
   }
 
   getUser() {
