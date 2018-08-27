@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { DataSharingService } from '../../services/data-sharing.service';
 
 @Component({
   selector: 'login-form',
@@ -13,7 +14,8 @@ export class LoginFormComponent implements OnInit {
   public loginForm: FormGroup;
 
   constructor(private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private dataSharingService: DataSharingService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -35,6 +37,7 @@ export class LoginFormComponent implements OnInit {
           this.authService.setEmail();
           this.clear();
           this.userLoggedIn.emit();
+          this.dataSharingService.isUserLoggedIn.next(account);
           this.router.navigate(['/tasks']);
         }, err => {
           console.log(err);
