@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Account } from '../../models/Account';
 
 @Component({
   selector: 'sidebar',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  @Output() userLoggedIn = new EventEmitter();
+  @Output() userLoggedIn = new EventEmitter<Account>();
 
   constructor(private authService: AuthService,
     private router: Router) { }
@@ -21,8 +22,8 @@ export class SidebarComponent implements OnInit {
     return token != null;
   }
 
-  onUserLoggedIn() {
-    this.userLoggedIn.emit();
+  onUserLoggedIn(account: Account) {
+    this.userLoggedIn.emit(account);
   }
   /*
   userLogin({email, password}) {

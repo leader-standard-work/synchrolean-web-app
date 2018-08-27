@@ -20,7 +20,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let invite of invites; let i = index">
-        <td>{{ inviterAccounts[i].firstName }} {{ inviterAccounts[i].lastName }}</td>
+        <td *ngIf="inviterAccounts">{{ inviterAccounts[i].firstName }} {{ inviterAccounts[i].lastName }}</td>
         <td>{{ invite.inviterEmail }}</td>
         <td>
           <div class="btn-group d-flex">
@@ -38,7 +38,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let invite of pending; let i = index">
-        <td>{{ pendingAccounts[i].firstName }} {{ pendingAccounts[i].lastName }}</td>
+        <td *ngIf="pendingAccounts">{{ pendingAccounts[i].firstName }} {{ pendingAccounts[i].lastName }}</td>
         <td>{{ invite.inviteeEmail }}</td>
       </tr>
     </tbody>

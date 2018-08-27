@@ -17,6 +17,7 @@ import { PermissionsComponent } from './components/permissions/permissions.compo
 import { RollupComponent } from './components/rollup/rollup.component';
 import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 import { RemoveMemberComponent } from './components/remove-member/remove-member.component';
+import { DataSharingService } from './services/data-sharing.service';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -69,7 +70,8 @@ import { AccountEditComponent } from './components/account-edit/account-edit.com
     BsDatepickerModule.forRoot(),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    DataSharingService
   ],
   bootstrap: [AppComponent]
 })

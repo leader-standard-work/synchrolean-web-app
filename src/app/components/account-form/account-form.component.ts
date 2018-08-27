@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Account } from '../../models/Account';
 import { AccountService } from '../../services/account.service';
 import { AuthService } from '../../services/auth.service';
+import { DataSharingService } from '../../services/data-sharing.service';
 
 @Component({
   selector: 'account-form',
@@ -16,11 +17,12 @@ export class AccountFormComponent implements OnInit {
   public accountForm: FormGroup;
   private passwordValidatorArray = [];
   private nameValidatorArray = [];
-  @Output() userLoggedIn = new EventEmitter();
+  @Output() userLoggedIn = new EventEmitter<Account>();
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
-    private router: Router) { 
+    private router: Router,
+    private dataSharingService: DataSharingService) { 
       // Validation setup
       this.passwordValidatorArray.push(Validators.required);
       this.passwordValidatorArray.push(Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,50}'));
@@ -70,7 +72,8 @@ export class AccountFormComponent implements OnInit {
                 this.authService.setCurrentUser(account);
                 this.authService.setEmail();
                 this.clear();
-                this.userLoggedIn.emit();
+                this.userLoggedIn.emit(account);
+                this.dataSharingService.isUserLoggedIn.next(account);
                 this.router.navigate(['/tasks']);
               }, err => {
                 console.log(err);

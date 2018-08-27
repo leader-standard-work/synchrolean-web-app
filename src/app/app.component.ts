@@ -1,6 +1,7 @@
 import { Account } from './models/Account';
 import { AuthService } from './services/auth.service';
 import { Component } from '@angular/core';
+import { DataSharingService } from './services/data-sharing.service';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,23 @@ export class AppComponent {
    * required services to handle this since the navbar includes
    * a login button.
    */
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+    private dataSharingService: DataSharingService) {
     if (this.isCurrentUser()) {
       this.authService.getUserAccountByEmail(this.authService.getEmail())
         .subscribe(user => {
           this.user = user;
         }, err => console.log(err));
     }
+  }
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.dataSharingService.isUserLoggedIn
+      .subscribe(value => {
+        this.user = value;
+      })
   }
 
   /**
@@ -42,11 +53,13 @@ export class AppComponent {
     return jwt != null;
   }
 
-  onUserLoggedIn() {
-    this.authService.getUserAccountByEmail(this.authService.getEmail())
+  onUserLoggedIn(account: Account) {
+    this.user = account;
+    /*this.authService.getUserAccountByEmail(this.authService.getEmail())
       .subscribe(user => {
         this.user = user;
       }, err => console.log(err));
+    */
   }
 
   getUser() {
