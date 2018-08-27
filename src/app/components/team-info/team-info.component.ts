@@ -6,7 +6,6 @@ import { Team } from '../../models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-team-info',
@@ -19,6 +18,7 @@ export class TeamInfoComponent implements OnInit {
   public lastWeeksMetrics: number;
   public thisWeeksMetrics: number;
   public toAuthorize: AddUserRequest[] = [];
+  public userIsPermitted;
 
   constructor(
     private teamService: TeamService,
@@ -50,6 +50,7 @@ export class TeamInfoComponent implements OnInit {
       .subscribe((accountList: Account[]) => {
         this.accounts = accountList;
       }, err => console.log(err));
+    this.userIsPermitted = this.userHasPermissions();
   }
 
   /**
@@ -139,23 +140,12 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
+   * Owner only**
    * Deletes the current team
    */
   deleteTeam() {
     this.teamService.deleteTeam(this.team.id)
       .subscribe(() => {}, err => console.log(err));
-  }
-
-  /**
-   * Determines and routes to correct user page based on account email
-   * @param email The email to determine which page to go to
-   */
-  getRoute(email: string) {
-    if (email !== this.authService.getEmail()) {
-      this.router.navigate([`users/${email}/tasks`]);
-    } else {
-      this.router.navigate(['tasks']);
-    }
   }
 
   /**
@@ -168,7 +158,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Updates the account members list (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * Updates the account members list
    * @param updatedAccounts The updated account information
    */
   onAccountsUpdated(updatedAccounts: Account[]) {
@@ -176,7 +166,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
-   * Removes owner from team (DOESN'T UPDATE MEMBER LIST DISPLAYED)
+   * Removes owner from team
    * @param email The email of the member leaving the team
    */
   leaveTeam() {
@@ -190,6 +180,7 @@ export class TeamInfoComponent implements OnInit {
   }
 
   /**
+   * Owner only**
    * Rescinds a team invite to a team
    * @param invite The team invite to rescind
    */
@@ -229,4 +220,27 @@ export class TeamInfoComponent implements OnInit {
       }, err => console.log(err));
   }
 
+  /**
+   * Returns whether user has permission to see weekly rollup
+   */
+  userHasPermissions() {
+    this.teamService.userIsPermittedToSeeTeam(this.team.id)
+      .subscribe((isPermitted) => {
+        return isPermitted;
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  /**
+   * Determines and routes to correct user page based on account email
+   * @param email The email to determine which page to go to
+   */
+  routeToUser(email: string) {
+    if (email !== this.authService.getEmail()) {
+      this.router.navigate([`users/${email}/tasks`]);
+    } else {
+      this.router.navigate(['tasks']);
+    }
+  }
 }

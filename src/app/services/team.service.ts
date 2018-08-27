@@ -77,6 +77,10 @@ export class TeamService {
     return this.http.get<Team>(endpoint);
   }
 
+  /**
+   * Determines whether current user has permission to view team tasks
+   * @param teamId The id of the team to check permissions for
+   */
   userIsPermittedToSeeTeam(teamId: number): Observable<boolean> {
     const endpoint = `${environment.baseServerUrl}${this.apiBase}permissions/team/${teamId}`;
     return this.http.get<boolean>(endpoint);

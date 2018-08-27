@@ -12,9 +12,18 @@
 }
 
 .tasks:hover {
-    background-color: lightgray;
+    background-color: #e2e2e2;
 }
 
 .users:hover {
-    background-color: lightgray;
+    background-color: #e2e2e2;
+}
+
+.list-group {
+    max-height: 500px;
+    overflow: scroll;
+}
+
+.task:hover {
+    cursor: pointer;
 }

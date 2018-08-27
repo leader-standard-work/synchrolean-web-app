@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  brand = 'lean';
-  public isCollapsed = true;
+  public brand: string = 'home';
+  public isCollapsed: boolean = true;
   public user: Account;
 
   /**

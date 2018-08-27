@@ -2,9 +2,9 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Account } from '../models/Account';
-import { AccountService } from '../services/account.service';
-import { AuthService } from '../services/auth.service';
+import { Account } from '../../models/Account';
+import { AccountService } from '../../services/account.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'account-form',

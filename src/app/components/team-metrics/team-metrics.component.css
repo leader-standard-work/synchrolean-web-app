@@ -12,3 +12,13 @@
     border-style: solid;
     background-color: lightblue;
 }
+
+li {
+    color: #007bff;
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px #555;
+}
