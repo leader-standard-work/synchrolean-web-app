@@ -88,6 +88,6 @@ export class TaskInfoComponent implements OnInit {
   }
 
   taskIsActive() {
-    return this.task.isActive;
+    return this.task.isActive && !this.task.isCompleted;
   }
 }
