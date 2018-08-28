@@ -24,7 +24,7 @@
         <tbody>
           <ng-container *ngFor="let task of tasks; let i = index">
             <tr *ngIf="task.isActive" class="{{ task.isCompleted ? 'complete' : 'uncomplete' }}">
-              <td style="width: 200px"><a href="/tasks/{{task.id}}">{{ task.name }}</a></td>
+              <td style="width: 200px"><a [routerLink]="[task.id]">{{ task.name }}</a></td>
               <td style="width: 500px">{{ task.description  }}</td>
               <!-- <td style="width: 50px">{{ task.isCompleted ? complete : incomplete }}</td> -->
             </tr>
