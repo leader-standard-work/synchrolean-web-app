@@ -59,6 +59,19 @@ export class TaskInfoComponent implements OnInit {
   }
 
   /**
+   * Marks the task as uncomplete
+   */
+  uncompleteTask() {
+    this.task.isCompleted = false;
+    this.taskService.editTask(this.task)
+      .subscribe((uncompletedTask) => {
+        this.task = uncompletedTask;
+        alert('Task successfully marked as incomplete');
+        this.router.navigate(['/tasks']);
+      }, err => console.log(err));
+  }
+
+  /**
    * Marks the task as removed and gets rid of it from the task list
    */
   removeTask() {
