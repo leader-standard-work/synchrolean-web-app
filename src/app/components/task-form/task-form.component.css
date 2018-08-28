@@ -1,0 +1,16 @@
+.list-group {
+    max-height: 200px;
+    margin-bottom: 10px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+h5 {
+    cursor: pointer;
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px #555;
+}
