@@ -87,7 +87,6 @@ export class AccountEditComponent implements OnInit {
     this.accountService.updateAccount(editedAccount)
       .subscribe((updatedAccount) => {
         this.account = updatedAccount;
-        console.log("AccountEditComponent: ", this.account);
         if(this.isPasswordChange && this.passwordCheck) {
           var oldPassword = this.passwordForm.controls['oldPassword'].value;
           var newPassword = this.passwordForm.controls['newPassword'].value;

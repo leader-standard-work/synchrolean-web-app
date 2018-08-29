@@ -30,7 +30,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   constructor(private taskService: TaskService,
     private authService: AuthService,
     private accountService: AccountService) { // Will need account service to fetch team that user is on
-      console.log('TaskForm: Created');
       this.weekdays = [];
       this.availableDays = Weekdays;
       // Fetch the teams the user is on so they can pick which team the task belongs to
