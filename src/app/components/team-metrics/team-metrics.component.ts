@@ -5,7 +5,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Team } from '../../models/Team';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Chart } from 'node_modules/chart.js';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-team-metrics',
@@ -23,7 +23,7 @@ export class TeamMetricsComponent implements OnInit {
   public days: string[] = [];                 // stores strings of the days of the week
   public week: string[] = [];                 // stores strings of sundays and saturdays of each week
   public xAxisLabel: string[] = [];           // stores strings of weekly ranges for x-axis labels on chart
-  LineChart = [];
+  lineChart: Chart;
 
   constructor(private teamService: TeamService,
     private taskService: TaskService,
@@ -98,6 +98,21 @@ export class TeamMetricsComponent implements OnInit {
       // Set appropriate start and end date hours
       this.startDate.setHours(0, 0, 0, 0);
       this.endDate.setHours(23, 59, 59);
+
+      const timeRange = this.endDate.getTime() - this.startDate.getTime();
+      // Check for range < week and > year
+      var week = 1000 * 60 * 60 * 24 * 7;
+      var year = (week / 7) * 365;
+      if(timeRange <= week) {
+        this.days = [];
+        this.getDays();
+        this.getDailyTeamMetrics();
+        return;
+      } else if(timeRange > year) {
+        alert('Cannot calculate metrics longer than one year');
+        return;
+      }
+
       this.getMetrics();                    // Gets metrics from startDate to endDate
       this.getWeeks();                      // Gets strings of each Sunday and Saturday
       this.getWeeksLabel();                 // Gets strings of week range Sunday-Saturday
@@ -362,8 +377,10 @@ export class TeamMetricsComponent implements OnInit {
    */
   fillTable() {
     // Reset and create new line graph 
-    this.LineChart = [];
-    this.LineChart = new Chart('lineChart', {
+    if(this.lineChart != null) {
+      this.lineChart.destroy();
+    }
+    this.lineChart = new Chart('lineChart', {
       type: 'line',
       data: {
         labels: this.xAxisLabel,
@@ -378,10 +395,8 @@ export class TeamMetricsComponent implements OnInit {
       },
       options: {
         title: {
-          tesxt: "Line Chart",
           display: true
         },
-        scaleShowValues: true,
         scales: {
           xAxes: [{
             ticks: {
