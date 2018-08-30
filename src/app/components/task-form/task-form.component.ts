@@ -184,8 +184,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * @param id The teamId for the team the task belongs to
    */
   setTaskTeamId(team: Team) {
-    this.taskForm.controls['teamId'].setValue(team.id);
-    this.teamName = team.teamName;
+    if(team != null) {
+      this.taskForm.controls['teamId'].setValue(team.id);
+      this.teamName = team.teamName;
+    } else {
+      this.taskForm.controls['teamId'].setValue(null);
+      this.teamName = null;
+    }
   }
 
   /**
