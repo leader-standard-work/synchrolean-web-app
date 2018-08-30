@@ -104,6 +104,11 @@ export class AccountFormComponent implements OnInit {
     const number = (/[0-9]/.test(this.accountForm.controls['password'].value));
     return number;
   }
+
+  hasLength() {
+    let password = this.accountForm.controls['password'].value;
+    return password.length >= 8 && password.length <= 50;
+  }
   // End case validations
 
   /**

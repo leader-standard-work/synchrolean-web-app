@@ -39,13 +39,11 @@
         </div>
         <div class="col">
           <button type="button" class="btn btn-block btn-success" [hidden]="!taskIsActive()" 
-            (click)="completeTask()" *ngIf="taskBelongsToMe">
+            (click)="completeTask()" *ngIf="taskBelongsToMe && !task.isCompleted">
             Complete
           </button>
-        </div>
-        <div class="col">
           <button type="button" class="btn btn-block btn-warning" [hidden]="!task.isCompleted" 
-            (click)="uncompleteTask()" *ngIf="taskBelongsToMe">
+            (click)="uncompleteTask()" *ngIf="taskBelongsToMe && task.isCompleted">
             Uncomplete
           </button>
         </div>

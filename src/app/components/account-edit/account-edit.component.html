@@ -71,6 +71,7 @@
                 <label class="text-danger" [hidden]="hasUpper()">Passwords must have at least one uppercase letter.</label>
                 <label class="text-danger" [hidden]="hasLower()">Passwords must have at least one lowercase letter.</label>
                 <label class="text-danger" [hidden]="hasNumber()">Passwords must have at least one number.</label>
+                <label class="text-danger" [hidden]="hasLength()">Passwords must have between 8 and 50 characters.</label>
               </div>
             </div>
           </div>
@@ -79,13 +80,35 @@
 
       <!-- Footer content -->
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="(accountForm.invalid && !isPasswordChange) || (isPasswordChange && (passwordForm.invalid || !passwordMatch()))" 
-          (click)="editAccount()" data-dismiss="modal">
+        <button type="submit" class="btn btn-primary" [disabled]="(accountForm.invalid && !isPasswordChange) 
+          || (isPasswordChange && (passwordForm.invalid || !passwordMatch()))" (click)="editAccount()" data-dismiss="modal" 
+          data-toggle="modal" data-target="#editSuccessModal">
           Edit Account
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="populateForm()">
           Cancel
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="editSuccessModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header lean-bg">
+        <h4 class="modal-title lean-text">Edit Account</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p>Your account has been succesfully edited!</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

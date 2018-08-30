@@ -14,6 +14,7 @@ import { Task, Frequency, Weekdays, Weekday } from '../../models/Task';
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
   public action: string;
+  public teamName: string;
   taskForm: FormGroup;    // Form
   @Input() taskId: number;
   @Output() addedTask = new EventEmitter<Task>();
@@ -29,7 +30,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   constructor(private taskService: TaskService,
     private authService: AuthService,
     private accountService: AccountService) { // Will need account service to fetch team that user is on
-      console.log('TaskForm: Created');
       this.weekdays = [];
       this.availableDays = Weekdays;
       // Fetch the teams the user is on so they can pick which team the task belongs to
@@ -183,8 +183,14 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Sets the tasks teamId to the team the user selects
    * @param id The teamId for the team the task belongs to
    */
-  setTaskTeamId(id: number) {
-    this.taskForm.controls['teamId'].setValue(id);
+  setTaskTeamId(team: Team) {
+    if(team != null) {
+      this.taskForm.controls['teamId'].setValue(team.id);
+      this.teamName = team.teamName;
+    } else {
+      this.taskForm.controls['teamId'].setValue(null);
+      this.teamName = null;
+    }
   }
 
   /**

@@ -27,13 +27,24 @@
         <div class="form-group text-center">
           <p>Which team would you like to assign this task to?</p>
           <ul class="list-group">
+            <div *ngIf="teamName">
+              <li class="list-group-item list-group-item-action flex-column align-items-start"
+                (click)="setTaskTeamId(null)">
+                <div class="d-flex justify-content-between">
+                  <h5 class="mb-1"><a>Personal</a></h5>
+                </div>
+              </li>
+            </div>
             <li class="list-group-item list-group-item-action flex-column align-items-start" 
-              *ngFor="let team of teams" (click)="setTaskTeamId(team.id)">
+              *ngFor="let team of teams" (click)="setTaskTeamId(team)">
               <div class="d-flex justify-content-between">
                 <h5 class="mb-1"><a>{{ team.teamName }}</a></h5>
               </div>
             </li>
           </ul>
+        </div>
+        <div *ngIf="teamName">
+          <p class="text-succeed">Task selected for {{ teamName }}</p>
         </div>
         <hr>
         <!-- Frequency options for the user to choose -->

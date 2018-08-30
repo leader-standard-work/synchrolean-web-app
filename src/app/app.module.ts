@@ -17,6 +17,7 @@ import { PermissionsComponent } from './components/permissions/permissions.compo
 import { RollupComponent } from './components/rollup/rollup.component';
 import { TeamMetricsComponent } from './components/team-metrics/team-metrics.component';
 import { RemoveMemberComponent } from './components/remove-member/remove-member.component';
+import { ChartsModule } from 'node_modules/ng2-charts';
 
 // bootstrap related imports
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -67,6 +68,7 @@ import { AccountEditComponent } from './components/account-edit/account-edit.com
     CollapseModule,
     BsDropdownModule,
     BsDatepickerModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

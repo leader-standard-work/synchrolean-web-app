@@ -74,6 +74,12 @@ export class AccountEditComponent implements OnInit {
     return number;
   }
 
+  hasLength() {
+    const password = this.passwordForm.controls['newPassword'].value;
+    return password.length >= 8 && password.length <= 50;
+  }
+  // End case validations 
+
   passwordChange() {
     this.isPasswordChange = !this.isPasswordChange;
   }
@@ -87,13 +93,12 @@ export class AccountEditComponent implements OnInit {
     this.accountService.updateAccount(editedAccount)
       .subscribe((updatedAccount) => {
         this.account = updatedAccount;
-        console.log("AccountEditComponent: ", this.account);
         if(this.isPasswordChange && this.passwordCheck) {
           var oldPassword = this.passwordForm.controls['oldPassword'].value;
           var newPassword = this.passwordForm.controls['newPassword'].value;
           this.accountService.changePassword(oldPassword, newPassword)
             .subscribe(() => {
-              // Add alert box??
+              
             }, (err) => {
               console.log(err);
             })
