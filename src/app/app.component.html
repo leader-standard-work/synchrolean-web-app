@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="navbar navbar-expand-sm lean-bg">
-        <h4><a href="/home" class="lean-text nav-link">{{ brand | uppercase }}</a></h4>
+        <h4><a href="/home" class="lean-text nav-link home-brand">{{ brand | uppercase }}</a></h4>
         <div class="dropdown ml-auto" *ngIf="user" [hidden]="!isCurrentUser()">
             <button class="dropdown-toggle btn lean-bg lean-text" type="button" data-toggle="dropdown" id="userDropdown" 
                 aria-haspopup="true" aria-expanded="false">Logged in as 
