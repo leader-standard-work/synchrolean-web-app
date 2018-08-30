@@ -1,15 +1,16 @@
 <div class="container-fluid bg-light bg-secondary h-100 pl-0 pr-0">
   <section class="jumbotron text-center">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col">
-        <h4 class="display-4" *ngIf="team">{{ team.teamName }}</h4>
-        <h5 class="display-5 lead">Weekly Rollup</h5>
+
       </div>
       <div class="col">
         <h4 class="display-4">Completion Rate</h4>
         <h5 class="{{ teamCompletion > .8 ? 'complete' : 'uncomplete' }}">{{ teamCompletion | percent }}</h5>
       </div>
-    </div>
+    </div> -->
+    <h4 class="display-4" *ngIf="team">{{ team.teamName }}</h4>
+    <h5 class="display-5 lead">Weekly Rollup</h5>
   </section>
 
   <div class="container-fluid">
@@ -44,8 +45,8 @@
                   <p>{{ task.description }}</p>
                 </div>
                 <div class="col">
-                  <h4 class="{{ task.isActive ? 'uncomplete' : 'complete' }}">
-                    {{ task.isActive ? uncomplete : complete }}
+                  <h4 class="{{ task.isCompleted ? 'complete' : 'uncomplete' }}">
+                    {{ task.isCompleted ? complete : uncomplete }}
                   </h4>
                 </div>
               </div>
@@ -63,8 +64,8 @@
                   <p>{{ task.description }}</p>
                 </div>
                 <div class="col">
-                  <h4 class="{{ task.isActive ? 'uncomplete' : 'complete' }}">
-                    {{ task.isActive ? uncomplete : complete }}
+                  <h4 class="{{ task.isCompleted ? 'complete' : 'uncomplete' }}">
+                    {{ task.isActive ? complete : uncomplete }}
                   </h4>
                 </div>
               </div>
