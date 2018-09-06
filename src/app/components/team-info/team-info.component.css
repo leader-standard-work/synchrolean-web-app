@@ -32,3 +32,7 @@ a:hover {
     max-height: 500px;
     overflow: scroll;
 }
+
+button {
+    min-height: 30px;
+}

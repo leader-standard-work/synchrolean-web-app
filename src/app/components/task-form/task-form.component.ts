@@ -203,6 +203,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else {
       this.setFormValues();
     }
+    this.teamName = null;
   }
 
   setFormValues() {
