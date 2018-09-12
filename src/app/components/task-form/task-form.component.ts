@@ -1,11 +1,12 @@
 import { Team } from '../../models/Team';
 import { AccountService } from '../../services/account.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 import { TaskService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
 import { Task, Frequency, Weekdays, Weekday } from '../../models/Task';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'task-form',
@@ -16,6 +17,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public action: string;
   public teamName: string;
   taskForm: FormGroup;    // Form
+  dateForm: FormGroup;
   @Input() taskId: number;
   @Output() addedTask = new EventEmitter<Task>();
   @Output() editedTask = new EventEmitter<Task>();
@@ -23,13 +25,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public availableDays: Weekday[];
   public teams: Team[];
   private loadedTask: Task;
+  datePickerConfig: Partial<BsDatepickerConfig>;
 
   /**
    * Communicates with the task service
    */
   constructor(private taskService: TaskService,
     private authService: AuthService,
-    private accountService: AccountService) { // Will need account service to fetch team that user is on
+    private accountService: AccountService,
+    private formBuilder: FormBuilder) { // Will need account service to fetch team that user is on
       this.weekdays = [];
       this.availableDays = Weekdays;
       // Fetch the teams the user is on so they can pick which team the task belongs to
@@ -37,6 +41,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       .subscribe((teams) => {
         this.teams = teams;
       }, (err) => { console.log(err); });
+      // Configure the graph
+      this.datePickerConfig = Object.assign({},
+        {
+          containerClass: 'theme-dark-blue',
+          showWeekNumbers: false,
+      });
   }
 
   ngOnInit() {
@@ -53,6 +63,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       deleted: new FormControl(false),
       frequency: new FormControl(Frequency.Once, [ Validators.required ]),
       teamId: new FormControl(null)
+    });
+    this.dateForm = this.formBuilder.group({
+      date: null
     });
     if (this.taskId) {
       this.action = 'Edit';
@@ -121,7 +134,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Adds a day to the numerical weekdays value
+   * Adds a day to the numerical weekdays value for daily tasks
    * @param dayValue The day value to add to the task
    */
   toggleWeekday(dayValue: number) {
@@ -131,6 +144,20 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else {
       this.weekdays.push(dayValue);
     }
+  }
+
+  /**
+   * Adds a day to the numerical weekdays value for weekly tasks (one day only)
+   * @param dayValue The day value to add to the task
+   */
+  toggleWeeklyWeekday(dayValue: number) {
+    if(this.weekdays.length > 0) {
+      this.weekdays.splice(0, 1);
+      this.weekdays.push(dayValue);
+    } else {
+      this.weekdays.push(dayValue);
+    }
+    console.log("weekdays[] = ", this.weekdays);
   }
 
   weekdayIsSelected(dayValue: number) {
@@ -150,11 +177,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.frequency = this.taskForm.controls['frequency'].value;
     task.ownerEmail = this.authService.getEmail();
     task.teamId = this.taskForm.controls['teamId'].value;
-    if (task.frequency === 1) {
+    if (task.frequency === 1 || task.frequency === 2) {
       // Sum the values in the weekdays array
       task.weekdays = this.weekdays.reduce((a, b) => a + b, 0);
+      task.dueDate = null;
     } else {
       task.weekdays = 0;
+      task.dueDate = this.dateForm.controls['date'].value;
     }
   }
 
@@ -171,11 +200,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     task.isDeleted = false;
     task.frequency = this.taskForm.controls['frequency'].value;
     task.teamId = this.taskForm.controls['teamId'].value;
-    if (task.frequency === 1) {
+    if (task.frequency === 1 || task.frequency === 2) {
       // Sum the values in the weekdays array
       task.weekdays = this.weekdays.reduce((a, b) => a + b, 0);
+      task.dueDate = null;
     } else {
       task.weekdays = 0;
+      task.dueDate = this.dateForm.controls['date'].value;
     }
   }
 
@@ -200,6 +231,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     if (!this.taskId) {
       this.taskForm.reset();
       this.weekdays = [];
+      this.dateForm.reset();
     } else {
       this.setFormValues();
     }

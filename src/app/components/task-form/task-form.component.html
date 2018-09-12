@@ -54,11 +54,19 @@
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(0)">Once</button>
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(1)">Daily</button>
             <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(2)">Weekly</button>
-            <!-- <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(3)">Monthly</button> -->
+            <button type="button" class="btn lean-bg lean-text" (click)="setFrequency(3)">Monthly</button>
           </div>
         </div>
         <div *ngIf="getFrequency() == 0">
-          <p class="text-succeed">Tasks that occur once are set for today's date.</p>
+          <p class="text-succeed">Tasks that occur once on selected date.</p>
+          <form [formGroup]="dateForm">
+            <div class="row">
+              <div class="col-8">
+                <input formControlName="date" type="text" class="form-control"
+                bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date">
+              </div>
+            </div>
+          </form>
         </div>
         <div *ngIf="getFrequency() == 1">
           <div class="form-group">
@@ -72,14 +80,29 @@
           </div>
         </div>
         <div *ngIf="getFrequency() == 2">
-          <p class="text-succeed">Tasks that occur sometime during the week.</p>
-        </div>
-        <!-- <div *ngIf="getFrequency() == 3">
           <div class="form-group">
-            <p class="text-succeed">Tasks that occur monthly occur on the dates you choose.</p>
-            <p>Monthly date picker here...</p>
+            <p class="text-succeed">Tasks that occur on specific day each week.</p>
+            <div class="btn-group btn-block text-white">
+              <a *ngFor="let weekday of availableDays" class="btn btn-md day-choice" 
+                 [ngClass]="{'lean-bg': weekdayIsSelected(weekday.value), 'btn-secondary': !weekdayIsSelected(weekday.value)}" 
+                 (click)="toggleWeeklyWeekday(weekday.value)">{{ weekday.displayName}}
+              </a>
+            </div>
           </div>
-        </div> -->
+        </div>
+        <div *ngIf="getFrequency() == 3">
+          <div class="form-group">
+            <p class="text-succeed">Tasks that occur on specific day each month.</p>
+            <form [formGroup]="dateForm">
+              <div class="row">
+                <div class="col-8">
+                  <input formControlName="date" type="text" class="form-control"
+                  bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
 
         <!-- Footer content -->
         <div class="modal-footer">

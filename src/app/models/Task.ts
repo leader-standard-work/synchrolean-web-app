@@ -27,6 +27,8 @@ export class Task {
     description: string;
     weekdays: number;
     creationDate: Date;
+    dueDate: Date;
+    lastModified: Date;
     isCompleted: boolean;
     completionDate: Date;
     isDeleted: boolean;
