@@ -26,6 +26,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   public teams: Team[];
   private loadedTask: Task;
   datePickerConfig: Partial<BsDatepickerConfig>;
+  public today: Date;
 
   /**
    * Communicates with the task service
@@ -45,8 +46,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.datePickerConfig = Object.assign({},
         {
           containerClass: 'theme-dark-blue',
-          showWeekNumbers: false,
+          showWeekNumbers: false
       });
+      this.today = new Date();
   }
 
   ngOnInit() {
@@ -157,7 +159,6 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else {
       this.weekdays.push(dayValue);
     }
-    console.log("weekdays[] = ", this.weekdays);
   }
 
   weekdayIsSelected(dayValue: number) {

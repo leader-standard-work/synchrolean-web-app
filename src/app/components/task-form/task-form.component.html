@@ -63,7 +63,7 @@
             <div class="row">
               <div class="col-8">
                 <input formControlName="date" type="text" class="form-control"
-                bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date">
+                bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date" [minDate]="today">
               </div>
             </div>
           </form>
@@ -97,7 +97,7 @@
               <div class="row">
                 <div class="col-8">
                   <input formControlName="date" type="text" class="form-control"
-                  bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date">
+                  bsDatepicker [bsConfig]="datePickerConfig" placeholder="Select a date" [minDate]="today">
                 </div>
               </div>
             </form>
