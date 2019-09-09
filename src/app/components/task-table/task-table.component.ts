@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task } from '../../models/Task';
-import { AuthService } from '../../services/auth.service';
+import { Task } from '@app/models/Task';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-task-table',
-  templateUrl: './task-table.component.html',
-  styleUrls: ['./task-table.component.css']
+  templateUrl: 'task-table.component.html',
+  styleUrls: ['task-table.component.css']
 })
 export class TaskTableComponent implements OnInit {
   @Input() tasks: Task[];

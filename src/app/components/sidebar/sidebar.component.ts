@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  templateUrl: 'sidebar.component.html',
+  styleUrls: ['sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
   @Output() userLoggedIn = new EventEmitter();
@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit {
             this.authService.setEmail();
             //this.clear();
             this.userLoggedIn.emit();
-            this.router.navigate(['/tasks']);
+            this.router.navigate(['tasks']);
           }, err => {
             console.log(err);
             //this.clear();

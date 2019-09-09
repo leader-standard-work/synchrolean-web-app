@@ -1,19 +1,19 @@
-import { TeamService } from '../../services/team.service';
+import { TeamService } from '@app/services/team.service';
 import { ActivatedRoute } from '@angular/router';
-import { Metric } from '../../models/Metric';
+import { Metric } from '@app/models/Metric';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { TaskService } from '../../services/task.service';
-import { Task } from '../../models/Task';
-import { AuthService } from '../../services/auth.service';
-import { Team } from '../../models/Team';
-import { AccountService } from '../../services/account.service';
-import { Permission } from '../../models/Permission';
+import { TaskService } from '@app/services/task.service';
+import { Task } from '@app/models/Task';
+import { AuthService } from '@app/services/auth.service';
+import { Team } from '@app/models/Team';
+import { AccountService } from '@app/services/account.service';
+import { Permission } from '@app/models/Permission';
 
 @Component({
   selector: 'task-page',
-  templateUrl: './task-page.component.html',
-  styleUrls: ['./task-page.component.css']
+  templateUrl: 'task-page.component.html',
+  styleUrls: ['task-page.component.css']
 })
 export class TaskPageComponent implements OnInit, OnDestroy {
   // public pageTitle: string = this.authService.getCurrentUserName();  // Page title

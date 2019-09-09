@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 // Leaving this import here for if we decide to use an expiration time
 import * as JWT from 'jwt-decode';
 

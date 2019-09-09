@@ -1,14 +1,14 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../models/Team';
+import { AuthService } from '@app/services/auth.service';
+import { TeamService } from '@app/services/team.service';
+import { Team } from '@app/models/Team';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-team-form',
-  templateUrl: './team-form.component.html',
-  styleUrls: ['./team-form.component.css']
+  templateUrl: 'team-form.component.html',
+  styleUrls: ['team-form.component.css']
 })
 export class TeamFormComponent implements OnInit {
   action: string;

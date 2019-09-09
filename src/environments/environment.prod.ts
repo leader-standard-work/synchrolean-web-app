@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseServerUrl: 'https://synchrolean-server.appspot.com/api'
+  baseServerUrl: 'http://8.15.201.152/api'
 };

@@ -1,4 +1,4 @@
-import { TeamService } from '../../services/team.service';
+import { TeamService } from '@app/services/team.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 

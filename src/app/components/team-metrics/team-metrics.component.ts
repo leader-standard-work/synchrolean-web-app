@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TeamService } from '../../services/team.service';
-import { TaskService } from '../../services/task.service';
+import { TeamService } from '@app/services/team.service';
+import { TaskService } from '@app/services/task.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { Team } from '../../models/Team';
+import { Team } from '@app/models/Team';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Chart } from 'node_modules/chart.js';

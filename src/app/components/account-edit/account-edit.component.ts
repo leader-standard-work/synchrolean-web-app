@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AccountService } from '../../services/account.service';
-import { AuthService } from '../../services/auth.service';
-import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
-import { Account } from '../../models/Account';
+import { AccountService } from '@app/services/account.service';
+import { AuthService } from '@app/services/auth.service';
+import { FormGroup, FormControl, Validators } from '@base/node_modules/@angular/forms';
+import { Account } from '@app/models/Account';
 
 @Component({
   selector: 'app-account-edit',

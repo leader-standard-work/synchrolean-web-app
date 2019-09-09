@@ -1,10 +1,10 @@
-import { Team } from '../models/Team';
+import { Team } from '@app/models/Team';
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Account } from '../models/Account';
-import { environment } from '../../environments/environment';
+import { Account } from '@app/models/Account';
+import { environment } from '@base/src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({

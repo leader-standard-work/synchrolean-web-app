@@ -1,14 +1,14 @@
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../models/Team';
+import { TeamService } from '@app/services/team.service';
+import { Team } from '@app/models/Team';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { AccountService } from '../../services/account.service';
-import { AuthService } from '../../services/auth.service';
+import { AccountService } from '@app/services/account.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-team-list',
-  templateUrl: './team-list.component.html',
-  styleUrls: ['./team-list.component.css']
+  templateUrl: 'team-list.component.html',
+  styleUrls: ['team-list.component.css']
 })
 export class TeamListComponent implements OnInit, OnDestroy {
   public pageTitle = 'Teams';  // Page title
@@ -63,7 +63,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
   }
 
   route(teamId: number) {
-    this.router.navigate([`/teams/${teamId}`]);
+    this.router.navigate([`teams/${teamId}`]);
   }
 
   /**

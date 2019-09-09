@@ -1,16 +1,16 @@
-import { AddUserRequest } from '../../models/AddUserRequest';
-import { Account } from '../../models/Account';
-import { TeamService } from '../../services/team.service';
-import { TaskService } from '../../services/task.service';
-import { Team } from '../../models/Team';
+import { AddUserRequest } from '@app/models/AddUserRequest';
+import { Account } from '@app/models/Account';
+import { TeamService } from '@app/services/team.service';
+import { TaskService } from '@app/services/task.service';
+import { Team } from '@app/models/Team';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-team-info',
-  templateUrl: './team-info.component.html',
-  styleUrls: ['./team-info.component.css']
+  templateUrl: 'team-info.component.html',
+  styleUrls: ['team-info.component.css']
 })
 export class TeamInfoComponent implements OnInit {
   public team: Team;

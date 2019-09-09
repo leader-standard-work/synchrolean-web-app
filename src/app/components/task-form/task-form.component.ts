@@ -1,16 +1,16 @@
-import { Team } from '../../models/Team';
-import { AccountService } from '../../services/account.service';
+import { Team } from '@app/models/Team';
+import { AccountService } from '@app/services/account.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { TaskService } from '../../services/task.service';
-import { AuthService } from '../../services/auth.service';
-import { Task, Frequency, Weekdays, Weekday } from '../../models/Task';
+import { TaskService } from '@app/services/task.service';
+import { AuthService } from '@app/services/auth.service';
+import { Task, Frequency, Weekdays, Weekday } from '@app/models/Task';
 
 @Component({
   selector: 'task-form',
-  templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.css']
+  templateUrl: 'task-form.component.html',
+  styleUrls: ['task-form.component.css']
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
   public action: string;

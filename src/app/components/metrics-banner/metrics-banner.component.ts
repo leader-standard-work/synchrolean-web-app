@@ -1,8 +1,8 @@
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '@app/services/account.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { Metric } from '../../models/Metric';
-import { TaskService } from '../../services/task.service';
-import { Account } from '../../models/Account';
+import { Metric } from '@app/models/Metric';
+import { TaskService } from '@app/services/task.service';
+import { Account } from '@app/models/Account';
 
 @Component({
   selector: 'app-metrics-banner',

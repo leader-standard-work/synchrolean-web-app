@@ -24,7 +24,7 @@
         <tbody>
           <tr *ngFor="let team of (myList ? myTeams : allTeams)">
             <td style="width: 200px">
-              <!--<a href="/teams/{{ team.id }}">{{ team.teamName }}</a>-->
+              <!--<a href="teams/{{ team.id }}">{{ team.teamName }}</a>-->
               <a style="color: #007bff" (click)="route(team.id)">{{ team.teamName }}</a>
             </td>
             <td style="width: 500px">{{ team.teamDescription }}</td>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Account } from '../../models/Account';
-import { TeamService } from '../../services/team.service';
+import { Account } from '@app/models/Account';
+import { TeamService } from '@app/services/team.service';
 
 @Component({
   selector: 'app-remove-member',

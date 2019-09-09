@@ -1,8 +1,8 @@
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Task, Weekdays } from '../../models/Task';
-import { TaskService } from '../../services/task.service';
+import { Task, Weekdays } from '@app/models/Task';
+import { TaskService } from '@app/services/task.service';
 
 @Component({
   selector: 'app-task-info',
@@ -54,7 +54,7 @@ export class TaskInfoComponent implements OnInit {
         this.task.completionDate = new Date();
         this.task.isCompleted = true;
         alert('Task successfully completed');
-        this.router.navigate(['/tasks']);
+        this.router.navigate(['tasks']);
       }, err => console.log(err));
   }
 
@@ -67,7 +67,7 @@ export class TaskInfoComponent implements OnInit {
       .subscribe((removedTask) => {
         this.task = removedTask;
         alert('Task successfully deleted');
-        this.router.navigate(['/tasks']);
+        this.router.navigate(['tasks']);
       }, err => console.log(err));
   }
 

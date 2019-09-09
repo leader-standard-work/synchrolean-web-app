@@ -2,14 +2,14 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Account } from '../../models/Account';
-import { AccountService } from '../../services/account.service';
-import { AuthService } from '../../services/auth.service';
+import { Account } from '@app/models/Account';
+import { AccountService } from '@app/services/account.service';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'account-form',
-  templateUrl: './account-form.component.html',
-  styleUrls: ['./account-form.component.css']
+  templateUrl: 'account-form.component.html',
+  styleUrls: ['account-form.component.css']
 })
 export class AccountFormComponent implements OnInit {
   public action: string;
@@ -71,7 +71,7 @@ export class AccountFormComponent implements OnInit {
                 this.authService.setEmail();
                 this.clear();
                 this.userLoggedIn.emit();
-                this.router.navigate(['/tasks']);
+                this.router.navigate(['tasks']);
               }, err => {
                 console.log(err);
                 this.clear();
@@ -80,7 +80,7 @@ export class AccountFormComponent implements OnInit {
             console.log(err);
             alert('Invalid login credentials');
             this.clear();
-            this.router.navigate(['/home']);
+            this.router.navigate(['home']);
           });
       });
   }

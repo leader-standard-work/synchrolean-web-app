@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@app/services/auth.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -35,7 +35,7 @@ export class LoginFormComponent implements OnInit {
           this.authService.setEmail();
           this.clear();
           this.userLoggedIn.emit();
-          this.router.navigate(['/tasks']);
+          this.router.navigate(['tasks']);
         }, err => {
           console.log(err);
           this.clear();
@@ -44,7 +44,7 @@ export class LoginFormComponent implements OnInit {
       console.log(err);
       alert('Invalid login credentials');
       this.clear();
-      this.router.navigate(['/home']);
+      this.router.navigate(['home']);
     });
   }
 

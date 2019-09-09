@@ -1,15 +1,15 @@
-import { WeeklyRollup } from './../../models/WeeklyRollup';
-import { Team } from './../../models/Team';
-import { Task } from '../../models/Task';
-import { TeamService } from '../../services/team.service';
+import { WeeklyRollup } from '@app/models/WeeklyRollup';
+import { Team } from '@app/models/Team';
+import { Task } from '@app/models/Task';
+import { TeamService } from '@app/services/team.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Account } from './../../models/Account';
+import { Account } from '@app/models/Account';
 
 @Component({
   selector: 'app-rollup',
-  templateUrl: './rollup.component.html',
-  styleUrls: ['./rollup.component.css']
+  templateUrl: 'rollup.component.html',
+  styleUrls: ['rollup.component.css']
 })
 export class RollupComponent implements OnInit {
   private teamId: number;

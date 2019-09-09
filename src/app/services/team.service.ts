@@ -1,14 +1,14 @@
-import { WeeklyRollup } from './../models/WeeklyRollup';
+import { WeeklyRollup } from '@app/models/WeeklyRollup';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { environment } from '../../environments/environment';
-import { Team } from '../models/Team';
-import { AddUserRequest } from '../models/AddUserRequest';
-import { Account } from '../models/Account';
-import { Task } from '../models/Task';
+import { environment } from '@base/src/environments/environment';
+import { Team } from '@app/models/Team';
+import { AddUserRequest } from '@app/models/AddUserRequest';
+import { Account } from '@app/models/Account';
+import { Task } from '@app/models/Task';
 
 @Injectable({
   providedIn: 'root'

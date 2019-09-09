@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AccountService } from '../../services/account.service';
-import { TeamService } from '../../services/team.service';
-import { Team } from '../../models/Team';
-import { Account } from '../../models/Account';
+import { AccountService } from '@app/services/account.service';
+import { TeamService } from '@app/services/team.service';
+import { Team } from '@app/models/Team';
+import { Account } from '@app/models/Account';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({

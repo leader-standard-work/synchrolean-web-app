@@ -2,15 +2,15 @@ import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Task } from '../models/Task';
-import { environment } from '../../environments/environment';
+import { Task } from '@app/models/Task';
+import { environment } from '@base/src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private apiBase = '/tasks';
+  private apiBase = '/tasks/';
   private tasksSubject: BehaviorSubject<Task[]>;
   private tasksObservable: Observable<Task[]>;
 
